@@ -39,9 +39,9 @@ if (route.query.fid) {
     showLoadingToast("比赛分析中...")
     analysisMatch(res1).then(res2 => {
       console.log(res2)
+    }).finally(() => {
+      closeToast()
     })
-  }).finally(() => {
-    closeToast()
   })
 }
 </script>
