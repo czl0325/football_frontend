@@ -8,3 +8,7 @@ export const getMatchList = () => {
 export const getMatchInfo = (fid: string) => {
   return http1.get<IMatchInfo>(`/analysis/info`, { fid })
 }
+
+export const analysisMatch = (match: IMatchInfo) => {
+  return http1.post("/analysis/all", match)
+}

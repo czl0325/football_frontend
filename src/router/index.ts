@@ -45,9 +45,9 @@ router.beforeEach(async (to, from, next)   => {
     })
     const store = useCacheViewsStore()
     if (tp.length >= fp.length) {
-      store.addCachedView(from.name)
+      store.addCachedView(from.name.toString())
     } else {
-      store.removeCachedView(from.name)
+      store.removeCachedView(from.name.toString())
     }
   }
   next()

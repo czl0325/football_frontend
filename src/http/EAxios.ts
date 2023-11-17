@@ -41,14 +41,10 @@ export class EAxios {
       err => {
         const { response } = err
         if (response) {
-          if (response.status === 403) {
-            router.push("/login")
-          } else {
-            showToast({
-              message: `错误：${response.status}`,
-              position: 'bottom',
-            })
-          }
+          showToast({
+            message: `错误：${response.status}`,
+            position: 'bottom',
+          })
           return Promise.reject(err)
         } else {
           showToast({

@@ -16,10 +16,12 @@
 
   --van-background-2: #ff6500;
   --van-nav-bar-title-text-color: white;
+  --van-nav-bar-icon-color: white;
 }
 
 .app-container {
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }

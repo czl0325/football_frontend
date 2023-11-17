@@ -32,5 +32,6 @@ onRefreshList()
 <style lang="less" scoped>
 .list-container {
   flex: 1;
+  width: 100%;
 }
 </style>
