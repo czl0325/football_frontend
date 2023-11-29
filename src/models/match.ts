@@ -19,6 +19,32 @@ export interface IMatchInfo {
   europe_odds_items?: IEuropeOddsInfo[];
   asia_odds_items?: IAsiaOddsInfo[];
   size_odds_items?: ISizeOddsInfo[];
+
+
+  asia_lose_all?: number;
+  asia_lose_league?: number;
+  asia_run_all?: number;
+  asia_run_league?: number;
+  asia_score_list?: any[];
+  asia_win_all?: number;
+  asia_win_league?: number;
+
+  europe_win_all?: number;
+  europe_win_league?: number;
+  europe_even_all?: number;
+  europe_even_league?: number;
+  europe_lose_all?: number;
+  europe_lose_league?: number;
+  europe_score_list?: any[];
+
+  size_big_all?: number;
+  size_big_league?: number;
+  size_run_all?: number;
+  size_run_league?: number;
+  size_score_list?: any[];
+  size_small_all?: number;
+  size_small_league?: number;
+  team_count?: number;
 }
 
 export interface IEuropeOddsInfo {
