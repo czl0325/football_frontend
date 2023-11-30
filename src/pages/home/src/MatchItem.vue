@@ -2,6 +2,7 @@
   <div class="item-container">
     <div class="header">
       <span>{{ match.match_group }}</span>
+      <span class="status">({{ match.match_status }})</span>
     </div>
     <div class="content">
       <span class="team">{{ match.home_team }}</span>
@@ -9,6 +10,7 @@
       <span class="team">{{ match.visit_team }}</span>
     </div>
     <div class="footer">
+      <span>比赛时间：{{ match.match_time }}</span>
       <router-link :to="`/detail?fid=${match.fid}`">
         <van-button type="primary" size="small" >分析</van-button>
       </router-link>
@@ -17,7 +19,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from "vue-router"
 import { IMatchInfo } from "@/models/match.ts"
 
 defineOptions({
@@ -26,7 +27,6 @@ defineOptions({
 defineProps<{
   match: IMatchInfo
 }>()
-const router = useRouter()
 </script>
 
 <style lang="less" scoped>
@@ -40,11 +40,16 @@ const router = useRouter()
   flex-direction: column;
   .header {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     padding: 8px 15px;
     border-bottom: 1px solid #E5E5E5;
     font-size: 18px;
     font-weight: bold;
+    .status {
+      margin-left: 5px;
+      font-size: 12px;
+      color: #ff5252;
+    }
   }
   .content {
     display: flex;
@@ -67,9 +72,14 @@ const router = useRouter()
   .footer {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     border-top: 1px solid #E5E5E5;
     padding: 8px 15px;
+
+    span {
+      font-size: 12px;
+      color: #666;
+    }
   }
 }
 </style>

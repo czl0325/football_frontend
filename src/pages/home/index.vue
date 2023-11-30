@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <van-nav-bar title="所有比赛" fixed placeholder/>
+    <van-nav-bar title="所有比赛" fixed placeholder class="w-full"/>
     <van-pull-refresh class="list-container" v-model="isLoading" @refresh="onRefreshList">
       <match-item v-for="match in matchList" :key="match.fid" :match="match" />
     </van-pull-refresh>

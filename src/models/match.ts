@@ -6,6 +6,7 @@ export interface IMatchInfo {
   match_category?: string;
   match_round?: string;
   match_time?: string;
+  match_status?: string;
   home_team?: string;
   home_team_rank?: string;
   home_score?: string;
