@@ -2,6 +2,7 @@ import { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { EAxios } from '@/http/EAxios.ts'
 import { showLoadingToast, showToast } from "vant"
 import { ToastWrapperInstance } from "vant/lib/toast/types"
+import { API_URL } from "../config.ts"
 
 interface BaseResponseData<T> {
   timestamp: number;
@@ -37,7 +38,7 @@ export const defaultPagination = {
 
 export class HttpService {
   myAxios: AxiosInstance
-  public baseUrl: string = "/api"
+  public baseUrl: string = API_URL
 
   constructor () {
     this.myAxios = new EAxios(this.baseUrl).getInterceptors()

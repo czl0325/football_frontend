@@ -1,12 +1,12 @@
-export const defineChartOption = (type: number) => {
+export const defineChartOption = (type: number, yName = "") => {
   const text1 = type === 1 ? '胜' : type === 2 ? '赢' : '大'
   const text2 = type === 1 ? '平' : '走'
-  const text3 = type === 1 ? '负' : type === 2 ? '熟' : '小'
-  const colors = ['#ff3200', '#99cc33', '#1890ff']
+  const text3 = type === 1 ? '负' : type === 2 ? '输' : '小'
+  const colors = ['#ff5252', '#99cc33', '#1890ff']
   return {
     color: colors,
     legend: {
-      top: '10%'
+      top: 0
     },
     grid: {
       left: 0,
@@ -29,9 +29,11 @@ export const defineChartOption = (type: number) => {
       }
     },
     yAxis: {
-      show: false,
       type: 'category',
-      data: ['场次']
+      axisTick: {
+        show: false
+      },
+      data: [yName]
     },
     series: [
       {
@@ -87,4 +89,8 @@ export const defineChartOption = (type: number) => {
       },
     ]
   }
+}
+
+export const getDecimalPoint = (value: number, num = 2) => {
+  return parseFloat(value.toFixed(num))
 }

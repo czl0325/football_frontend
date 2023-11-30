@@ -12,8 +12,10 @@ export interface IMatchInfo {
   visit_team?: string;
   visit_team_rank?: string;
   visit_score?: string;
-  origin_pan_most?: string;
-  instant_pan_most?: string;
+  origin_pan_most?: number;
+  instant_pan_most?: number;
+  origin_size_most?: number;
+  instant_size_most?: number;
   field_score?: string;
   match_filter?: string;
   europe_odds_items?: IEuropeOddsInfo[];

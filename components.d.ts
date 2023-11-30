@@ -10,10 +10,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']
-    VanCol: typeof import('vant/es')['Col']
-    VanDivider: typeof import('vant/es')['Divider']
     VanNavBar: typeof import('vant/es')['NavBar']
+    VanNoticeBar: typeof import('vant/es')['NoticeBar']
     VanPullRefresh: typeof import('vant/es')['PullRefresh']
-    VanRow: typeof import('vant/es')['Row']
   }
 }

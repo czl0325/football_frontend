@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
 import { showToast } from "vant"
-import router from '@/router/index.ts'
 
 export class EAxios {
   instance: AxiosInstance;
@@ -8,7 +7,7 @@ export class EAxios {
   constructor (url: string) {
     this.instance = axios.create({
       baseURL: url || '',
-      timeout: 10000
+      timeout: 120000
     })
     this.init()
   }

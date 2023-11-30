@@ -13,8 +13,9 @@
         <span class="rank" v-if="match.visit_team_rank">排名{{ match.visit_team_rank }}，积分{{ match.visit_score }}</span>
       </div>
     </div>
-    <div class="panel">
-      <div >
+    <van-notice-bar wrapable :scrollable="false" text="请注意，由于水位是实时在变化，每次分析的结果都不一样，建议在比赛开始后水位不再变化时候分析。" />
+    <div class="panel" v-if="showEuropeAll">
+      <div class="title">
         欧赔全网匹配结果：
       </div>
       <div class="flex flex-row items-center w-full">
@@ -28,7 +29,101 @@
           负：{{ match.europe_lose_all }}场
         </div>
       </div>
-      <div id="chart_europe_all"></div>
+      <div id="chart_europe_all" class="chart"></div>
+    </div>
+    <div class="panel" v-else>欧赔暂无匹配场次</div>
+    <div class="panel" v-if="showEuropeLeague">
+      <div class="title">
+        欧赔本联赛匹配结果：
+      </div>
+      <div class="flex flex-row items-center w-full">
+        <div class="flex-horizontal-1 win_count">
+          胜：{{ match.europe_win_league }}场
+        </div>
+        <div class="flex-horizontal-1 even_count">
+          平：{{ match.europe_even_league }}场
+        </div>
+        <div class="flex-horizontal-1 lose_count">
+          负：{{ match.europe_lose_league }}场
+        </div>
+      </div>
+      <div id="chart_europe_league" class="chart"></div>
+    </div>
+    <van-notice-bar v-if="showAsiaAll" color="#1989fa" background="#ecf9ff" class="w-full" :scrollable="false">
+      亚盘初盘：{{ match.origin_pan_most }}，亚盘即时盘：{{ match.instant_pan_most }}
+    </van-notice-bar>
+    <div class="panel" v-if="showAsiaAll">
+      <div class="title">
+        亚盘全网匹配结果：
+      </div>
+      <div class="flex flex-row items-center w-full">
+        <div class="flex-horizontal-1 win_count">
+          赢：{{ match.asia_win_all }}场
+        </div>
+        <div class="flex-horizontal-1 even_count">
+          走：{{ match.asia_run_all }}场
+        </div>
+        <div class="flex-horizontal-1 lose_count">
+          输：{{ match.asia_lose_all }}场
+        </div>
+      </div>
+      <div id="chart_asia_all" class="chart"></div>
+    </div>
+    <div class="panel" v-else>亚盘暂无匹配场次</div>
+    <div class="panel" v-if="showAsiaLeague">
+      <div class="title">
+        亚盘本联赛匹配结果：
+      </div>
+      <div class="flex flex-row items-center w-full">
+        <div class="flex-horizontal-1 win_count">
+          赢：{{ match.asia_win_league }}场
+        </div>
+        <div class="flex-horizontal-1 even_count">
+          走：{{ match.asia_run_league }}场
+        </div>
+        <div class="flex-horizontal-1 lose_count">
+          输：{{ match.asia_lose_league }}场
+        </div>
+      </div>
+      <div id="chart_asia_league" class="chart"></div>
+    </div>
+    <van-notice-bar v-if="showSizeAll" color="#1989fa" background="#ecf9ff" class="w-full" :scrollable="false">
+      大小球初盘：{{ match.origin_size_most }}，大小球即时盘：{{ match.instant_size_most }}
+    </van-notice-bar>
+    <div class="panel" v-if="showSizeAll">
+      <div class="title">
+        大小球全网匹配结果：
+      </div>
+      <div class="flex flex-row items-center w-full">
+        <div class="flex-horizontal-1 win_count">
+          大：{{ match.size_big_all }}场
+        </div>
+        <div class="flex-horizontal-1 even_count">
+          走：{{ match.size_run_all }}场
+        </div>
+        <div class="flex-horizontal-1 lose_count">
+          小：{{ match.size_small_all }}场
+        </div>
+      </div>
+      <div id="chart_size_all" class="chart"></div>
+    </div>
+    <div class="panel" v-else>大小球暂无匹配场次</div>
+    <div class="panel" v-if="showSizeLeague">
+      <div class="title">
+        大小球本联赛匹配结果：
+      </div>
+      <div class="flex flex-row items-center w-full">
+        <div class="flex-horizontal-1 win_count">
+          大：{{ match.size_big_league }}场
+        </div>
+        <div class="flex-horizontal-1 even_count">
+          走：{{ match.size_run_league }}场
+        </div>
+        <div class="flex-horizontal-1 lose_count">
+          小：{{ match.size_small_league }}场
+        </div>
+      </div>
+      <div id="chart_size_league" class="chart"></div>
     </div>
   </div>
 </template>
@@ -40,8 +135,8 @@ import * as echarts from "echarts"
 import _ from "lodash"
 import { analysisMatch, getMatchInfo } from "@/http/api/football.ts"
 import { IMatchInfo } from "@/models/match.ts"
-import { closeToast, showLoadingToast } from "vant"
-import { defineChartOption } from "@/utils/tools.ts"
+import { closeToast, showLoadingToast, showToast } from "vant"
+import { defineChartOption, getDecimalPoint } from "@/utils/tools.ts"
 
 defineOptions({
   name: "MatchDetail"
@@ -49,7 +144,18 @@ defineOptions({
 const route = useRoute()
 const router = useRouter()
 const match = ref<IMatchInfo>({})
+const showEuropeAll = ref(true)
+const showEuropeLeague = ref(true)
+const showAsiaAll = ref(true)
+const showAsiaLeague = ref(true)
+const showSizeAll = ref(true)
+const showSizeLeague = ref(true)
 let chart_europe_all: any = null
+let chart_europe_league: any = null
+let chart_asia_all: any = null
+let chart_asia_league: any = null
+let chart_size_all: any = null
+let chart_size_league: any = null
 const onBack = () => {
   router.back()
 }
@@ -57,28 +163,184 @@ onMounted(() => {
   const dom1 = document.getElementById('chart_europe_all')
   if (dom1) {
     chart_europe_all = echarts.init(dom1)
-    const options = _.cloneDeep(defineChartOption(1))
-    chart_europe_all.setOption(options)
+  }
+  const dom2 = document.getElementById("chart_europe_league")
+  if (dom2) {
+    chart_europe_league = echarts.init(dom2)
+  }
+  const dom3 = document.getElementById("chart_asia_all")
+  if (dom3) {
+    chart_asia_all = echarts.init(dom3)
+  }
+  const dom4 = document.getElementById("chart_asia_league")
+  if (dom4) {
+    chart_asia_league = echarts.init(dom4)
+  }
+  const dom5 = document.getElementById("chart_size_all")
+  if (dom5) {
+    chart_size_all = echarts.init(dom5)
+  }
+  const dom6 = document.getElementById("chart_size_league")
+  if (dom6) {
+    chart_size_league = echarts.init(dom6)
   }
   if (route.query.fid) {
     showLoadingToast("加载基础数据...")
-    getMatchInfo(route.query.fid as string).then(res1 => {
+    getMatchInfo(route.query.fid as string).then((res1: IMatchInfo) => {
       match.value = res1
       showLoadingToast("比赛分析中...")
-      analysisMatch(res1).then(res2 => {
+      analysisMatch(res1).then((res2: IMatchInfo) => {
         match.value = res2
-        const option1 = chart_europe_all.getOption()
-        const total = res2.europe_win_all + res2.europe_even_all + res2.europe_lose_all
-        option1.series[0].data = [res2.europe_win_all / total]
-        option1.series[1].data = [res2.europe_even_all / total]
-        option1.series[2].data = [res2.europe_lose_all / total]
-        console.log(option1)
-        chart_europe_all.setOption(option1)
-      }).finally(() => {
+        showEuropeAll.value = (match.value.europe_win_all+match.value.europe_even_all+match.value.europe_lose_all>0)
+        if (match.value.europe_win_all+match.value.europe_even_all+match.value.europe_lose_all>0) {
+          const option1 = _.cloneDeep(defineChartOption(1, "欧赔全网"))
+          const total1 = res2.europe_win_all + res2.europe_even_all + res2.europe_lose_all
+          option1.series[0].data = [res2.europe_win_all / total1]
+          option1.series[1].data = [res2.europe_even_all / total1]
+          option1.series[2].data = [res2.europe_lose_all / total1]
+          option1.legend = {
+            top: '10%',
+            formatter: (name: string) => {
+              if (name === "胜") {
+                return `胜：${getDecimalPoint(res2.europe_win_all/total1*100)}%`
+              } else if (name === "平") {
+                return `平：${getDecimalPoint(res2.europe_even_all/total1*100)}%`
+              } else {
+                return `负：${getDecimalPoint(res2.europe_lose_all/total1*100)}%`
+              }
+            }
+          }
+          chart_europe_all.setOption(option1)
+          showEuropeLeague.value = match.value.europe_win_league+match.value.europe_even_league+match.value.europe_lose_league>0
+          if (match.value.europe_win_league+match.value.europe_even_league+match.value.europe_lose_league>0) {
+            const option11 = _.cloneDeep(defineChartOption(1, "欧赔本联赛"))
+            const total11 = res2.europe_win_league + res2.europe_even_league + res2.europe_lose_league
+            option11.series[0].data = [res2.europe_win_league/ total11]
+            option11.series[1].data = [res2.europe_even_league / total11]
+            option11.series[2].data = [res2.europe_lose_league / total11]
+            option11.legend = {
+              top: '10%',
+              formatter: (name: string) => {
+                if (name === "胜") {
+                  return `胜：${getDecimalPoint(res2.europe_win_league/total11*100)}%`
+                } else if (name === "平") {
+                  return `平：${getDecimalPoint(res2.europe_even_league/total11*100)}%`
+                } else {
+                  return `负：${getDecimalPoint(res2.europe_lose_league/total11*100)}%`
+                }
+              }
+            }
+            chart_europe_league.setOption(option11)
+          }
+        } else {
+          showEuropeLeague.value = false
+        }
+        showAsiaAll.value = (match.value.asia_win_all+match.value.asia_run_all+match.value.asia_lose_all>0)
+        if (match.value.asia_win_all+match.value.asia_run_all+match.value.asia_lose_all>0) {
+          const option1 = _.cloneDeep(defineChartOption(2, "亚盘全网"))
+          const total1 = res2.asia_win_all + res2.asia_run_all + res2.asia_lose_all
+          option1.series[0].data = [res2.asia_win_all / total1]
+          option1.series[1].data = [res2.asia_run_all / total1]
+          option1.series[2].data = [res2.asia_lose_all / total1]
+          option1.legend = {
+            top: '10%',
+            formatter: (name: string) => {
+              if (name === "赢") {
+                return `赢：${getDecimalPoint(res2.asia_win_all/total1*100)}%`
+              } else if (name === "走") {
+                return `走：${getDecimalPoint(res2.asia_run_all/total1*100)}%`
+              } else {
+                return `输：${getDecimalPoint(res2.asia_lose_all/total1*100)}%`
+              }
+            }
+          }
+          chart_asia_all.setOption(option1)
+          showAsiaLeague.value = (match.value.asia_win_league+match.value.asia_run_league+match.value.asia_lose_league>0)
+          if (match.value.asia_win_league+match.value.asia_run_league+match.value.asia_lose_league>0) {
+            const option11 = _.cloneDeep(defineChartOption(2, "亚盘本联赛"))
+            const total11 = res2.asia_win_league + res2.asia_run_league + res2.asia_lose_league
+            option11.series[0].data = [res2.asia_win_league/ total11]
+            option11.series[1].data = [res2.asia_run_league / total11]
+            option11.series[2].data = [res2.asia_lose_league / total11]
+            option11.legend = {
+              top: '10%',
+              formatter: (name: string) => {
+                if (name === "赢") {
+                  return `赢：${getDecimalPoint(res2.asia_win_league/total11*100)}%`
+                } else if (name === "走") {
+                  return `走：${getDecimalPoint(res2.asia_run_league/total11*100)}%`
+                } else {
+                  return `输：${getDecimalPoint(res2.asia_lose_league/total11*100)}%`
+                }
+              }
+            }
+            chart_asia_league.setOption(option11)
+          }
+        } else {
+          showAsiaLeague.value = false
+        }
+        showSizeAll.value = (match.value.size_big_all+match.value.size_run_all+match.value.size_small_all>0)
+        if (match.value.size_big_all+match.value.size_run_all+match.value.size_small_all>0) {
+          const option1 = _.cloneDeep(defineChartOption(3, "大小全网"))
+          const total1 = res2.size_big_all + res2.size_run_all + res2.size_small_all
+          option1.series[0].data = [res2.size_big_all / total1]
+          option1.series[1].data = [res2.size_run_all / total1]
+          option1.series[2].data = [res2.size_small_all / total1]
+          option1.legend = {
+            top: '10%',
+            formatter: (name: string) => {
+              if (name === "大") {
+                return `大：${getDecimalPoint(res2.size_big_all/total1*100)}%`
+              } else if (name === "走") {
+                return `走：${getDecimalPoint(res2.size_run_all/total1*100)}%`
+              } else {
+                return `小：${getDecimalPoint(res2.size_small_all/total1*100)}%`
+              }
+            }
+          }
+          chart_size_all.setOption(option1)
+          showSizeLeague.value = (match.value.size_big_league+match.value.size_run_league+match.value.size_small_league>0)
+          if (match.value.size_big_league+match.value.size_run_league+match.value.size_small_league>0) {
+            const option11 = _.cloneDeep(defineChartOption(2, "大小本联赛"))
+            const total11 = res2.size_big_league + res2.size_run_league + res2.size_small_league
+            option11.series[0].data = [res2.size_big_league/ total11]
+            option11.series[1].data = [res2.size_run_league / total11]
+            option11.series[2].data = [res2.size_small_league / total11]
+            option11.legend = {
+              top: '10%',
+              formatter: (name: string) => {
+                if (name === "大") {
+                  return `大：${getDecimalPoint(res2.asia_win_league/total11*100)}%`
+                } else if (name === "走") {
+                  return `走：${getDecimalPoint(res2.asia_run_league/total11*100)}%`
+                } else {
+                  return `小：${getDecimalPoint(res2.asia_lose_league/total11*100)}%`
+                }
+              }
+            }
+            chart_size_league.setOption(option11)
+          }
+        } else {
+          showSizeLeague.value = false
+        }
         closeToast()
+      }).catch(() => {
+        closeToast()
+        showToast({
+          message: "请求失败，请稍后重试",
+          position: "bottom"
+        });
       })
     })
   }
+})
+window.addEventListener("resize", () => {
+  chart_europe_all?.resize()
+  chart_europe_league?.resize()
+  chart_asia_all?.resize()
+  chart_asia_league?.resize()
+  chart_size_all?.resize()
+  chart_size_league?.resize()
 })
 </script>
 
@@ -121,6 +383,12 @@ onMounted(() => {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: orange;
+    margin-bottom: 10px;
+  }
 }
 .flex-horizontal-1 {
   width: 0;
@@ -135,7 +403,7 @@ onMounted(() => {
 .lose_count {
   color: #1890ff;
 }
-#chart_europe_all {
+.chart {
   width: 100%;
   height: 100px;
 }

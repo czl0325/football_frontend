@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <van-nav-bar title="所有比赛" fixed placeholder/>
-    <van-pull-refresh class="list-container" v-model="loading" @refresh="onRefreshList">
+    <van-pull-refresh class="list-container" v-model="isLoading" @refresh="onRefreshList">
       <match-item v-for="match in matchList" :key="match.fid" :match="match" />
     </van-pull-refresh>
   </div>
@@ -16,14 +16,14 @@ import { IMatchInfo } from "@/models/match.ts"
 defineOptions({
   name: "Home"
 })
-const loading = ref(false)
+const isLoading = ref(false)
 const matchList = ref<IMatchInfo[]>([])
 const onRefreshList = () => {
-  loading.value = true
+  isLoading.value = true
   getMatchList().then(res => {
     matchList.value = res
   }).finally(() => {
-    loading.value = false
+    isLoading.value = false
   })
 }
 onRefreshList()
