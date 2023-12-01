@@ -1,6 +1,10 @@
 import { http1 } from "../http.ts"
 import { IMatchInfo } from "../../models/match.ts"
 
+export const testAPI = () => {
+  return http1.get("/football/test")
+}
+
 export const getMatchList = () => {
   return http1.get<IMatchInfo[]>("/football/matches")
 }
