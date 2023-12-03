@@ -129,7 +129,7 @@
 </template>
 
 <script lang="ts" setup>
-import {nextTick, onMounted, ref} from "vue"
+import { onBeforeUnmount, onMounted, ref} from "vue"
 import { useRoute, useRouter } from "vue-router"
 import * as echarts from "echarts"
 import _ from "lodash"
@@ -191,7 +191,6 @@ onMounted(() => {
       showLoadingToast("比赛分析中...")
       analysisMatch(res1).then((res2: IMatchInfo) => {
         match.value = res2
-        nextTick(() => {
           showEuropeAll.value = (match.value.europe_win_all+match.value.europe_even_all+match.value.europe_lose_all>0)
           if (match.value.europe_win_all+match.value.europe_even_all+match.value.europe_lose_all>0) {
             const option1 = _.cloneDeep(defineChartOption(1, "欧赔全网"))
@@ -236,7 +235,6 @@ onMounted(() => {
           } else {
             showEuropeLeague.value = false
           }
-          nextTick(() => {
             showAsiaAll.value = (match.value.asia_win_all+match.value.asia_run_all+match.value.asia_lose_all>0)
             if (match.value.asia_win_all+match.value.asia_run_all+match.value.asia_lose_all>0) {
               const option1 = _.cloneDeep(defineChartOption(2, "亚盘全网"))
@@ -281,10 +279,9 @@ onMounted(() => {
             } else {
               showAsiaLeague.value = false
             }
-            nextTick(() => {
               showSizeAll.value = (match.value.size_big_all+match.value.size_run_all+match.value.size_small_all>0)
               if (match.value.size_big_all+match.value.size_run_all+match.value.size_small_all>0) {
-                const option1 = _.cloneDeep(defineChartOption(3, "大小全网"))
+                const option1 = _.cloneDeep(defineChartOption(3, "大小球全网"))
                 const total1 = res2.size_big_all + res2.size_run_all + res2.size_small_all
                 option1.series[0].data = [res2.size_big_all / total1]
                 option1.series[1].data = [res2.size_run_all / total1]
@@ -304,7 +301,7 @@ onMounted(() => {
                 chart_size_all.setOption(option1)
                 showSizeLeague.value = (match.value.size_big_league+match.value.size_run_league+match.value.size_small_league>0)
                 if (match.value.size_big_league+match.value.size_run_league+match.value.size_small_league>0) {
-                  const option11 = _.cloneDeep(defineChartOption(2, "大小本联赛"))
+                  const option11 = _.cloneDeep(defineChartOption(2, "大小球本联赛"))
                   const total11 = res2.size_big_league + res2.size_run_league + res2.size_small_league
                   option11.series[0].data = [res2.size_big_league/ total11]
                   option11.series[1].data = [res2.size_run_league / total11]
@@ -313,11 +310,11 @@ onMounted(() => {
                     top: '10%',
                     formatter: (name: string) => {
                       if (name === "大") {
-                        return `大：${getDecimalPoint(res2.asia_win_league/total11*100)}%`
+                        return `大：${getDecimalPoint(res2.size_big_league/total11*100)}%`
                       } else if (name === "走") {
-                        return `走：${getDecimalPoint(res2.asia_run_league/total11*100)}%`
+                        return `走：${getDecimalPoint(res2.size_run_league/total11*100)}%`
                       } else {
-                        return `小：${getDecimalPoint(res2.asia_lose_league/total11*100)}%`
+                        return `小：${getDecimalPoint(res2.size_small_league/total11*100)}%`
                       }
                     }
                   }
@@ -326,9 +323,6 @@ onMounted(() => {
               } else {
                 showSizeLeague.value = false
               }
-            })
-          })
-        })
         closeToast()
       }).catch(() => {
         closeToast()
@@ -339,6 +333,14 @@ onMounted(() => {
       })
     })
   }
+})
+onBeforeUnmount(() => {
+  chart_europe_all?.disponse()
+  chart_europe_league?.disponse()
+  chart_asia_all?.disponse()
+  chart_asia_league?.disponse()
+  chart_size_all?.disponse()
+  chart_size_league?.disponse()
 })
 window.addEventListener("resize", () => {
   chart_europe_all?.resize()
