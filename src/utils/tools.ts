@@ -30,6 +30,10 @@ export const defineChartOption = (type: number, yName = "") => {
     },
     yAxis: {
       type: 'category',
+      axisLabel: {
+        margin: 2,
+        align: "right"
+      },
       axisTick: {
         show: false
       },
