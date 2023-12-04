@@ -1,7 +1,6 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { EAxios } from '@/http/EAxios.ts'
-import { showLoadingToast, showToast } from "vant"
-import { ToastWrapperInstance } from "vant/lib/toast/types"
+import { showToast } from "vant"
 import { API_URL } from "../config.ts"
 
 interface BaseResponseData<T> {
@@ -67,13 +66,7 @@ export class HttpService {
     })
   }
 
-  postWithConfig<T> (url: string, params: object = {}, config: AxiosRequestConfig, needLoading = false) {
-    let loading: ToastWrapperInstance | null = null
-    if (needLoading) {
-      loading = showLoadingToast({
-        message: '请求中...',
-      })
-    }
+  postWithConfig<T> (url: string, params: object = {}, config: AxiosRequestConfig) {
     return new Promise<T>((resolve, reject) => {
       this.myAxios.post(url, params, config)
         // @ts-ignore
@@ -89,14 +82,12 @@ export class HttpService {
           }
         }).catch((err: { message: any }) => {
         reject(err.message || '请求失败')
-      }).finally(() => {
-        loading?.close()
       })
     })
   }
 
-  post<T> (url: string, params: object = {}, needLoading = false) {
-    return this.postWithConfig<T>(url, params, {}, needLoading)
+  post<T> (url: string, params: object = {}) {
+    return this.postWithConfig<T>(url, params, {})
   }
 }
 

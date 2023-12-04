@@ -7,6 +7,7 @@ import 'vant/es/toast/style'
 import 'vant/es/dialog/style'
 import 'vant/es/notify/style'
 import 'vant/es/image-preview/style'
+import 'vant/lib/index.css'
 import { createPinia } from "pinia"
 
 const app = createApp(App)
