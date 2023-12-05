@@ -18,7 +18,8 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --van-background-2: #ff6500;
+  /*--van-background-2: #ff6500;*/
+  --van-nav-bar-background: #ff6500;
   --van-nav-bar-title-text-color: white;
   --van-nav-bar-icon-color: white;
 }

@@ -1,4 +1,4 @@
-import { http1 } from "../http.ts"
+import { http1, IPaginationInfo } from "../http.ts"
 import { IMatchInfo } from "../../models/match.ts"
 
 export const testAPI = () => {
@@ -15,4 +15,8 @@ export const getMatchInfo = (fid: string) => {
 
 export const analysisMatch = (match: IMatchInfo) => {
   return http1.post("/analysis/all", match)
+}
+
+export const getMatchesByDate = (date: string, pagination: IPaginationInfo) => {
+  return http1.getList<IMatchInfo[]>(`/football/daily/${date}`, {}, pagination)
 }

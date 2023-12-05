@@ -4,13 +4,30 @@ import { useCacheViewsStore } from "../store/cacheViews.ts"
 export const constantRouterMap = [
   {
     path: "/",
-    name: "Home",
-    component: () => import("@/pages/Home/index.vue"),
+    redirect: "/home"
   },
   {
-    path: "/detail",
+    path: "/home",
+    name: "Home",
+    component: () => import("@/pages/Home/index.vue"),
+    meta: {
+      num: 0,
+      showTab: true
+    }
+  },
+  {
+    path: "/match/detail",
     name: "MatchDetail",
     component: () => import("@/pages/detail/index.vue"),
+  },
+  {
+    path: "/reanalyze",
+    name: "Reanalyze",
+    component: () => import("@/pages/reanalyze/index.vue"),
+    meta: {
+      num: 1,
+      showTab: true
+    }
   }
 ]
 

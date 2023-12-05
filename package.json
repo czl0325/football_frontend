@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.6.2",
+    "dayjs": "^1.11.10",
     "echarts": "^5.4.3",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",

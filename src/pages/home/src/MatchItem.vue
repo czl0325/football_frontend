@@ -11,7 +11,7 @@
     </div>
     <div class="footer">
       <span>比赛时间：{{ match.match_time }}</span>
-      <router-link :to="`/detail?fid=${match.fid}`">
+      <router-link :to="`/match/detail?fid=${match.fid}`">
         <van-button type="primary" size="small" >分析</van-button>
       </router-link>
     </div>
