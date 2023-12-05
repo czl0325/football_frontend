@@ -15,7 +15,7 @@
             <span class="rank" v-if="match.visit_team_rank">排名{{ match.visit_team_rank }}，积分{{ match.visit_score }}</span>
           </div>
         </div>
-        <van-notice-bar wrapable :scrollable="false" text="请注意，由于水位是实时在变化，每次分析的结果都不一样，建议在比赛开始后水位不再变化时候分析。如果欧赔和亚盘都指向同一队，且概率都大于6成，就可以打。" />
+        <van-notice-bar wrapable :scrollable="false" text="请注意，由于水位是实时在变化，每次分析的结果都不一样。分析结果仅供参考。" />
         <div class="panel" v-if="showEuropeAll">
           <div class="title">
             欧赔全网匹配结果：
