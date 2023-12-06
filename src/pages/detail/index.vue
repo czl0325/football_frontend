@@ -3,6 +3,7 @@
     <van-nav-bar title="详细分析" fixed placeholder left-arrow clickable @click-left="router.back()"  class="w-full"/>
     <van-pull-refresh v-model="isLoading" @refresh="onRetryAnalysis">
       <div class="content-container">
+        <span class="match-group">{{ match.match_group }}</span>
         <span class="match-time">{{ match.match_time }}</span>
         <div class="top-view">
           <div class="team-item">
@@ -411,9 +412,17 @@ window.addEventListener("resize", () => {
   flex-direction: column;
   align-items: center;
 }
+.match-group {
+  margin-top: 10px;
+  color: #333333;
+  font-size: 20px;
+  font-weight: bold;
+}
 .match-time {
-  margin: 10px auto;
+  margin-top: 5px;
+  margin-bottom: 10px;
   color: red;
+  font-size: 12px;
 }
 .top-view {
   display: flex;
