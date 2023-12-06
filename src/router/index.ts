@@ -28,6 +28,15 @@ export const constantRouterMap = [
       num: 1,
       showTab: true
     }
+  },
+  {
+    path: "/feedback",
+    name: "Feedback",
+    component: () => import("@/pages/Feedback/index.vue"),
+    meta: {
+      num: 2,
+      showTab: true
+    }
   }
 ]
 

@@ -30,3 +30,8 @@
   flex-direction: column;
   align-items: center;
 }
+
+a {
+  color: #1890ff;
+  text-decoration: underline;
+}
