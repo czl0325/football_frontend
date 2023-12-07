@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ccdbfa5e-2307-4f4c-b026-d2ec1bc21227" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/assets/MatchItem-HNWsHGNo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/index-8riyubO1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/index-S6z1LpIl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/index-Y7f58B7M.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/index-j2PiXsk4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/index-j2PiXsk4.js.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/index-soqWF0aO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/index-soqWF0aO.js.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/tools-c7qvf58n.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+</project>
