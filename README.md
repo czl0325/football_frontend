@@ -9,3 +9,7 @@
 
 运行截图<br>
 <img width="331" alt="截屏2023-12-01 09 15 23" src="https://github.com/czl0325/football_frontend/assets/2100549/9872603c-1b9d-4760-aa26-0d1d44c03091">
+
+请作者吃碗沙茶面
+
+<img width="400" height="600" src="./src/assets/images/alipay.jpg" alt="">
