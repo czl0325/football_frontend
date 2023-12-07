@@ -98,3 +98,8 @@ export const defineChartOption = (type: number, yName = "") => {
 export const getDecimalPoint = (value: number, num = 2) => {
   return parseFloat(value.toFixed(num))
 }
+
+
+export const getAssetsFile = (url: string) => {
+  return new URL(`../assets/images/${url}`, import.meta.url).href
+}

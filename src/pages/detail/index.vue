@@ -16,7 +16,7 @@
             <span class="rank" v-if="match.visit_team_rank">排名{{ match.visit_team_rank }}，积分{{ match.visit_score }}</span>
           </div>
         </div>
-        <van-notice-bar wrapable :scrollable="false" text="请注意，由于水位是实时在变化，每次分析的结果都不一样。分析结果仅供参考。" />
+        <van-notice-bar wrapable :scrollable="false" text="请注意，由于水位是实时在变化，每次分析的结果都不一样。越接近开赛时间越准确。分析结果仅供参考。" />
         <div class="panel" v-if="showEuropeAll">
           <div class="title">
             欧赔全网匹配结果：
@@ -350,13 +350,14 @@ const onAnalysisMatch = () => {
     } else {
       showSizeLeague.value = false
     }
+    closeToast()
   }).catch(() => {
+    closeToast()
     showToast({
       message: "请求失败，请稍后重试",
       position: "bottom"
     });
   }).finally(() => {
-    closeToast()
     isLoading.value = false
   })
 }
