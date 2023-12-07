@@ -116,6 +116,9 @@ export class HttpService {
         pagination.finished = res.pageNum * res.pageSize >= res.total
         resolve(res)
       }).catch(err => {
+        if (pagination.loading) {
+          pagination.pageNum--
+        }
         reject(err)
       }).finally(() => {
         pagination.refreshing = false

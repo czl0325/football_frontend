@@ -6,7 +6,7 @@
         <van-field v-model="searchValue.matchDate" label="比赛日期" placeholder="请选择比赛日期" is-link readonly @click="showDatePicker=true"/>
       </van-cell-group>
     </van-form>
-    <van-pull-refresh class="w-full" v-model="pagination.refreshing" @refresh="onGetMatchByDate(true)">
+    <van-pull-refresh class="w-full" style="min-height: 100vh" v-model="pagination.refreshing" @refresh="onGetMatchByDate(true)">
       <van-list v-model:loading="pagination.loading" :finished="pagination.finished" finished-text="没有更多比赛" @load="onGetMatchByDate(false)" :immediate-check="false">
         <match-item v-for="match in matchList" :key="match.fid" :match="match" />
       </van-list>
@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import { computed, reactive, ref } from "vue"
-import * as dayjs from "dayjs"
+import dayjs from "dayjs"
 import _ from "lodash"
 import { getMatchesByDate } from "@/http/api/football.ts"
 import MatchItem from "@/pages/home/src/MatchItem.vue"
