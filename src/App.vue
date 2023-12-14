@@ -4,10 +4,11 @@
       <component :is="Component" />
     </keep-alive>
   </router-view>
-  <van-tabbar v-model="route.meta.num" active-color="#ff6500" inactive-color="#333" v-show="route.meta.showTab" route fixed placeholder>
+  <van-tabbar v-model="<number>route.meta.num" active-color="#ff6500" inactive-color="#333" v-show="route.meta.showTab" route fixed>
     <van-tabbar-item to="/home" icon="todo-list">实时</van-tabbar-item>
     <van-tabbar-item to="/reanalyze" icon="browsing-history">复盘</van-tabbar-item>
     <van-tabbar-item to="/feedback" icon="youzan-shield">反馈</van-tabbar-item>
+    <van-tabbar-item to="/setting" icon="setting">设置</van-tabbar-item>
   </van-tabbar>
 </template>
 

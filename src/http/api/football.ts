@@ -14,6 +14,9 @@ export const getMatchInfo = (fid: string) => {
 }
 
 export const analysisMatch = (match: IMatchInfo) => {
+  match.europe_companies = (JSON.parse(localStorage.getItem("check_europe") ?? "[]"))
+  match.asia_companies = (JSON.parse(localStorage.getItem("check_asia") ?? "[]"))
+  match.size_companies = (JSON.parse(localStorage.getItem("check_size") ?? "[]"))
   return http1.post("/analysis/all", match)
 }
 

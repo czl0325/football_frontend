@@ -1,3 +1,5 @@
+import { IMatchInfo } from "../models/match.ts"
+
 export const defineChartOption = (type: number, yName = "") => {
   const text1 = type === 1 ? '胜' : type === 2 ? '赢' : '大'
   const text2 = type === 1 ? '平' : '走'
@@ -99,7 +101,10 @@ export const getDecimalPoint = (value: number, num = 2) => {
   return parseFloat(value.toFixed(num))
 }
 
-
 export const getAssetsFile = (url: string) => {
   return new URL(`../assets/images/${url}`, import.meta.url).href
+}
+
+export const getAllMatchGroup = (matchList: IMatchInfo[]) => {
+  return [...new Set(matchList.map(item => item.match_category))]
 }

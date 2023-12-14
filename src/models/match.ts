@@ -22,6 +22,10 @@ export interface IMatchInfo {
   europe_odds_items?: IEuropeOddsInfo[];
   asia_odds_items?: IAsiaOddsInfo[];
   size_odds_items?: ISizeOddsInfo[];
+  europe_companies?: string[];
+  asia_companies?: string[];
+  size_companies?: string[];
+  remark?: string;
 
 
   asia_lose_all?: number;

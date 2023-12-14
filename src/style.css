@@ -26,9 +26,11 @@
 
 .app-container {
   width: 100%;
+  padding-top: 46px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
 }
 
 a {

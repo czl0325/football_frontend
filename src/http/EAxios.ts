@@ -21,6 +21,7 @@ export class EAxios {
     // 请求接口拦截器
     this.instance.interceptors.request.use(
       config => {
+        config.headers["Content-Type"] = 'application/json;'
         return config
       },
       err => {

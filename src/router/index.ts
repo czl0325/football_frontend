@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory, RouterOptions } from 'vue-router'
+import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router'
 import { useCacheViewsStore } from "../store/cacheViews.ts"
 
 export const constantRouterMap = [
@@ -35,6 +35,15 @@ export const constantRouterMap = [
     component: () => import("@/pages/Feedback/index.vue"),
     meta: {
       num: 2,
+      showTab: true
+    }
+  },
+  {
+    path: "/setting",
+    name: "Setting",
+    component: () => import("@/pages/Setting/index.vue"),
+    meta: {
+      num: 3,
       showTab: true
     }
   }

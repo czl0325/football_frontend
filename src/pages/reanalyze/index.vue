@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <van-nav-bar title="复盘比赛" fixed placeholder />
+    <van-nav-bar title="复盘比赛" fixed />
     <van-form class="w-full my-3">
       <van-cell-group inset>
         <van-field v-model="searchValue.matchDate" label="比赛日期" placeholder="请选择比赛日期" is-link readonly @click="showDatePicker=true"/>
