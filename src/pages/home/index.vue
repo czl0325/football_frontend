@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container padding-tabbar">
     <van-nav-bar title="所有比赛" fixed class="w-full" />
     <van-cell title="比赛筛选" is-link @click="showMatchTypes=true"/>
     <van-pull-refresh class="list-container" v-model="isLoading" @refresh="onRefreshList">
@@ -29,6 +29,7 @@ defineOptions({
   name: "Home"
 })
 const isLoading = ref(false)
+let originMatchList:IMatchInfo[] = []
 const matchList = ref<IMatchInfo[]>([])
 const matchGroups = ref<string[]>([])
 const showMatchTypes = ref(false)
@@ -40,18 +41,19 @@ const onRefreshList = () => {
   })
   isLoading.value = true
   getMatchList().then((res:IMatchInfo[]) => {
-    matchList.value = res
+    originMatchList = res
     matchGroups.value = getAllMatchGroup(res)
     if (selectMatchTypes.value.length === 0) {
       selectMatchTypes.value = matchGroups.value
     }
+    onChangeMatchType()
   }).finally(() => {
     closeToast()
     isLoading.value = false
   })
 }
 const onChangeMatchType = () => {
-  matchList.value = matchList.value.filter(item => selectMatchTypes.value.includes(item.match_category))
+  matchList.value = originMatchList.filter(item => selectMatchTypes.value.includes(item.match_category))
 }
 onRefreshList()
 </script>

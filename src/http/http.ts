@@ -36,7 +36,7 @@ export const defaultPagination = {
   finished: false,
   pageNum: 1,
   total: 0,
-  pageSize: 10
+  pageSize: 20
 }
 
 export class HttpService {

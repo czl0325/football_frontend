@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container padding-tabbar">
     <van-nav-bar title="帮助反馈" fixed />
     <div class="grow w-full flex flex-col p-4 items-center">
       <span>请在github上提交issue，告知不准确的联赛和具体场次，以便我改进算法。有什么好的思路也可以提出。</span>

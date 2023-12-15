@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container" style="padding-top: 46px">
+  <div class="app-container padding-tabbar">
     <van-nav-bar class="w-full" title="设置" fixed/>
     <van-cell-group title="赔率公司配置" class="w-full text-left" >
       <van-cell title="欧赔公司配置" is-link @click="showEuropePopover=true"/>

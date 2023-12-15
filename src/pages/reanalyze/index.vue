@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container padding-tabbar">
     <van-nav-bar title="复盘比赛" fixed />
     <van-form class="w-full my-3">
       <van-cell-group inset>
@@ -42,7 +42,7 @@ const minDate = computed(() => {
   return dayjs().subtract(25, "year").toDate()
 })
 const maxDate = computed(() => {
-  return dayjs().subtract(1, "day").toDate()
+  return dayjs().toDate()
 })
 const onConfirmDate = ({ selectedValues }) => {
   searchValue.matchDate = selectedValues.join('-');
