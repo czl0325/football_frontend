@@ -17,6 +17,8 @@ export const analysisMatch = (match: IMatchInfo) => {
   match.europe_companies = (JSON.parse(localStorage.getItem("check_europe") ?? "[]"))
   match.asia_companies = (JSON.parse(localStorage.getItem("check_asia") ?? "[]"))
   match.size_companies = (JSON.parse(localStorage.getItem("check_size") ?? "[]"))
+  match.asia_compose_size = localStorage.getItem("asia_compose") === "true" || false
+  match.size_compose_asia = localStorage.getItem("size_compose") === "true" || true
   return http1.post("/analysis/all", match)
 }
 

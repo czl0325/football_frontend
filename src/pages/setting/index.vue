@@ -6,6 +6,18 @@
       <van-cell title="亚盘公司配置" is-link @click="showAsiaPopover=true"/>
       <van-cell title="大小球公司配置" is-link @click="showSizePopover=true"/>
     </van-cell-group>
+    <van-cell-group title="组合配置" class="w-full text-left" >
+      <van-cell title="亚盘组合大小球">
+        <template #right-icon>
+          <van-switch v-model="asiaCompose"/>
+        </template>
+      </van-cell>
+      <van-cell title="大小球组合亚盘">
+        <template #right-icon>
+          <van-switch v-model="sizeCompose"/>
+        </template>
+      </van-cell>
+    </van-cell-group>
     <van-popup v-model:show="showEuropePopover" position="bottom">
       <div class="w-full p-3">
         <van-checkbox-group v-model="checkEuropeCompanies" shape="square">
@@ -47,6 +59,8 @@ const asiaCompanies = useLocalStorage("asia", ASIA_COMPANY)
 const checkAsiaCompanies = useLocalStorage("check_asia", ASIA_COMPANY.map((item: any) => item.value))
 const sizeCompanies = useLocalStorage("size", SIZE_COMPANY)
 const checkSizeCompanies = useLocalStorage("check_size", SIZE_COMPANY.map((item: any) => item.value))
+const asiaCompose = useLocalStorage("asia_compose", false)
+const sizeCompose = useLocalStorage("size_compose", true)
 </script>
 
 <style lang="less" scoped>
