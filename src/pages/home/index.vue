@@ -9,7 +9,7 @@
       <div class="w-full p-3 overflow-y-auto flex flex-col" style="max-height: 500px">
         <div class="top-select">
           <van-button size="small" plain round @click="onSelectType(1)">全选</van-button>
-          <van-button size="small" plain round @click="onSelectType(2)">反选</van-button>
+          <van-button size="small" plain round @click="onSelectType(2)">全不选</van-button>
           <van-button size="small" plain round @click="onSelectType(3)">五大联赛</van-button>
           <van-button size="small" plain round @click="onSelectType(4)">热门</van-button>
         </div>
