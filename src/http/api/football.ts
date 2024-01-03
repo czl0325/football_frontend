@@ -5,8 +5,8 @@ export const testAPI = () => {
   return http1.get("/football/test")
 }
 
-export const getMatchList = () => {
-  return http1.get<IMatchInfo[]>("/football/matches")
+export const getMatchList = (type = "all") => {
+  return http1.get<IMatchInfo[]>("/football/matches", { type })
 }
 
 export const getMatchInfo = (fid: string) => {

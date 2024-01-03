@@ -1,12 +1,14 @@
 <template>
   <div class="app-container padding-tabbar">
     <van-nav-bar title="复盘比赛" fixed />
-    <van-form class="w-full my-3">
-      <van-cell-group inset>
-        <van-field v-model="searchValue.matchDate" label="比赛日期" placeholder="请选择比赛日期" is-link readonly @click="showDatePicker=true"/>
-      </van-cell-group>
-    </van-form>
-    <van-pull-refresh class="w-full" style="min-height: 100vh" v-model="pagination.refreshing" @refresh="onGetMatchByDate(true)">
+    <van-sticky class="w-full" :offset-top="46">
+      <van-form class="w-full">
+        <van-cell-group>
+          <van-field v-model="searchValue.matchDate" label="比赛日期" placeholder="请选择比赛日期" is-link readonly @click="showDatePicker=true"/>
+        </van-cell-group>
+      </van-form>
+    </van-sticky>
+    <van-pull-refresh class="w-full flex-1" v-model="pagination.refreshing" @refresh="onGetMatchByDate(true)">
       <van-list v-model:loading="pagination.loading" :finished="pagination.finished" finished-text="没有更多比赛" @load="onGetMatchByDate(false)" :immediate-check="false">
         <match-item v-for="match in matchList" :key="match.fid" :match="match" />
       </van-list>

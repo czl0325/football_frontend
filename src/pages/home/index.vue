@@ -1,7 +1,13 @@
 <template>
   <div class="app-container padding-tabbar">
-    <van-nav-bar title="所有比赛" fixed class="w-full" />
-    <van-cell title="比赛筛选" is-link @click="showMatchTypes=true"/>
+    <van-nav-bar title="所有比赛" fixed class="w-full">
+      <template #right>
+        <span class="text-white" @click="onChangeMatchList">{{ matchType === "all" ? "全部" : "竞彩" }}</span>
+      </template>
+    </van-nav-bar>
+    <van-sticky class="w-full" :offset-top="46">
+      <van-cell title="比赛筛选" is-link @click="showMatchTypes=true"/>
+    </van-sticky>
     <van-pull-refresh class="list-container" v-model="isLoading" @refresh="onRefreshList">
       <match-item v-for="match in matchList" :key="match.fid" :match="match" />
     </van-pull-refresh>
@@ -22,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { reactive, ref } from "vue"
 import MatchItem from "@/pages/home/src/MatchItem.vue"
 import { getMatchList } from "@/http/api/football.ts"
 import { IMatchInfo } from "@/models/match.ts"
@@ -36,6 +42,7 @@ defineOptions({
 })
 const isLoading = ref(false)
 let originMatchList:IMatchInfo[] = []
+const matchType = useLocalStorage<string>("match_type", "all")
 const matchList = ref<IMatchInfo[]>([])
 const matchGroups = ref<string[]>([])
 const showMatchTypes = ref(false)
@@ -46,7 +53,7 @@ const onRefreshList = () => {
     duration: 0
   })
   isLoading.value = true
-  getMatchList().then((res:IMatchInfo[]) => {
+  getMatchList(matchType.value).then((res:IMatchInfo[]) => {
     originMatchList = res
     matchGroups.value = getAllMatchGroup(res)
     if (selectMatchTypes.value.length === 0) {
@@ -61,6 +68,10 @@ const onRefreshList = () => {
 const onChangeMatchType = () => {
   matchList.value = originMatchList.filter(item => selectMatchTypes.value.includes(item.match_category))
 }
+const onChangeMatchList = () => {
+  matchType.value = matchType.value === "all" ? "jingcai" : "all"
+  onRefreshList()
+}
 const onSelectType = (type: number) => {
   if (type === 1) {
     selectMatchTypes.value = matchGroups.value
@@ -72,7 +83,9 @@ const onSelectType = (type: number) => {
     selectMatchTypes.value = ["英超", "意甲", "德甲", "西甲", "法甲", "欧冠", "欧罗巴", "亚冠"]
   }
 }
-
+//window.addEventListener('scroll', () => {
+//  console.log(document.documentElement.scrollTop)
+//})
 onRefreshList()
 </script>
 
