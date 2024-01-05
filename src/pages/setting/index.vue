@@ -18,6 +18,9 @@
         </template>
       </van-cell>
     </van-cell-group>
+    <van-cell-group title="匹配配置" class="w-full text-left" >
+      <van-cell title="不准确联赛" label="勾选后将不会匹配该联赛的数据" is-link @click="showMatchPopover=true"/>
+    </van-cell-group>
     <van-popup v-model:show="showEuropePopover" position="bottom">
       <div class="w-full p-3">
         <van-checkbox-group v-model="checkEuropeCompanies" shape="square">
@@ -39,6 +42,11 @@
         </van-checkbox-group>
       </div>
     </van-popup>
+    <van-popup v-model:show="showMatchPopover" position="bottom">
+      <div class="w-full" style="height: 80vh">
+        <no-compare-match />
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -46,6 +54,7 @@
 import { ref } from "vue"
 import { useLocalStorage } from "@vueuse/core"
 import { ASIA_COMPANY, EUROPE_COMPANY, SIZE_COMPANY } from "@/config.ts"
+import NoCompareMatch from "@/pages/setting/src/NoCompareMatch.vue"
 
 defineOptions({
   name: "Setting"
@@ -53,6 +62,7 @@ defineOptions({
 const showEuropePopover = ref(false)
 const showAsiaPopover = ref(false)
 const showSizePopover = ref(false)
+const showMatchPopover = ref(false)
 const europeCompanies = useLocalStorage("europe", EUROPE_COMPANY)
 const checkEuropeCompanies = useLocalStorage("check_europe", EUROPE_COMPANY.map((item: any) => item.value))
 const asiaCompanies = useLocalStorage("asia", ASIA_COMPANY)
