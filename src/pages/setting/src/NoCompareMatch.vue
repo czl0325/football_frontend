@@ -1,12 +1,14 @@
 <template>
-  <van-index-bar v-for="key in Object.keys(matches)" :key="key">
-    <van-index-anchor :index="key" />
-    <van-cell v-for="item in matches[key]" :key="item" :title="item" >
-      <template #right-icon>
-        <van-checkbox ></van-checkbox>
-      </template>
-    </van-cell>
-  </van-index-bar>
+  <van-checkbox-group v-model="noCompareMatches">
+    <van-index-bar v-for="key in Object.keys(matches)" :key="key">
+      <van-index-anchor :index="key"/>
+      <van-cell v-for="item in matches[key]" :key="item" :title="item" >
+        <template #right-icon>
+          <van-checkbox :name="item" />
+        </template>
+      </van-cell>
+    </van-index-bar>
+  </van-checkbox-group>
 </template>
 
 <script lang="ts" setup>

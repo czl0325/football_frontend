@@ -6,7 +6,7 @@
     </div>
     <div class="content">
       <span class="team">{{ match.home_team }}</span>
-      <span class="score">{{ match.field_score ?? "vs" }}</span>
+      <span class="score">{{ match.field_score || "vs" }}</span>
       <span class="team">{{ match.visit_team }}</span>
     </div>
     <div class="footer">

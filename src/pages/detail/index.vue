@@ -131,7 +131,9 @@
           <div id="chart_size_league" class="chart"></div>
         </div>
         <div class="panel" v-if="size_score_list.length">比分概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
-        <van-notice-bar v-if="match.remark" color="#fff" background="#f00" class="w-full" />
+        <van-notice-bar v-if="match.remark" color="#fff" background="#ff8c00" class="w-full" :scrollable="false" wrapable>
+          {{ match.remark }}
+        </van-notice-bar>
       </div>
     </van-pull-refresh>
   </div>
