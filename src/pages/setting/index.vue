@@ -18,9 +18,9 @@
         </template>
       </van-cell>
     </van-cell-group>
-    <van-cell-group title="匹配配置" class="w-full text-left" >
-      <van-cell title="不准确联赛" label="勾选后将不会匹配该联赛的数据" is-link @click="showMatchPopover=true"/>
-    </van-cell-group>
+<!--    <van-cell-group title="匹配配置" class="w-full text-left" >-->
+<!--      <van-cell title="不准确联赛" label="勾选后将不会匹配该联赛的数据" is-link @click="showMatchPopover=true"/>-->
+<!--    </van-cell-group>-->
     <van-popup v-model:show="showEuropePopover" position="bottom">
       <div class="w-full p-3">
         <van-checkbox-group v-model="checkEuropeCompanies" shape="square">

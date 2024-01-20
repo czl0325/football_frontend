@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <van-nav-bar title="详细分析" fixed left-arrow clickable @click-left="router.back()"  class="w-full"/>
-    <van-pull-refresh v-model="isLoading" @refresh="onGetMatchInfo">
+    <van-pull-refresh style="min-height: 100vh" v-model="isLoading" @refresh="onGetMatchInfo">
       <div class="content-container">
         <span class="match-group">{{ match.match_group }}</span>
         <span class="match-time">{{ match.match_time }}</span>
@@ -131,9 +131,7 @@
           <div id="chart_size_league" class="chart"></div>
         </div>
         <div class="panel" v-if="size_score_list.length">比分概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
-        <van-notice-bar v-if="match.remark" color="#fff" background="#ff8c00" class="w-full" :scrollable="false" wrapable>
-          {{ match.remark }}
-        </van-notice-bar>
+        <van-notice-bar v-if="match.remark" color="#fff" background="#f00" class="w-full" :text="match.remark" :scrollable="false" wrapable/>
       </div>
     </van-pull-refresh>
   </div>
@@ -177,6 +175,7 @@ const onGetMatchInfo = () => {
       message: "加载基础数据...",
       duration: 0
     })
+    match.value = {}
     getMatchInfo(route.query.fid as string).then((res: IMatchInfo) => {
       match.value = res
       onAnalysisMatch()
@@ -483,5 +482,8 @@ const onChartResize = () => {
 .chart {
   width: 100%;
   height: 100px;
+}
+:deep(.van-notice-bar__content) {
+  white-space: pre-line;
 }
 </style>
