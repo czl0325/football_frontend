@@ -60,11 +60,11 @@ export interface IEuropeOddsInfo {
   company_en?: string;
   company_zh?: string;
   origin_win_odds?: number;
-  origin_even_home?: number;
-  origin_lose_visit?: number;
+  origin_even_odds?: number;
+  origin_lose_odds?: number;
   instant_win_odds?: number;
-  instant_even_home?: number;
-  instant_lose_visit?: number;
+  instant_even_odds?: number;
+  instant_lose_odds?: number;
 }
 
 export interface IAsiaOddsInfo {

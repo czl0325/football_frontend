@@ -52,8 +52,12 @@
           </div>
           <div id="chart_europe_league" class="chart"></div>
         </div>
-        <div class="panel" v-if="europe_score_list.length">比分概率前三:<div v-for="score in europe_score_list" :key="score" v-html="score"></div></div>
-        <van-notice-bar v-if="showAsiaAll" color="#1989fa" background="#ecf9ff" class="w-full" :scrollable="false">
+        <div class="panel" v-if="showEuropeAll&&europe_score_list.length">比分概率前三:<div v-for="score in europe_score_list" :key="score" v-html="score"></div></div>
+        <div class="flex flex-row w-full justify-end mt-2" style="padding: 0 20px">
+          <van-button type="primary" size="small" @click="currentOddsType=1;showOdds=true;">查看欧赔赔率</van-button>
+          <van-button type="primary" size="small">查看匹配详情</van-button>
+        </div>
+        <van-notice-bar v-if="showAsiaAll" color="#1989fa" background="#ecf9ff" class="w-full mt-2" :scrollable="false">
           亚盘初盘：{{ match.origin_pan_most }}，亚盘即时盘：{{ match.instant_pan_most }}
         </van-notice-bar>
         <div class="panel" v-if="showAsiaAll">
@@ -91,7 +95,7 @@
           </div>
           <div id="chart_asia_league" class="chart"></div>
         </div>
-        <div class="panel" v-if="asia_score_list.length">比分概率前三:<div v-for="score in asia_score_list" :key="score" v-html="score"></div></div>
+        <div class="panel" v-if="showAsiaAll&&asia_score_list.length">比分概率前三:<div v-for="score in asia_score_list" :key="score" v-html="score"></div></div>
         <van-notice-bar v-if="showSizeAll" color="#1989fa" background="#ecf9ff" class="w-full" :scrollable="false">
           大小球初盘：{{ match.origin_size_most }}，大小球即时盘：{{ match.instant_size_most }}
         </van-notice-bar>
@@ -134,6 +138,15 @@
         <van-notice-bar v-if="match.remark" color="#fff" background="#f00" class="w-full" :text="match.remark" :scrollable="false" wrapable/>
       </div>
     </van-pull-refresh>
+    <van-popup v-model:show="showOdds" position="bottom" round>
+      <div class="w-full overflow-y-auto flex flex-col" style="max-height: 600px">
+        <odds-list :match="match" :type="currentOddsType" />
+      </div>
+    </van-popup>
+    <van-popup v-model:show="showMatching" position="bottom" round>
+      <div class="w-full p-3 overflow-y-auto flex flex-col" style="max-height: 500px">
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -146,6 +159,7 @@ import { analysisMatch, getMatchInfo } from "@/http/api/football.ts"
 import { IMatchInfo } from "@/models/match.ts"
 import { closeToast, showLoadingToast, showToast } from "vant"
 import { defineChartOption, getDecimalPoint } from "@/utils/tools.ts"
+import OddsList from "@/pages/detail/src/OddsList.vue"
 
 defineOptions({
   name: "MatchDetail"
@@ -159,7 +173,10 @@ const showAsiaAll = ref(true)
 const showAsiaLeague = ref(true)
 const showSizeAll = ref(true)
 const showSizeLeague = ref(true)
+const showOdds = ref(false)
+const showMatching = ref(false)
 const isLoading = ref(false)
+const currentOddsType = ref(1)
 let chart_europe_all: any = null
 let chart_europe_league: any = null
 let chart_asia_all: any = null
