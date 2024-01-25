@@ -55,7 +55,7 @@
         <div class="panel" v-if="showEuropeAll&&europe_score_list.length">比分概率前三:<div v-for="score in europe_score_list" :key="score" v-html="score"></div></div>
         <div class="flex flex-row w-full justify-end mt-2" style="padding: 0 20px">
           <van-button type="primary" size="small" @click="currentOddsType=1;showOdds=true;">查看欧赔赔率</van-button>
-          <van-button type="primary" size="small">查看匹配详情</van-button>
+          <van-button v-if="showEuropeAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=1;showMatching=true;">查看欧赔匹配详情</van-button>
         </div>
         <van-notice-bar v-if="showAsiaAll" color="#1989fa" background="#ecf9ff" class="w-full mt-2" :scrollable="false">
           亚盘初盘：{{ match.origin_pan_most }}，亚盘即时盘：{{ match.instant_pan_most }}
@@ -96,6 +96,10 @@
           <div id="chart_asia_league" class="chart"></div>
         </div>
         <div class="panel" v-if="showAsiaAll&&asia_score_list.length">比分概率前三:<div v-for="score in asia_score_list" :key="score" v-html="score"></div></div>
+        <div class="flex flex-row w-full justify-end mt-2" style="padding: 0 20px">
+          <van-button type="primary" size="small" @click="currentOddsType=2;showOdds=true;">查看亚盘赔率</van-button>
+          <van-button v-if="showAsiaAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=2;showMatching=true;">查看亚盘匹配详情</van-button>
+        </div>
         <van-notice-bar v-if="showSizeAll" color="#1989fa" background="#ecf9ff" class="w-full" :scrollable="false">
           大小球初盘：{{ match.origin_size_most }}，大小球即时盘：{{ match.instant_size_most }}
         </van-notice-bar>
@@ -135,6 +139,10 @@
           <div id="chart_size_league" class="chart"></div>
         </div>
         <div class="panel" v-if="size_score_list.length">比分概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
+        <div class="flex flex-row w-full justify-end mt-2 mb-4" style="padding: 0 20px">
+          <van-button type="primary" size="small" @click="currentOddsType=3;showOdds=true;">查看大小球赔率</van-button>
+          <van-button v-if="showSizeAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=3;showMatching=true;">查看大小球匹配详情</van-button>
+        </div>
         <van-notice-bar v-if="match.remark" color="#fff" background="#f00" class="w-full" :text="match.remark" :scrollable="false" wrapable/>
       </div>
     </van-pull-refresh>
@@ -144,7 +152,8 @@
       </div>
     </van-popup>
     <van-popup v-model:show="showMatching" position="bottom" round>
-      <div class="w-full p-3 overflow-y-auto flex flex-col" style="max-height: 500px">
+      <div class="w-full overflow-y-auto flex flex-col" style="max-height: 600px">
+        <matching-list :match="match" :type="currentOddsType" />
       </div>
     </van-popup>
   </div>
@@ -160,6 +169,7 @@ import { IMatchInfo } from "@/models/match.ts"
 import { closeToast, showLoadingToast, showToast } from "vant"
 import { defineChartOption, getDecimalPoint } from "@/utils/tools.ts"
 import OddsList from "@/pages/detail/src/OddsList.vue"
+import MatchingList from "@/pages/detail/src/MatchingList.vue"
 
 defineOptions({
   name: "MatchDetail"

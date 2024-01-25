@@ -1,23 +1,23 @@
 <template>
   <table class="table-1">
     <thead>
-      <tr>
-        <th>公司</th>
-        <th v-for="item in tableHeader" :key="item">{{ item }}</th>
-      </tr>
+    <tr>
+      <th>公司</th>
+      <th v-for="item in tableHeader" :key="item">{{ item }}</th>
+    </tr>
     </thead>
     <tbody v-if="type===1">
-      <tr v-for="item in match.europe_odds_items" :key="item.company_en">
-        <td>{{ item.company_zh }}</td>
-        <td>{{ item.origin_win_odds }}</td>
-        <td>{{ item.origin_even_odds }}</td>
-        <td>{{ item.origin_lose_odds }}</td>
-        <td>{{ item.instant_win_odds }}</td>
-        <td>{{ item.instant_even_odds }}</td>
-        <td>{{ item.instant_lose_odds }}</td>
-      </tr>
+    <tr v-for="item in match.europe_odds_items" :key="item.company_en">
+      <td>{{ item.company_zh }}</td>
+      <td>{{ item.origin_win_odds }}</td>
+      <td>{{ item.origin_even_odds }}</td>
+      <td>{{ item.origin_lose_odds }}</td>
+      <td>{{ item.instant_win_odds }}</td>
+      <td>{{ item.instant_even_odds }}</td>
+      <td>{{ item.instant_lose_odds }}</td>
+    </tr>
     </tbody>
-    <tbody v-else-if="type===2">
+    <tbody v-if="type===2">
     <tr v-for="item in match.asia_odds_items" :key="item.company_en">
       <td>{{ item.company_zh }}</td>
       <td>{{ item.origin_odds_home }}</td>
@@ -26,6 +26,17 @@
       <td>{{ item.instant_odds_home }}</td>
       <td>{{ item.instant_odds }}</td>
       <td>{{ item.instant_odds_visit }}</td>
+    </tr>
+    </tbody>
+    <tbody v-else-if="type===3">
+    <tr v-for="item in match.size_odds_items" :key="item.company_en">
+      <td>{{ item.company_zh }}</td>
+      <td>{{ item.origin_odds_big }}</td>
+      <td>{{ item.origin_size }}</td>
+      <td>{{ item.origin_odds_small }}</td>
+      <td>{{ item.instant_odds_big }}</td>
+      <td>{{ item.instant_size }}</td>
+      <td>{{ item.instant_odds_small }}</td>
     </tr>
     </tbody>
   </table>
