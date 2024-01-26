@@ -28,6 +28,9 @@ export interface IMatchInfo {
   remark?: string;
   asia_compose_size?: boolean;
   size_compose_asia?: boolean;
+  europe_matches?: string[];
+  asia_matches?: string[];
+  size_matches?: string[];
 
 
   asia_lose_all?: number;
