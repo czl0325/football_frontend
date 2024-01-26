@@ -100,7 +100,7 @@
           <van-button type="primary" size="small" @click="currentOddsType=2;showOdds=true;">查看亚盘赔率</van-button>
           <van-button v-if="showAsiaAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=2;showMatching=true;">查看亚盘匹配详情</van-button>
         </div>
-        <van-notice-bar v-if="showSizeAll" color="#1989fa" background="#ecf9ff" class="w-full" :scrollable="false">
+        <van-notice-bar v-if="showSizeAll" color="#1989fa" background="#ecf9ff" class="w-full mt-2" :scrollable="false">
           大小球初盘：{{ match.origin_size_most }}，大小球即时盘：{{ match.instant_size_most }}
         </van-notice-bar>
         <div class="panel" v-if="showSizeAll">
@@ -138,7 +138,7 @@
           </div>
           <div id="chart_size_league" class="chart"></div>
         </div>
-        <div class="panel" v-if="size_score_list.length">比分概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
+        <div class="panel" v-if="showSizeAll&&size_score_list.length">比分概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
         <div class="flex flex-row w-full justify-end mt-2 mb-4" style="padding: 0 20px">
           <van-button type="primary" size="small" @click="currentOddsType=3;showOdds=true;">查看大小球赔率</van-button>
           <van-button v-if="showSizeAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=3;showMatching=true;">查看大小球匹配详情</van-button>
@@ -146,12 +146,12 @@
         <van-notice-bar v-if="match.remark" color="#fff" background="#f00" class="w-full" :text="match.remark" :scrollable="false" wrapable/>
       </div>
     </van-pull-refresh>
-    <van-popup v-model:show="showOdds" position="bottom" round>
+    <van-popup v-model:show="showOdds" position="bottom" round close-on-popstate>
       <div class="w-full overflow-y-auto flex flex-col">
         <odds-list :match="match" :type="currentOddsType" />
       </div>
     </van-popup>
-    <van-popup v-model:show="showMatching" position="bottom" round>
+    <van-popup v-model:show="showMatching" position="bottom" round close-on-popstate>
       <div class="w-full overflow-y-auto flex flex-col">
         <matching-list :match="match" :type="currentOddsType" />
       </div>
