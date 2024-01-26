@@ -1,7 +1,7 @@
 <template>
   <van-tabs v-model:active="activeTab" animated swipeable title-active-color="#FF5600">
     <van-tab v-for="(item, index) in allData" :key="item.tab" :name="index" :title="item.tab">
-      <div class="h-full" style="height: 600px;">
+      <div style="height: 600px;">
         <vxe-table :data="item.data" border align="center" stripe height="100%">
           <vxe-column title="赛事" field="0" />
           <vxe-column title="主队" field="1" />
@@ -18,6 +18,7 @@
 <script lang="ts" setup>
 import { IMatchInfo } from "@/models/match.ts"
 import { computed, nextTick, ref, watch } from "vue"
+import { mergeSameMatch } from "@/utils/tools.ts"
 
 defineOptions({
   name: "MatchingList"
@@ -31,11 +32,12 @@ const allData = ref<any>([])
 const match = computed(() => props.match)
 watch(() => props.type, (val) => {
   allData.value = []
-  const matches = val=== 1 ? match.value.europe_matches : (val === 2 ? match.value.asia_matches : match.value.size_matches)
+  const matches: string[] = (val === 1 ? match.value.europe_matches : (val === 2 ? match.value.asia_matches : match.value.size_matches)) || []
   const arr1: string[][] = []
   const arr2: string[][] = []
   const arr3: string[][] = []
-  matches.forEach((item: string) => {
+  const newMatches = props.type === 1 ? matches : mergeSameMatch(matches)
+  newMatches?.forEach((item: string) => {
     const arr = item.split("_")
     if (arr.length === 6) {
       if (props.type === 1) {
@@ -77,6 +79,7 @@ watch(() => props.type, (val) => {
     tab: (val === 1 ? "负" : (val === 2 ? "输" : "小")) + `(${arr3.length})`,
     data: arr3
   })
+  console.log(allData.value)
   nextTick(() => {
     activeTab.value = 0
   })

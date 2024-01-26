@@ -108,3 +108,49 @@ export const getAssetsFile = (url: string) => {
 export const getAllMatchGroup = (matchList: IMatchInfo[]) => {
   return [...new Set(matchList.map(item => item.match_category))]
 }
+
+export const mergeSameMatch = (matchList: string[]) => {
+  const result: any[] = []
+  matchList.forEach(item => {
+    const parts = item.split('_');
+    const key = parts.slice(0, 3).join('_');
+    const existingItem = result.find(entry => entry.key === key)
+    if (existingItem) {
+      existingItem.indices.push(parts[5])
+    } else {
+      // 如果不存在相同 key 的元素，创建新的 entry，并初始化 indices 数组
+      result.push({
+        key,
+        start: item.substring(0, item.lastIndexOf('_') + 1),
+        indices: [parts[5]],
+      });
+    }
+  })
+  return result.map(entry => entry.start + mergeEqualValues(entry.indices.join(',')))
+}
+
+function mergeEqualValues(str: string) {
+  const parts = str.split(',')
+  const values: string[] = []
+  parts.forEach((item: string) => {
+    const regex = /\(([^)]+)\)/g;  // 匹配括号内的任意非右括号字符
+    const match = item.match(regex)
+    if (match && !values.includes(match[0])) {
+      values.push(match[0])
+    }
+  })
+  const results: string[] = []
+  values.forEach(item => {
+    let str = item
+    parts.forEach(part => {
+      if (part.endsWith(item)) {
+        str = "|" + part.slice(0, part.indexOf('(')) + str
+      }
+    })
+    if (str.startsWith("|")) {
+      str = str.slice(1)
+    }
+    results.push(str)
+  })
+  return results.join(',')
+}
