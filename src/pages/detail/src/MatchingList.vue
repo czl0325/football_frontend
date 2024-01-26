@@ -1,33 +1,22 @@
 <template>
-  <van-tabs v-model:active="activeTab">
+  <van-tabs v-model:active="activeTab" animated swipeable>
     <van-tab v-for="item in allData" :key="item.tab" :title="item.tab">
-      <table class="table-1">
-        <thead>
-        <tr>
-          <th>赛事</th>
-          <th>主队</th>
-          <th>客队</th>
-          <th>比分</th>
-          <th>赛果</th>
-        </tr>
-        </thead>
-        <thead>
-        <tr v-for="match in item.data" :key="match">
-          <th>{{ match[0] }}</th>
-          <th>{{ match[1] }}</th>
-          <th>{{ match[2] }}</th>
-          <th>{{ match[3] }}</th>
-          <th>{{ match[4] }}</th>
-        </tr>
-        </thead>
-      </table>
+      <div class="h-full" style="height: 600px;">
+        <vxe-table :data="item.data" border align="center" stripe height="100%">
+          <vxe-column title="赛事" field="0" />
+          <vxe-column title="主队" field="1" />
+          <vxe-column title="客队" field="2" />
+          <vxe-column title="比分" field="3" />
+          <vxe-column title="赛果" field="4" />
+        </vxe-table>
+      </div>
     </van-tab>
   </van-tabs>
 </template>
 
 <script lang="ts" setup>
 import { IMatchInfo } from "@/models/match.ts"
-import { ref, watch } from "vue"
+import { computed, ref, watch } from "vue"
 
 defineOptions({
   name: "MatchingList"
@@ -38,8 +27,10 @@ const props = defineProps<{
 }>()
 const activeTab = ref(0)
 const allData = ref<any>([])
-watch(() => props.match, (val) => {
-  const matches = props.type === 1 ? val.europe_matches : (props.type === 2 ? val.asia_matches : val.size_matches)
+const match = computed(() => props.match)
+watch(() => props.type, (val) => {
+  allData.value = []
+  const matches = val=== 1 ? match.value.europe_matches : (val === 2 ? match.value.asia_matches : match.value.size_matches)
   const arr1: string[][] = []
   const arr2: string[][] = []
   const arr3: string[][] = []
@@ -73,24 +64,18 @@ watch(() => props.match, (val) => {
       }
     }
   })
-  if (arr1.length > 0) {
-    allData.value.push({
-      tab: props.type === 1 ? "胜" : (props.type === 2 ? "赢" : "大"),
-      data: arr1
-    })
-  }
-  if (arr2.length > 0) {
-    allData.value.push({
-      tab: props.type === 1 ? "平" : "走",
-      data: arr2
-    })
-  }
-  if (arr3.length > 0) {
-    allData.value.push({
-      tab: props.type === 1 ? "负" : (props.type === 2 ? "输" : "小"),
-      data: arr3
-    })
-  }
+  allData.value.push({
+    tab: val === 1 ? "胜" : (val === 2 ? "赢" : "大") + `(${arr1.length})`,
+    data: arr1
+  })
+  allData.value.push({
+    tab: val === 1 ? "平" : "走" + `(${arr2.length})`,
+    data: arr2
+  })
+  allData.value.push({
+    tab: val === 1 ? "负" : (val === 2 ? "输" : "小") + `(${arr3.length})`,
+    data: arr3
+  })
 }, {immediate: true, deep: true})
 </script>
 

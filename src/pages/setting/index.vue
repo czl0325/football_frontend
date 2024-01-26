@@ -18,6 +18,23 @@
         </template>
       </van-cell>
     </van-cell-group>
+    <van-cell-group title="优化方案" class="w-full text-left" >
+      <van-cell title="亚盘剔除非主流赔率" label="个别公司开出的让球数和主流不一致，不匹配这些公司">
+        <template #right-icon>
+          <van-switch v-model="asiaNonMainstream" :active-value="1" :inactive-value="0"/>
+        </template>
+      </van-cell>
+      <van-cell title="大小球剔除非主流赔率" label="个别公司开出的大小球数和主流不一致，不匹配这些公司">
+        <template #right-icon>
+          <van-switch v-model="sizeNonMainstream" :active-value="1" :inactive-value="0"/>
+        </template>
+      </van-cell>
+      <van-cell title="不匹配友谊赛">
+        <template #right-icon>
+          <van-switch v-model="noFriendMatch" :active-value="1" :inactive-value="0"/>
+        </template>
+      </van-cell>
+    </van-cell-group>
 <!--    <van-cell-group title="匹配配置" class="w-full text-left" >-->
 <!--      <van-cell title="不准确联赛" label="勾选后将不会匹配该联赛的数据" is-link @click="showMatchPopover=true"/>-->
 <!--    </van-cell-group>-->
@@ -71,6 +88,9 @@ const sizeCompanies = useLocalStorage("size", SIZE_COMPANY)
 const checkSizeCompanies = useLocalStorage("check_size", SIZE_COMPANY.map((item: any) => item.value))
 const asiaCompose = useLocalStorage("asia_compose", false)
 const sizeCompose = useLocalStorage("size_compose", true)
+const asiaNonMainstream = useLocalStorage("asia_nonMainstream", 1)
+const sizeNonMainstream = useLocalStorage("size_nonMainstream", 1)
+const noFriendMatch = useLocalStorage("no_friend_match", 1)
 </script>
 
 <style lang="less" scoped>

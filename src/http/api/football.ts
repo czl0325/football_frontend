@@ -19,6 +19,9 @@ export const analysisMatch = (match: IMatchInfo) => {
   match.size_companies = (JSON.parse(localStorage.getItem("check_size") ?? "[]"))
   match.asia_compose_size = localStorage.getItem("asia_compose") === "true" || false
   match.size_compose_asia = localStorage.getItem("size_compose") === "true" || true
+  match.asia_nonMainstream = localStorage.getItem("asia_nonMainstream") === "0" ? 0 : 1
+  match.size_nonMainstream = localStorage.getItem("size_nonMainstream") === "0" ? 0 : 1
+  match.no_friend_match = localStorage.getItem("no_friend_match") === "0" ? 0 : 1
   return http1.post("/analysis/all", match)
 }
 

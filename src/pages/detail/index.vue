@@ -147,12 +147,12 @@
       </div>
     </van-pull-refresh>
     <van-popup v-model:show="showOdds" position="bottom" round>
-      <div class="w-full overflow-y-auto flex flex-col" style="max-height: 600px">
+      <div class="w-full overflow-y-auto flex flex-col">
         <odds-list :match="match" :type="currentOddsType" />
       </div>
     </van-popup>
     <van-popup v-model:show="showMatching" position="bottom" round>
-      <div class="w-full overflow-y-auto flex flex-col" style="max-height: 600px">
+      <div class="w-full overflow-y-auto flex flex-col">
         <matching-list :match="match" :type="currentOddsType" />
       </div>
     </van-popup>

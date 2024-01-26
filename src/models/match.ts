@@ -31,6 +31,9 @@ export interface IMatchInfo {
   europe_matches?: string[];
   asia_matches?: string[];
   size_matches?: string[];
+  asia_nonMainstream?: number;
+  size_nonMainstream?: number;
+  no_friend_match?: number;
 
 
   asia_lose_all?: number;
