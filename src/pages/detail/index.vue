@@ -138,7 +138,7 @@
           </div>
           <div id="chart_size_league" class="chart"></div>
         </div>
-        <div class="panel" v-if="size_score_list.length">比分概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
+        <div class="panel" v-if="showSizeAll&&size_score_list.length">比分概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
         <div class="flex flex-row w-full justify-end mt-2 mb-4" style="padding: 0 20px">
           <van-button type="primary" size="small" @click="currentOddsType=3;showOdds=true;">查看大小球赔率</van-button>
           <van-button v-if="showSizeAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=3;showMatching=true;">查看大小球匹配详情</van-button>
@@ -146,12 +146,12 @@
         <van-notice-bar v-if="matchStore.match.remark" color="#fff" background="#f00" class="w-full" :text="matchStore.match.remark" :scrollable="false" wrapable/>
       </div>
     </van-pull-refresh>
-    <van-popup v-model:show="showOdds" position="bottom" round>
+    <van-popup v-model:show="showOdds" position="bottom" round close-on-popstate>
       <div class="w-full overflow-y-auto flex flex-col">
         <odds-list :match="matchStore.match" :type="currentOddsType" />
       </div>
     </van-popup>
-    <van-popup v-model:show="showMatching" position="bottom" round>
+    <van-popup v-model:show="showMatching" position="bottom" round close-on-popstate>
       <div class="w-full overflow-y-auto flex flex-col">
         <matching-list :match="matchStore.match" :type="currentOddsType" />
       </div>
