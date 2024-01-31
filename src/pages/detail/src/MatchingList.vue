@@ -1,7 +1,7 @@
 <template>
   <van-tabs v-model:active="activeTab" animated swipeable title-active-color="#FF5600">
     <van-tab v-for="(item, index) in allData" :key="item.tab" :name="index" :title="item.tab">
-      <div style="height: 600px;">
+      <div style="height: 70vh;">
         <vxe-table :data="item.data" border align="center" stripe height="100%">
           <vxe-column title="赛事" field="0" />
           <vxe-column title="主队" field="1" />
