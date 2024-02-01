@@ -1,5 +1,6 @@
 import { http1, IPaginationInfo } from "../http.ts"
 import { IMatchInfo } from "../../models/match.ts"
+import _ from "lodash"
 
 export const testAPI = () => {
   return http1.get("/football/test")
@@ -27,4 +28,22 @@ export const analysisMatch = (match: IMatchInfo) => {
 
 export const getMatchesByDate = (date: string, pagination: IPaginationInfo) => {
   return http1.getList<IMatchInfo[]>(`/football/daily/${date}`, {}, pagination)
+}
+
+export const getOddsTrendByCompany = (match: IMatchInfo, type: number, company: string) => {
+  const tempMatch = _.cloneDeep(match)
+  delete tempMatch.europe_matches
+  delete tempMatch.asia_matches
+  delete tempMatch.size_matches
+  delete tempMatch.europe_score_list
+  delete tempMatch.asia_score_list
+  delete tempMatch.size_score_list
+  if (type === 1) {
+
+  } else {
+    return http1.post<any>("/analysis/asia_trend", {
+      ...tempMatch,
+      company
+    })
+  }
 }

@@ -40,7 +40,7 @@
       <!--      <van-cell title="不准确联赛" label="勾选后将不会匹配该联赛的数据" is-link @click="showMatchPopover=true"/>-->
       <!--    </van-cell-group>-->
     </div>
-    <span class="w-full block text-center my-2" style="color: #ff5252">当前版本:1.1</span>
+    <span class="w-full block text-center my-2" style="color: #ff5252">当前版本:{{ APP_VERSION }}</span>
     <van-popup v-model:show="showEuropePopover" position="bottom">
       <div class="w-full p-3">
         <van-checkbox-group v-model="checkEuropeCompanies" shape="square">
@@ -73,7 +73,7 @@
 <script lang="ts" setup>
 import { ref } from "vue"
 import { useLocalStorage } from "@vueuse/core"
-import { ASIA_COMPANY, EUROPE_COMPANY, SIZE_COMPANY } from "@/config.ts"
+import { APP_VERSION, ASIA_COMPANY, EUROPE_COMPANY, SIZE_COMPANY } from "@/config.ts"
 import NoCompareMatch from "@/pages/setting/src/NoCompareMatch.vue"
 
 defineOptions({

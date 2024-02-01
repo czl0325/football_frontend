@@ -97,6 +97,56 @@ export const defineChartOption = (type: number, yName = "") => {
   }
 }
 
+export const defineTrendChartOption = (type: number) => {
+  const text1 = type === 1 ? '胜' : type === 2 ? '赢' : '大'
+  const text2 = type === 1 ? '平' : '走'
+  const text3 = type === 1 ? '负' : type === 2 ? '输' : '小'
+  const colors = ['#ff5252', '#99cc33', '#1890ff']
+  return {
+    color: colors,
+    tooltip: {
+      trigger: 'axis'
+    },
+    legend: {
+      data: [text1, text2, text3],
+    },
+    grid: {
+      top: 30,
+      left: 30,
+      right: 20,
+      bottom: 25,
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false
+    },
+    yAxis: {
+      type: 'value',
+      minInterval: 1
+    },
+    series: [
+      {
+        name: text1,
+        type: 'line',
+        stack: text1,
+        symbol: "none",
+      },
+      {
+        name: text2,
+        type: 'line',
+        stack: text2,
+        symbol: "none",
+      },
+      {
+        name: text3,
+        type: 'line',
+        stack: text3,
+        symbol: "none",
+      },
+    ]
+  }
+}
+
 export const getDecimalPoint = (value: number, num = 2) => {
   return parseFloat(value.toFixed(num))
 }

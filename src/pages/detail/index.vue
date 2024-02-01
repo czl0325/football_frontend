@@ -98,6 +98,7 @@
         <div class="panel" v-if="showAsiaAll&&asia_score_list.length">比分概率前三:<div v-for="score in asia_score_list" :key="score" v-html="score"></div></div>
         <div class="flex flex-row w-full justify-end mt-2" style="padding: 0 20px">
           <van-button type="primary" size="small" @click="currentOddsType=2;showOdds=true;">查看亚盘赔率</van-button>
+          <van-button v-if="showAsiaAll" style="margin-left: 10px"  type="primary" size="small" @click="currentTrendType=2;showTrend=true">查看亚盘匹配趋势</van-button>
           <van-button v-if="showAsiaAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=2;showMatching=true;">查看亚盘匹配详情</van-button>
         </div>
         <van-notice-bar v-if="showSizeAll" color="#1989fa" background="#ecf9ff" class="w-full mt-2" :scrollable="false">
@@ -156,6 +157,11 @@
         <matching-list :match="matchStore.match" :type="currentOddsType" />
       </div>
     </van-popup>
+    <van-popup v-model:show="showTrend" position="bottom" round close-on-popstate>
+      <div class="w-full overflow-y-auto flex flex-col">
+        <trend-list :type="currentTrendType" />
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -170,6 +176,7 @@ import { closeToast, showLoadingToast, showToast } from "vant"
 import { defineChartOption, getDecimalPoint } from "@/utils/tools.ts"
 import OddsList from "@/pages/detail/src/OddsList.vue"
 import MatchingList from "@/pages/detail/src/MatchingList.vue"
+import TrendList from "@/pages/detail/src/TrendList.vue"
 import { useMatchStore } from "@/store/currentMatch.ts"
 
 defineOptions({
@@ -186,8 +193,10 @@ const showSizeAll = ref(true)
 const showSizeLeague = ref(true)
 const showOdds = ref(false)
 const showMatching = ref(false)
+const showTrend = ref(false)
 const isLoading = ref(false)
 const currentOddsType = ref(1)
+const currentTrendType = ref(2)
 let chart_europe_all: any = null
 let chart_europe_league: any = null
 let chart_asia_all: any = null
