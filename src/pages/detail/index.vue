@@ -140,7 +140,7 @@
           <div id="chart_size_league" class="chart"></div>
         </div>
         <div class="panel" v-if="showSizeAll&&size_score_list.length">比分概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
-        <div class="panel" v-if="showSizeAll&&size_score_list.length">进球数概率前三:<div v-for="score in size_score_list" :key="score" v-html="score"></div></div>
+        <div class="panel" v-if="showSizeAll&&goal_number_list.length">进球数概率前三:<div v-for="score in goal_number_list" :key="score" v-html="score"></div></div>
         <div class="flex flex-row w-full justify-end mt-2 mb-4" style="padding: 0 20px">
           <van-button type="primary" size="small" @click="currentOddsType=3;showOdds=true;">查看大小球赔率</van-button>
           <van-button v-if="showSizeAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=3;showMatching=true;">查看大小球匹配详情</van-button>
@@ -207,7 +207,7 @@ let chart_size_league: any = null
 const europe_score_list = ref<string[]>([])
 const asia_score_list = ref<string[]>([])
 const size_score_list = ref<string[]>([])
-const goal_score_list = ref<string[]>([])
+const goal_number_list = ref<string[]>([])
 const onGetMatchInfo = () => {
   if (route.query.fid) {
     showLoadingToast({
@@ -379,7 +379,14 @@ const onAnalysisMatch = () => {
         size_score_list.value = []
         matchStore.match.size_score_list?.some((item: any[]) => {
           size_score_list.value.push(`<span style="color: #895b8a">${item[0]}</span>：${item[1]}场(${(item[1]/total3*100).toFixed(2)}%)`)
-          if (size_score_list.value.length >=  3) {
+          if (size_score_list.value.length >= 3) {
+            return true
+          }
+        })
+        goal_number_list.value = []
+        matchStore.match.goal_number_list?.some((item: any[]) => {
+          goal_number_list.value.push(`<span style="color: #895b8a">${item[0]}球</span>：${item[1]}场(${(item[1]/total3*100).toFixed(2)}%)`)
+          if (goal_number_list.value.length >= 3) {
             return true
           }
         })

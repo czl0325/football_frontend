@@ -57,6 +57,7 @@ export interface IMatchInfo {
   size_run_all?: number;
   size_run_league?: number;
   size_score_list?: any[];
+  goal_number_list?: any[];
   size_small_all?: number;
   size_small_league?: number;
   team_count?: number;

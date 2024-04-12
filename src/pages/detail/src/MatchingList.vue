@@ -2,7 +2,7 @@
   <van-tabs v-model:active="activeTab" animated swipeable title-active-color="#FF5600">
     <van-tab v-for="(item, index) in allData" :key="item.tab" :name="index" :title="item.tab">
       <div style="height: 70vh;">
-        <vxe-table :data="item.data" border align="center" stripe height="100%">
+        <vxe-table class="match-list-table" :data="item.data" border align="center" stripe height="100%" :row-class-name="rowClassName">
           <vxe-column title="赛事" field="0" />
           <vxe-column title="主队" field="1" />
           <vxe-column title="客队" field="2" />
@@ -19,6 +19,7 @@
 import { IMatchInfo } from "@/models/match.ts"
 import { computed, nextTick, ref, watch } from "vue"
 import { mergeSameMatch } from "@/utils/tools.ts"
+import { VxeTablePropTypes } from "vxe-table"
 
 defineOptions({
   name: "MatchingList"
@@ -29,7 +30,11 @@ const props = defineProps<{
 }>()
 const activeTab = ref(0)
 const allData = ref<any>([])
-const match = computed(() => props.match)
+const match = computed<IMatchInfo>(() => props.match)
+const rowClassName: VxeTablePropTypes.CellClassName<IMatchInfo> = ({ row }) => {
+  console.log(row[0].includes(match.value.match_category))
+  return row[0].includes(match.value.match_category) ? "match-highlight" : ""
+}
 watch(() => props.type, (val) => {
   allData.value = []
   const matches: string[] = (val === 1 ? match.value.europe_matches : (val === 2 ? match.value.asia_matches : match.value.size_matches)) || []
@@ -79,7 +84,6 @@ watch(() => props.type, (val) => {
     tab: (val === 1 ? "负" : (val === 2 ? "输" : "小")) + `(${arr3.length})`,
     data: arr3
   })
-  console.log(allData.value)
   nextTick(() => {
     activeTab.value = 0
   })
@@ -87,5 +91,7 @@ watch(() => props.type, (val) => {
 </script>
 
 <style scoped>
-
+::v-deep(.match-list-table.vxe-table .vxe-body--row.match-highlight) {
+  background-color: #F9CDAD;
+}
 </style>
