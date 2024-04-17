@@ -108,10 +108,11 @@ export const defineTrendChartOption = (type: number) => {
       trigger: 'axis'
     },
     legend: {
+      top: 5,
       data: [text1, text2, text3],
     },
     grid: {
-      top: 30,
+      top: 50,
       left: 30,
       right: 20,
       bottom: 25,

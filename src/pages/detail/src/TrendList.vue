@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col w-full">
-    <van-nav-bar title="查看水位走势" />
-    <van-cell title="博彩公司" :value="currentCompany" clickable @click="showCompanyList=true"/>
+    <van-nav-bar title="查看水位走势" right-text="刷新" @click-right="onGetMatchTrend"/>
+<!--    <van-cell title="博彩公司" :value="currentCompany" clickable @click="showCompanyList=true"/>-->
     <div id="trend_chart" class="chart"></div>
     <van-dialog v-model:show="showCompanyList" title="" :showConfirmButton="false">
       <van-picker title="选择博彩公司" :columns="columns" @confirm="onConfirmCompany" @cancel="showCompanyList=false"/>
@@ -46,6 +46,7 @@ const onGetMatchTrend = () => {
     options.series[0].data = res.y_win
     options.series[1].data = res.y_run
     options.series[2].data = res.y_lose
+    console.log(options)
     trend_chart.setOption(options)
   })
 }

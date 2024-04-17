@@ -22,7 +22,8 @@
   --van-primary-color: #ff6500;
   --van-nav-bar-background: #ff6500;
   --van-nav-bar-title-text-color: white;
-  --van-nav-bar-icon-color: white;
+  --van-nav-bar-icon-color: white !important;
+  --van-nav-bar-text-color: white !important;
 }
 
 .app-container {
