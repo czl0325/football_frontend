@@ -40,13 +40,12 @@ const onConfirmCompany = ({ selectedValues }) => {
   onGetMatchTrend()
 }
 const onGetMatchTrend = () => {
-  getOddsTrendByCompany(match, props.type, currentCompany.value).then((res) => {
+  getOddsTrendByCompany(match, props.type, currentCompany.value).then((res: any) => {
     const options = defineTrendChartOption(props.type)
     options.xAxis.data = res.x
     options.series[0].data = res.y_win
     options.series[1].data = res.y_run
     options.series[2].data = res.y_lose
-    console.log(options)
     trend_chart.setOption(options)
   })
 }
@@ -79,7 +78,6 @@ onMounted(() => {
   const dom = document.getElementById("trend_chart")
   if (dom) {
     trend_chart = echarts.init(dom)
-    onGetMatchTrend()
   }
   window.addEventListener("resize", onChartResize)
 })
@@ -89,6 +87,12 @@ onBeforeUnmount(() => {
 const onChartResize = () => {
   trend_chart?.resize()
 }
+defineExpose({
+  getData: () => {
+    console.log("调用getData")
+    onGetMatchTrend()
+  }
+})
 </script>
 
 <style lang="less" scoped>

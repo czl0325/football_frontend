@@ -32,7 +32,6 @@ const activeTab = ref(0)
 const allData = ref<any>([])
 const match = computed<IMatchInfo>(() => props.match)
 const rowClassName: VxeTablePropTypes.CellClassName<IMatchInfo> = ({ row }) => {
-  console.log(row[0].includes(match.value.match_category))
   return row[0].includes(match.value.match_category) ? "match-highlight" : ""
 }
 watch(() => props.type, (val) => {

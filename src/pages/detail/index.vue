@@ -16,7 +16,7 @@
             <span class="rank" v-if="matchStore.match.visit_team_rank">排名{{ matchStore.match.visit_team_rank }}，积分{{ matchStore.match.visit_score }}</span>
           </div>
         </div>
-        <van-notice-bar wrapable :scrollable="false" text="请注意，由于水位是实时在变化，每次分析的结果都不一样。越接近开赛时间越准确。分析结果仅供参考。" />
+        <van-notice-bar wrapable :scrollable="false" text="请注意，本项目打法仅适用于滚球的亚盘和大小球，不适用于竞彩，（欧赔仅娱乐，准确率不高）建议在开场后一分钟查看分析最准确。" />
         <div class="panel" v-if="showEuropeAll">
           <div class="title">
             欧赔全网匹配结果：
@@ -153,14 +153,14 @@
         <odds-list :match="matchStore.match" :type="currentOddsType" />
       </div>
     </van-popup>
-    <van-popup v-model:show="showMatching" position="bottom" round close-on-popstate>
+    <van-popup v-model:show="showMatching" position="bottom" round close-on-popstate >
       <div class="w-full overflow-y-auto flex flex-col">
         <matching-list :match="matchStore.match" :type="currentOddsType" />
       </div>
     </van-popup>
-    <van-popup v-model:show="showTrend" position="bottom" round close-on-popstate>
+    <van-popup v-model:show="showTrend" position="bottom" round close-on-popstate @opened="onLookTrend">
       <div class="w-full overflow-y-auto flex flex-col">
-        <trend-list :type="currentTrendType" />
+        <trend-list ref="xTrendList" :type="currentTrendType" />
       </div>
     </van-popup>
   </div>
@@ -198,6 +198,7 @@ const showTrend = ref(false)
 const isLoading = ref(false)
 const currentOddsType = ref(1)
 const currentTrendType = ref(2)
+const xTrendList = ref<any>(undefined)
 let chart_europe_all: any = null
 let chart_europe_league: any = null
 let chart_asia_all: any = null
@@ -404,6 +405,9 @@ const onAnalysisMatch = () => {
   }).finally(() => {
     isLoading.value = false
   })
+}
+const onLookTrend = () => {
+  xTrendList.value.getData()
 }
 onMounted(() => {
   const dom1 = document.getElementById('chart_europe_all')

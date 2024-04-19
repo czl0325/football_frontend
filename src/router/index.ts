@@ -9,7 +9,7 @@ export const constantRouterMap = [
   {
     path: "/home",
     name: "Home",
-    component: () => import("@/pages/Home/index.vue"),
+    component: () => import("@/pages/home/index.vue"),
     meta: {
       num: 0,
       showTab: true
@@ -32,7 +32,7 @@ export const constantRouterMap = [
   {
     path: "/feedback",
     name: "Feedback",
-    component: () => import("@/pages/Feedback/index.vue"),
+    component: () => import("@/pages/feedback/index.vue"),
     meta: {
       num: 2,
       showTab: true
@@ -41,7 +41,7 @@ export const constantRouterMap = [
   {
     path: "/setting",
     name: "Setting",
-    component: () => import("@/pages/Setting/index.vue"),
+    component: () => import("@/pages/setting/index.vue"),
     meta: {
       num: 3,
       showTab: true
