@@ -213,7 +213,8 @@ const onGetMatchInfo = () => {
   if (route.query.fid) {
     showLoadingToast({
       message: "加载基础数据...",
-      duration: 0
+      duration: 0,
+      forbidClick: true
     })
     matchStore.match = {}
     getMatchInfo(route.query.fid as string).then((res: IMatchInfo) => {
@@ -225,7 +226,8 @@ const onGetMatchInfo = () => {
 const onAnalysisMatch = () => {
   showLoadingToast({
     message: "比赛分析中...",
-    duration: 0
+    duration: 0,
+    forbidClick: true
   })
   analysisMatch(matchStore.match).then((res2: IMatchInfo) => {
     matchStore.match = res2

@@ -50,7 +50,8 @@ const selectMatchTypes = ref<string[]>([])
 const onRefreshList = () => {
   showLoadingToast({
     message: "加载比赛...",
-    duration: 0
+    duration: 0,
+    forbidClick: true
   })
   isLoading.value = true
   getMatchList(matchType.value).then((res:IMatchInfo[]) => {

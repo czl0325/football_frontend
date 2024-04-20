@@ -1,5 +1,5 @@
 <template>
-  <van-tabs v-model:active="activeTab" animated swipeable title-active-color="#FF5600">
+  <van-tabs ref="xTabs" v-model:active="activeTab" animated swipeable title-active-color="#FF5600">
     <van-tab v-for="(item, index) in allData" :key="item.tab" :name="index" :title="item.tab">
       <div style="height: 70vh;">
         <vxe-table class="match-list-table" :data="item.data" border align="center" stripe height="100%" :row-class-name="rowClassName">
@@ -20,6 +20,7 @@ import { IMatchInfo } from "@/models/match.ts"
 import { computed, nextTick, ref, watch } from "vue"
 import { mergeSameMatch } from "@/utils/tools.ts"
 import { VxeTablePropTypes } from "vxe-table"
+import { TabsInstance } from "vant"
 
 defineOptions({
   name: "MatchingList"
@@ -28,6 +29,7 @@ const props = defineProps<{
   type: number,
   match: IMatchInfo
 }>()
+const xTabs = ref<TabsInstance>()
 const activeTab = ref(0)
 const allData = ref<any>([])
 const match = computed<IMatchInfo>(() => props.match)
@@ -86,7 +88,7 @@ watch(() => props.type, (val) => {
   nextTick(() => {
     activeTab.value = 0
   })
-}, {immediate: true, deep: true})
+}, { immediate: true, deep: true })
 </script>
 
 <style scoped>
