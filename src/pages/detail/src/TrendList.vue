@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from "vue"
-import { PickerOption } from "vant"
+import { closeToast, PickerOption, showLoadingToast } from "vant"
 import * as echarts from "echarts"
 import { IAsiaOddsInfo, IEuropeOddsInfo, IMatchInfo, ISizeOddsInfo } from "@/models/match.ts"
 import { useMatchStore } from "@/store/currentMatch.ts"
@@ -40,6 +40,11 @@ const onConfirmCompany = ({ selectedValues }) => {
   onGetMatchTrend()
 }
 const onGetMatchTrend = () => {
+  showLoadingToast({
+    message: "趋势加载中...",
+    duration: 0,
+    forbidClick: true
+  })
   getOddsTrendByCompany(match, props.type, currentCompany.value).then((res: any) => {
     const options = defineTrendChartOption(props.type)
     options.xAxis.data = res.x
@@ -47,6 +52,9 @@ const onGetMatchTrend = () => {
     options.series[1].data = res.y_run
     options.series[2].data = res.y_lose
     trend_chart.setOption(options)
+    trend_chart?.resize()
+  }).finally(() => {
+    closeToast()
   })
 }
 onMounted(() => {
@@ -89,7 +97,6 @@ const onChartResize = () => {
 }
 defineExpose({
   getData: () => {
-    console.log("调用getData")
     onGetMatchTrend()
   }
 })
