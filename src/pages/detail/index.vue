@@ -57,7 +57,7 @@
           <van-button type="primary" size="small" @click="currentOddsType=1;showOdds=true;">查看欧赔赔率</van-button>
           <van-button v-if="showEuropeAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=1;showMatching=true;">查看欧赔匹配详情</van-button>
         </div>
-        <van-notice-bar v-if="showAsiaAll" color="#1989fa" background="#ecf9ff" class="w-full mt-2" :scrollable="false">
+        <van-notice-bar v-if="matchStore.match.origin_pan_most&&matchStore.match.instant_pan_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           亚盘初盘：{{ matchStore.match.origin_pan_most }}，亚盘即时盘：{{ matchStore.match.instant_pan_most }}
         </van-notice-bar>
         <div class="panel" v-if="showAsiaAll">
@@ -98,12 +98,26 @@
         <div class="panel" v-if="showAsiaAll&&asia_score_list.length">比分概率前三:<div v-for="score in asia_score_list" :key="score" v-html="score"></div></div>
         <div class="flex flex-row w-full justify-end mt-2" style="padding: 0 20px">
           <van-button type="primary" size="small" @click="currentOddsType=2;showOdds=true;">查看亚盘赔率</van-button>
-          <van-button v-if="showAsiaAll" style="margin-left: 10px"  type="primary" size="small" @click="currentTrendType=2;showTrend=true">查看亚盘匹配趋势</van-button>
+          <van-button style="margin-left: 10px"  type="primary" size="small" @click="currentTrendType=2;showTrend=true">查看亚盘匹配趋势</van-button>
           <van-button v-if="showAsiaAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=2;showMatching=true;">查看亚盘匹配详情</van-button>
         </div>
-        <van-notice-bar v-if="showSizeAll" color="#1989fa" background="#ecf9ff" class="w-full mt-2" :scrollable="false">
+        <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           大小球初盘：{{ matchStore.match.origin_size_most }}，大小球即时盘：{{ matchStore.match.instant_size_most }}
         </van-notice-bar>
+        <table v-if="matchStore.match.poisson_small&&matchStore.match.poisson_big" class="table-1 w-full mt-3 px-4">
+          <thead>
+          <tr>
+            <th>泊松分布2.5小球概率</th>
+            <th>泊松分布2.5大球概率</th>
+          </tr>
+          </thead>
+          <tbody >
+          <tr >
+            <td>{{ matchStore.match.poisson_small }}%</td>
+            <td>{{ matchStore.match.poisson_big }}%</td>
+          </tr>
+          </tbody>
+        </table>
         <div class="panel" v-if="showSizeAll">
           <div class="title">
             大小球全网匹配结果：
@@ -400,6 +414,12 @@ const onAnalysisMatch = () => {
     closeToast()
   }).catch(() => {
     closeToast()
+    chart_europe_all?.clear()
+    chart_europe_league?.clear()
+    chart_asia_all?.clear()
+    chart_asia_league?.clear()
+    chart_size_all?.clear()
+    chart_size_league?.clear()
     showToast({
       message: "请求失败，请稍后重试",
       position: "bottom"

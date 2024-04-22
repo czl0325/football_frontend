@@ -61,6 +61,9 @@ export interface IMatchInfo {
   size_small_all?: number;
   size_small_league?: number;
   team_count?: number;
+
+  poisson_small?: number;
+  poisson_big?: number;
 }
 
 export interface IEuropeOddsInfo {
