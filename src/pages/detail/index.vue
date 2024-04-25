@@ -57,7 +57,7 @@
           <van-button type="primary" size="small" @click="currentOddsType=1;showOdds=true;">查看欧赔赔率</van-button>
           <van-button v-if="showEuropeAll" style="margin-left: 10px" type="primary" size="small" @click="currentOddsType=1;showMatching=true;">查看欧赔匹配详情</van-button>
         </div>
-        <van-notice-bar v-if="matchStore.match.origin_pan_most&&matchStore.match.instant_pan_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
+        <van-notice-bar v-if="matchStore.match.origin_pan_most!==undefined&&matchStore.match.instant_pan_most!==undefined" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           亚盘初盘：{{ matchStore.match.origin_pan_most }}，亚盘即时盘：{{ matchStore.match.instant_pan_most }}
         </van-notice-bar>
         <div class="panel" v-if="showAsiaAll">
