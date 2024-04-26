@@ -420,6 +420,9 @@ const onAnalysisMatch = () => {
     chart_asia_league?.clear()
     chart_size_all?.clear()
     chart_size_league?.clear()
+    europe_score_list.value = []
+    asia_score_list.value = []
+    size_score_list.value = []
     showToast({
       message: "请求失败，请稍后重试",
       position: "bottom"
