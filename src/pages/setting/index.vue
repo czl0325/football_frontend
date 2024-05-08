@@ -10,12 +10,12 @@
       <van-cell-group title="组合配置" class="w-full text-left" >
         <van-cell title="亚盘组合大小球">
           <template #right-icon>
-            <van-switch v-model="asiaCompose"/>
+            <van-switch v-model="asiaCompose" :active-value="1" :inactive-value="0"/>
           </template>
         </van-cell>
         <van-cell title="大小球组合亚盘">
           <template #right-icon>
-            <van-switch v-model="sizeCompose"/>
+            <van-switch v-model="sizeCompose" :active-value="1" :inactive-value="0"/>
           </template>
         </van-cell>
       </van-cell-group>
@@ -89,8 +89,8 @@ const asiaCompanies = useLocalStorage("asia", ASIA_COMPANY)
 const checkAsiaCompanies = useLocalStorage("check_asia", ASIA_COMPANY.map((item: any) => item.value))
 const sizeCompanies = useLocalStorage("size", SIZE_COMPANY)
 const checkSizeCompanies = useLocalStorage("check_size", SIZE_COMPANY.map((item: any) => item.value))
-const asiaCompose = useLocalStorage("asia_compose", false)
-const sizeCompose = useLocalStorage("size_compose", true)
+const asiaCompose = useLocalStorage("asia_compose", 0)
+const sizeCompose = useLocalStorage("size_compose", 0)
 const asiaNonMainstream = useLocalStorage("asia_nonMainstream", 1)
 const sizeNonMainstream = useLocalStorage("size_nonMainstream", 1)
 const noFriendMatch = useLocalStorage("no_friend_match", 1)

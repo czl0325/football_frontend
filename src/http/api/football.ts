@@ -1,6 +1,6 @@
+import _ from "lodash"
 import { http1, IPaginationInfo } from "../http.ts"
 import { IMatchInfo } from "../../models/match.ts"
-import _ from "lodash"
 
 export const testAPI = () => {
   return http1.get("/football/test")
@@ -18,8 +18,18 @@ export const analysisMatch = (match: IMatchInfo) => {
   match.europe_companies = (JSON.parse(localStorage.getItem("check_europe") ?? "[]"))
   match.asia_companies = (JSON.parse(localStorage.getItem("check_asia") ?? "[]"))
   match.size_companies = (JSON.parse(localStorage.getItem("check_size") ?? "[]"))
-  match.asia_compose_size = localStorage.getItem("asia_compose") === "true" || false
-  match.size_compose_asia = localStorage.getItem("size_compose") === "true" || true
+  match.asia_compose_size = localStorage.getItem("asia_compose") === "0" ? 0 : 1
+  if (localStorage.getItem("asia_compose") === "true") {
+    match.asia_compose_size = 1
+  } else if (localStorage.getItem("asia_compose") === "false") {
+    match.asia_compose_size = 0
+  }
+  match.size_compose_asia = localStorage.getItem("size_compose") === "0" ? 0 : 1
+  if (localStorage.getItem("size_compose") === "true") {
+    match.size_compose_asia = 1
+  } else if (localStorage.getItem("size_compose") === "false") {
+    match.size_compose_asia = 0
+  }
   match.asia_nonMainstream = localStorage.getItem("asia_nonMainstream") === "0" ? 0 : 1
   match.size_nonMainstream = localStorage.getItem("size_nonMainstream") === "0" ? 0 : 1
   match.no_friend_match = localStorage.getItem("no_friend_match") === "0" ? 0 : 1
