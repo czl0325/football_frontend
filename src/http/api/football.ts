@@ -21,18 +21,24 @@ export const analysisMatch = (match: IMatchInfo) => {
   match.asia_compose_size = localStorage.getItem("asia_compose") === "0" ? 0 : 1
   if (localStorage.getItem("asia_compose") === "true") {
     match.asia_compose_size = 1
-  } else if (localStorage.getItem("asia_compose") === "false") {
+    localStorage.setItem("asia_compose", "1")
+  } else {
     match.asia_compose_size = 0
+    localStorage.setItem("asia_compose", "0")
   }
   match.size_compose_asia = localStorage.getItem("size_compose") === "0" ? 0 : 1
   if (localStorage.getItem("size_compose") === "true") {
     match.size_compose_asia = 1
-  } else if (localStorage.getItem("size_compose") === "false") {
+    localStorage.setItem("size_compose", "1")
+  } else {
     match.size_compose_asia = 0
+    localStorage.setItem("size_compose", "0")
   }
   match.asia_nonMainstream = localStorage.getItem("asia_nonMainstream") === "0" ? 0 : 1
   match.size_nonMainstream = localStorage.getItem("size_nonMainstream") === "0" ? 0 : 1
   match.no_friend_match = localStorage.getItem("no_friend_match") === "0" ? 0 : 1
+  match.asia_filter_odds = localStorage.getItem("asia_filter_odds") === "0" ? 0 : 1
+  match.size_filter_odds = localStorage.getItem("size_filter_odds") === "0" ? 0 : 1
   return http1.post("/analysis/all", match)
 }
 

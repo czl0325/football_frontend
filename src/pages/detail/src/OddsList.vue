@@ -60,10 +60,10 @@ watch(() => props.type, (val) => {
       tableHeader.value = ["初赔(胜)", "初赔(平)", "初赔(负)", "即时(胜)", "即时(平)", "即时(负)"]
       break
     case 2:
-      tableHeader.value = ["初盘(主队)", "初盘(让球)", "初盘(客队)", "即时(主队)", "即时(让球)", "即时(客队)"]
+      tableHeader.value = ["初盘(主)", "初盘", "初盘(客)", "即时(主)", "即时", "即时(客)"]
       break
     case 3:
-      tableHeader.value = ["初盘(主队)", "初盘(大小)", "初盘(客队)", "即时(主队)", "即时(大小)", "即时(客队)"]
+      tableHeader.value = ["初盘(大)", "初盘", "初盘(小)", "即时(大)", "即时", "即时(小)"]
       break
   }
 }, { immediate: true })

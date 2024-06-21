@@ -14,9 +14,17 @@ export interface IMatchInfo {
   visit_team_rank?: string;
   visit_score?: string;
   origin_pan_most?: number;
+  origin_pan_home_map?: { [key: number]: number[] };
+  origin_pan_visit_map?: { [key: number]: number[] };
   instant_pan_most?: number;
+  instant_pan_home_map?: { [key: number]: number[] };
+  instant_pan_visit_map?: { [key: number]: number[] };
   origin_size_most?: number;
+  origin_size_home_map?: { [key: number]: number[] };
+  origin_size_visit_map?: { [key: number]: number[] };
   instant_size_most?: number;
+  instant_size_home_map?: { [key: number]: number[] };
+  instant_size_visit_map?: { [key: number]: number[] };
   field_score?: string;
   match_filter?: string;
   europe_odds_items?: IEuropeOddsInfo[];
@@ -34,7 +42,8 @@ export interface IMatchInfo {
   asia_nonMainstream?: number;
   size_nonMainstream?: number;
   no_friend_match?: number;
-
+  asia_filter_odds?: number;
+  size_filter_odds?: number;
 
   asia_lose_all?: number;
   asia_lose_league?: number;
@@ -58,6 +67,7 @@ export interface IMatchInfo {
   size_run_league?: number;
   size_score_list?: any[];
   goal_number_list?: any[];
+  half_goal_number_list?: any[];
   size_small_all?: number;
   size_small_league?: number;
   team_count?: number;

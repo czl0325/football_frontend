@@ -30,9 +30,9 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: "http://127.0.0.1:5000/",
+        target: 'http://127.0.0.1:5000',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   },
@@ -44,6 +44,8 @@ export default defineConfig({
           lodash: ['lodash'],
           vant: ['vant'],
           echarts: ['echarts'],
+          vueuse: ['@vueuse/core'],
+          axios: ['axios']
         }
       }
     }

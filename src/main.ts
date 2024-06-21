@@ -14,6 +14,14 @@ import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import { createPinia } from "pinia"
 
+import { VxeUI } from 'vxe-table'
+
+VxeUI.setConfig({
+  table: {
+    emptyText: "暂无数据"
+  }
+})
+
 const app = createApp(App)
 app.use(router)
 app.use(VXETable)

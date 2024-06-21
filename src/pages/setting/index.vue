@@ -25,9 +25,19 @@
             <van-switch v-model="asiaNonMainstream" :active-value="1" :inactive-value="0"/>
           </template>
         </van-cell>
+        <van-cell title="亚盘剔除偏差过大的水位" label="个别公司的水位和中位数水位差距偏大，剔除掉，阈值暂时设置为1.2">
+          <template #right-icon>
+            <van-switch v-model="asiaFilterOdds" :active-value="1" :inactive-value="0"/>
+          </template>
+        </van-cell>
         <van-cell title="大小球剔除非主流赔率" label="个别公司开出的大小球数和主流不一致，不匹配这些公司">
           <template #right-icon>
             <van-switch v-model="sizeNonMainstream" :active-value="1" :inactive-value="0"/>
+          </template>
+        </van-cell>
+        <van-cell title="大小球剔除偏差过大的水位" label="个别公司的水位和中位数水位差距偏大，剔除掉，阈值暂时设置为1.2">
+          <template #right-icon>
+            <van-switch v-model="sizeFilterOdds" :active-value="1" :inactive-value="0"/>
           </template>
         </van-cell>
         <van-cell title="不匹配友谊赛">
@@ -35,10 +45,16 @@
             <van-switch v-model="noFriendMatch" :active-value="1" :inactive-value="0"/>
           </template>
         </van-cell>
+        <van-cell title="只匹配主流联赛" label="五大联赛欧冠欧罗巴世界杯欧洲杯(目前还未确定联赛，暂未开放功能，请大家提交建议)">
+          <template #right-icon>
+            <van-switch v-model="onlyMainMatch" :active-value="1" :inactive-value="0"/>
+          </template>
+        </van-cell>
       </van-cell-group>
       <!--    <van-cell-group title="匹配配置" class="w-full text-left" >-->
       <!--      <van-cell title="不准确联赛" label="勾选后将不会匹配该联赛的数据" is-link @click="showMatchPopover=true"/>-->
       <!--    </van-cell-group>-->
+
     </div>
     <span class="w-full block text-center my-2" style="color: #ff5252">当前版本:{{ APP_VERSION }}</span>
     <van-popup v-model:show="showEuropePopover" position="bottom">
@@ -93,7 +109,10 @@ const asiaCompose = useLocalStorage("asia_compose", 0)
 const sizeCompose = useLocalStorage("size_compose", 0)
 const asiaNonMainstream = useLocalStorage("asia_nonMainstream", 1)
 const sizeNonMainstream = useLocalStorage("size_nonMainstream", 1)
+const asiaFilterOdds = useLocalStorage("asia_filter_odds", 1)
+const sizeFilterOdds = useLocalStorage("size_filter_odds", 1)
 const noFriendMatch = useLocalStorage("no_friend_match", 1)
+const onlyMainMatch = useLocalStorage("only_main_match", 0)
 </script>
 
 <style lang="less" scoped>

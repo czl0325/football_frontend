@@ -1,7 +1,7 @@
 export const PRODUCT_URL = "http://47.99.134.39:10008"
-export const DEVELOP_URL = "http://47.99.134.39:10008" // "/api"
+export const DEVELOP_URL = "http://47.99.134.39:10008"
 export const API_URL = process.env.NODE_ENV === 'production' ? PRODUCT_URL : DEVELOP_URL
-export const APP_VERSION = "1.3.2"
+export const APP_VERSION = "1.3.3"
 
 export const EUROPE_COMPANY = [
   {
