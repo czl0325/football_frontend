@@ -1,5 +1,5 @@
-export const PRODUCT_URL = "http://47.99.134.39:10008"
-export const DEVELOP_URL = "http://47.99.134.39:10008"
+export const PRODUCT_URL = "http://106.54.58.139:10008"
+export const DEVELOP_URL = "http://106.54.58.139:10008"
 export const API_URL = process.env.NODE_ENV === 'production' ? PRODUCT_URL : DEVELOP_URL
 export const APP_VERSION = "1.3.3"
 
