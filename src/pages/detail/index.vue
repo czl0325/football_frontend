@@ -214,17 +214,37 @@ const isLoading = ref(false)
 const currentOddsType = ref(1)
 const currentTrendType = ref(2)
 const xTrendList = ref<any>(undefined)
-let chart_europe_all: any = null
-let chart_europe_league: any = null
-let chart_asia_all: any = null
-let chart_asia_league: any = null
-let chart_size_all: any = null
-let chart_size_league: any = null
+let chart_europe_all: echarts.EChartsType = {} as echarts.EChartsType
+let chart_europe_league: echarts.EChartsType = {} as echarts.EChartsType
+let chart_asia_all: echarts.EChartsType = {} as echarts.EChartsType
+let chart_asia_league: echarts.EChartsType = {} as echarts.EChartsType
+let chart_size_all: echarts.EChartsType = {} as echarts.EChartsType
+let chart_size_league: echarts.EChartsType = {} as echarts.EChartsType
 const europe_score_list = ref<string[]>([])
 const asia_score_list = ref<string[]>([])
 const size_score_list = ref<string[]>([])
 const goal_number_list = ref<string[]>([])
 const half_goal_number_list = ref<string[]>([])
+const clearAllData = () => {
+  showEuropeAll.value = true
+  showEuropeLeague.value = true
+  showAsiaAll.value = true
+  showAsiaLeague.value = true
+  showSizeAll.value = true
+  showSizeLeague.value = true
+  europe_score_list.value = []
+  asia_score_list.value = []
+  size_score_list.value = []
+  goal_number_list.value = []
+  half_goal_number_list.value = []
+  chart_europe_all.clear()
+  chart_europe_league.clear()
+  chart_asia_all.clear()
+  chart_asia_league.clear()
+  chart_size_all.clear()
+  chart_size_league.clear()
+  matchStore.match = {}
+}
 const onGetMatchInfo = () => {
   if (route.query.fid) {
     showLoadingToast({
@@ -232,7 +252,7 @@ const onGetMatchInfo = () => {
       duration: 0,
       forbidClick: true
     })
-    matchStore.match = {}
+    clearAllData()
     getMatchInfo(route.query.fid as string).then((res: IMatchInfo) => {
       matchStore.match = res
       onAnalysisMatch()
