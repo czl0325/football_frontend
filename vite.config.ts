@@ -23,7 +23,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src')
     }
   },
-  base: './',
+  base: process.env.NODE_ENV === 'production' ? "/" : "./",
   server: {
     host: '0.0.0.0',
     port: 8303,
