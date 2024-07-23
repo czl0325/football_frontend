@@ -1,6 +1,7 @@
 import { IMatchInfo } from "../models/match.ts"
+import * as echarts from "echarts"
 
-export const defineChartOption = (type: number, yName = "") => {
+export const defineChartOption = (type: number, yName = "") : echarts.EChartsOption => {
   const text1 = type === 1 ? '胜' : type === 2 ? '赢' : '大'
   const text2 = type === 1 ? '平' : '走'
   const text3 = type === 1 ? '负' : type === 2 ? '输' : '小'
@@ -50,10 +51,10 @@ export const defineChartOption = (type: number, yName = "") => {
           show: false
         },
         itemStyle: {
-          normal: {
-            color: colors[0]
-          },
-          emphasis: {
+          color: colors[0],
+        },
+        emphasis: {
+          itemStyle: {
             color: colors[0]
           }
         },
@@ -67,12 +68,12 @@ export const defineChartOption = (type: number, yName = "") => {
           show: false
         },
         itemStyle: {
-          normal: {
-            color: colors[1]
+          color: colors[1],
+        },
+        emphasis: {
+          itemStyle: {
+            color: colors[1],
           },
-          emphasis: {
-            color: colors[1]
-          }
         },
         barWidth: 20
       },
@@ -84,12 +85,12 @@ export const defineChartOption = (type: number, yName = "") => {
           show: false
         },
         itemStyle: {
-          normal: {
+          color: colors[2]
+        },
+        emphasis: {
+          itemStyle: {
             color: colors[2]
           },
-          emphasis: {
-            color: colors[2]
-          }
         },
         barWidth: 20,
       },
@@ -97,7 +98,7 @@ export const defineChartOption = (type: number, yName = "") => {
   }
 }
 
-export const defineTrendChartOption = (type: number) => {
+export const defineTrendChartOption = (type: number) : echarts.EChartsOption => {
   const text1 = type === 1 ? '胜' : type === 2 ? '赢' : '大'
   const text2 = type === 1 ? '平' : '走'
   const text3 = type === 1 ? '负' : type === 2 ? '输' : '小'

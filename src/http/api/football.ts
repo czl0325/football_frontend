@@ -1,9 +1,12 @@
 import _ from "lodash"
 import { http1, IPaginationInfo } from "../http.ts"
-import { IMatchInfo } from "../../models/match.ts"
+import { IMatchInfo } from "@/models/match.ts"
 
-export const testAPI = () => {
-  return http1.get("/football/test")
+export const getGithubToken = (code?: string) => {
+  return http1.get<any>("/football/callback", {
+    code,
+    redirect_uri: `${window.location.origin}${window.location.pathname}`
+  })
 }
 
 export const getMatchList = (type = "all") => {
@@ -18,14 +21,14 @@ export const analysisMatch = (match: IMatchInfo) => {
   match.europe_companies = (JSON.parse(localStorage.getItem("check_europe") ?? "[]"))
   match.asia_companies = (JSON.parse(localStorage.getItem("check_asia") ?? "[]"))
   match.size_companies = (JSON.parse(localStorage.getItem("check_size") ?? "[]"))
-  match.asia_compose_size = localStorage.getItem("asia_compose") === "0" ? 0 : 1
-  match.size_compose_asia = localStorage.getItem("size_compose") === "0" ? 0 : 1
-  match.asia_nonMainstream = localStorage.getItem("asia_nonMainstream") === "0" ? 0 : 1
-  match.size_nonMainstream = localStorage.getItem("size_nonMainstream") === "0" ? 0 : 1
-  match.no_friend_match = localStorage.getItem("no_friend_match") === "0" ? 0 : 1
-  match.asia_filter_odds = localStorage.getItem("asia_filter_odds") === "0" ? 0 : 1
-  match.size_filter_odds = localStorage.getItem("size_filter_odds") === "0" ? 0 : 1
-  return http1.post("/analysis/all", match)
+  match.asia_compose_size = localStorage.getItem("asia_compose") == "0" ? 0 : 1
+  match.size_compose_asia = localStorage.getItem("size_compose") == "0" ? 0 : 1
+  match.asia_nonMainstream = localStorage.getItem("asia_nonMainstream") == "0" ? 0 : 1
+  match.size_nonMainstream = localStorage.getItem("size_nonMainstream") == "0" ? 0 : 1
+  match.no_friend_match = localStorage.getItem("no_friend_match") == "0" ? 0 : 1
+  match.asia_filter_odds = localStorage.getItem("asia_filter_odds") == "0" ? 0 : 1
+  match.size_filter_odds = localStorage.getItem("size_filter_odds") == "0" ? 0 : 1
+  return http1.post<IMatchInfo>("/analysis/all", match)
 }
 
 export const getMatchesByDate = (date: string, pagination: IPaginationInfo) => {

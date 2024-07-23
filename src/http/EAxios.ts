@@ -22,6 +22,9 @@ export class EAxios {
     this.instance.interceptors.request.use(
       config => {
         config.headers["Content-Type"] = 'application/json;'
+        if (localStorage.getItem("token")) {
+          config.headers["Authorization"] = localStorage.getItem("token")
+        }
         return config
       },
       err => {

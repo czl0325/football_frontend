@@ -28,11 +28,11 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue"
+import { ref } from "vue"
+import { useRoute } from "vue-router"
 import MatchItem from "@/pages/home/src/MatchItem.vue"
-import { getMatchList } from "@/http/api/football.ts"
+import { getGithubToken, getMatchList } from "@/http/api/football.ts"
 import { IMatchInfo } from "@/models/match.ts"
-import { ASIA_COMPANY, EUROPE_COMPANY, SIZE_COMPANY } from "@/config.ts"
 import { useLocalStorage } from "@vueuse/core"
 import { closeToast, showLoadingToast } from "vant"
 import { getAllMatchGroup } from "@/utils/tools.ts"
@@ -40,6 +40,7 @@ import { getAllMatchGroup } from "@/utils/tools.ts"
 defineOptions({
   name: "Home"
 })
+const route = useRoute()
 const isLoading = ref(false)
 let originMatchList:IMatchInfo[] = []
 const matchType = useLocalStorage<string>("match_type", "all")
@@ -87,6 +88,13 @@ const onSelectType = (type: number) => {
 //window.addEventListener('scroll', () => {
 //  console.log(document.documentElement.scrollTop)
 //})
+if (route.query.code) {
+  getGithubToken(route.query.code as string).then(res => {
+    if (res.access_token) {
+      localStorage.setItem("token", res.access_token as string)
+    }
+  })
+}
 onRefreshList()
 </script>
 

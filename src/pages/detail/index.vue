@@ -182,11 +182,11 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref} from "vue"
+import { onBeforeUnmount, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import * as echarts from "echarts"
 import _ from "lodash"
-import { analysisMatch, getMatchInfo } from "@/http/api/football.ts"
+import { analysisMatch, getGithubToken, getMatchInfo } from "@/http/api/football.ts"
 import { IMatchInfo } from "@/models/match.ts"
 import { closeToast, showLoadingToast, showToast } from "vant"
 import { defineChartOption, getDecimalPoint } from "@/utils/tools.ts"
@@ -245,17 +245,34 @@ const clearAllData = () => {
   chart_size_league.clear()
   matchStore.match = {}
 }
-const onGetMatchInfo = () => {
-  if (route.query.fid) {
+let fid = route.query.fid
+const onGetMatchInfo = async () => {
+  if (route.query.code) {
+    const data = await getGithubToken(route.query.code as string)
+    if (data.access_token) {
+      localStorage.setItem("token", data.access_token as string)
+    }
+    const urlParams = new URLSearchParams(window.location.search)
+    const state = urlParams.get('state')
+    if (state) {
+      const params = new URLSearchParams(state);
+      fid = params.get('fid')
+    }
+  }
+  if (fid) {
     showLoadingToast({
       message: "加载基础数据...",
       duration: 0,
       forbidClick: true
     })
     clearAllData()
-    getMatchInfo(route.query.fid as string).then((res: IMatchInfo) => {
+    getMatchInfo(fid as string).then((res: IMatchInfo) => {
       matchStore.match = res
       onAnalysisMatch()
+    }).catch(err => {
+      if (err.code === 403) {
+        window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }`
+      }
     })
   }
 }
@@ -267,8 +284,8 @@ const onAnalysisMatch = () => {
   })
   analysisMatch(matchStore.match).then((res2: IMatchInfo) => {
     matchStore.match = res2
-    showEuropeAll.value = (matchStore.match.europe_win_all+matchStore.match.europe_even_all+matchStore.match.europe_lose_all>0)
-    if (matchStore.match.europe_win_all+matchStore.match.europe_even_all+matchStore.match.europe_lose_all>0) {
+    showEuropeAll.value = (matchStore.match?.europe_win_all ?? 0) + (matchStore.match?.europe_even_all ?? 0) + (matchStore.match?.europe_lose_all ?? 0) > 0
+    if (showEuropeAll.value) {
       const option1 = _.cloneDeep(defineChartOption(1, "欧赔全网"))
       const total1 = res2.europe_win_all + res2.europe_even_all + res2.europe_lose_all
       option1.series[0].data = [res2.europe_win_all / total1]
@@ -287,13 +304,13 @@ const onAnalysisMatch = () => {
         }
       }
       chart_europe_all.setOption(option1)
-      showEuropeLeague.value = matchStore.match.europe_win_league+matchStore.match.europe_even_league+matchStore.match.europe_lose_league>0
-      if (matchStore.match.europe_win_league+matchStore.match.europe_even_league+matchStore.match.europe_lose_league>0) {
-        const option11 = _.cloneDeep(defineChartOption(1, "欧赔本联赛"))
+      showEuropeLeague.value = (matchStore.match?.europe_win_league ?? 0) + (matchStore.match?.europe_even_league ?? 0) + (matchStore.match?.europe_lose_league ?? 0) > 0
+      if (showEuropeLeague.value) {
+        const option11: echarts.EChartsOption = _.cloneDeep(defineChartOption(1, "欧赔本联赛"))
         const total11 = res2.europe_win_league + res2.europe_even_league + res2.europe_lose_league
-        option11.series[0].data = [res2.europe_win_league/ total11]
-        option11.series[1].data = [res2.europe_even_league / total11]
-        option11.series[2].data = [res2.europe_lose_league / total11]
+        option11.series[0].data = [(res2.europe_win_league ?? 0) / total11]
+        option11.series[1].data = [(res2.europe_even_league ?? 0) / total11]
+        option11.series[2].data = [(res2.europe_lose_league ?? 0) / total11]
         option11.legend = {
           top: '10%',
           formatter: (name: string) => {
@@ -455,7 +472,12 @@ const onAnalysisMatch = () => {
     showToast({
       message: "请求失败，请稍后重试",
       position: "bottom"
-    });
+    })
+  }).catch(err => {
+    if (err.code === 403) {
+//      window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }${ window.location.pathname }&state=fid%3D${ fid }`
+      window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }`
+    }
   }).finally(() => {
     isLoading.value = false
   })

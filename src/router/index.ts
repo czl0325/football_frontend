@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory, RouterOptions } from 'vue-router'
 import { useCacheViewsStore } from "../store/cacheViews.ts"
 
 export const constantRouterMap = [
@@ -50,7 +50,7 @@ export const constantRouterMap = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory("/"),
   routes: constantRouterMap,
   // @ts-ignore
   scrollBehavior(to, from, savedPosition) {
