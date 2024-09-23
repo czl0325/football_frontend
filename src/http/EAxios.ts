@@ -7,7 +7,7 @@ export class EAxios {
   constructor (url: string) {
     this.instance = axios.create({
       baseURL: url || '',
-      timeout: 120000
+      timeout: 300000
     })
     this.init()
   }
