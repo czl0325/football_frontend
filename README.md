@@ -17,6 +17,8 @@ $\color{red}{👋👋👋热烈祝贺本项目2024欧洲杯完成仅错三场的
 
 体验网址：[点击跳转体验](http://106.54.58.139:8080/#/home)
 
+* 由于我的服务器被500网封禁，需要自行上500网在数据详情里复制比赛fid，然后在体验网址上输入fid查看比赛详情。例如网址为https://odds.500.com/fenxi/shuju-1173700.shtml，那么fid就是最后那一串数字1173700。
+
 #### 经典战役
 
 [23/24葡超29轮波尔图vs法马利康，100%概率下盘](http://47.99.134.39:8080/#/match/detail?fid=1101833)<br>
@@ -41,6 +43,8 @@ $\color{red}{👋👋👋热烈祝贺本项目2024欧洲杯完成仅错三场的
 请作者吃碗沙茶面
 
 <img width="400" height="600" src="./src/assets/images/alipay.jpg" alt="">
+
+<img width="400" height="600" src="./src/assets/images/wxpay.jpg" alt="">
 
 
 #### 使用手册

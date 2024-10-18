@@ -294,6 +294,8 @@ const onGetMatchInfo = async () => {
     }).catch(err => {
       if (err.code === 403) {
         window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }`
+      } else if (err.code === 1001) {
+        window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }`
       }
     })
   }

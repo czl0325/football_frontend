@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { http1, IPaginationInfo } from "../http.ts"
 import { IMatchInfo } from "@/models/match.ts"
+import got from 'got'
 
 export const getGithubToken = (code?: string) => {
   return http1.get<any>("/football/callback", {
@@ -9,7 +10,7 @@ export const getGithubToken = (code?: string) => {
   })
 }
 
-export const getMatchList = (type = "all") => {
+export const getMatchList = async (type = "all") => {
   return http1.get<IMatchInfo[]>("/football/matches", { type })
 }
 
