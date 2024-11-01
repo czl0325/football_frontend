@@ -14,6 +14,8 @@
         <van-button round block type="primary" native-type="submit">分析</van-button>
       </div>
     </van-form>
+    <van-cell title="历史查询" />
+    <van-cell v-for="match in historyMatches" :title="`${match.home} vs ${match.visit}`" :label="`${match.group}(${match.time})`" is-link value="分析" :to="`/match/detail?fid=${match.fid}`"/>
 <!--    <van-sticky class="w-full" :offset-top="46">-->
 <!--      <van-cell title="比赛筛选" is-link @click="showMatchTypes=true"/>-->
 <!--    </van-sticky>-->
@@ -97,6 +99,7 @@ const onSelectType = (type: number) => {
     selectMatchTypes.value = ["英超", "意甲", "德甲", "西甲", "法甲", "欧冠", "欧罗巴", "亚冠"]
   }
 }
+const historyMatches = useLocalStorage("history_matches", [])
 if (route.query.code) {
   getGithubToken(route.query.code as string).then(res => {
     if (res.access_token) {

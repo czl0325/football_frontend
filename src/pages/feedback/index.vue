@@ -12,7 +12,7 @@
       <span class="mt-3 text-xl block text-left w-full text-emerald-700">加群讨论</span>
       <van-image :src="getAssetsFile('wx.jpg')" class="pay"/>
       <span class="mt-3 text-xl block text-left w-full text-green-800">请作者吃碗沙茶面</span>
-      <van-image :src="getAssetsFile('alipay.jpg')" class="pay"/>
+      <van-image :src="getAssetsFile('alipay.jpg')" class="pay" />
       <van-image :src="getAssetsFile('wxpay.jpg')" class="pay"/>
     </div>
   </div>

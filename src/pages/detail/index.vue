@@ -216,6 +216,7 @@ import OddsList from "@/pages/detail/src/OddsList.vue"
 import MatchingList from "@/pages/detail/src/MatchingList.vue"
 import TrendList from "@/pages/detail/src/TrendList.vue"
 import { useMatchStore } from "@/store/currentMatch.ts"
+import { useLocalStorage } from "@vueuse/core"
 
 defineOptions({
   name: "MatchDetail"
@@ -290,6 +291,7 @@ const onGetMatchInfo = async () => {
     clearAllData()
     getMatchInfo(fid as string).then((res: IMatchInfo) => {
       matchStore.match = res
+      addHistoryMatch(res)
       onAnalysisMatch()
     }).catch(err => {
       if (err.code === 403) {
@@ -563,6 +565,23 @@ const onChartResize = () => {
   chart_asia_league?.resize()
   chart_size_all?.resize()
   chart_size_league?.resize()
+}
+const historyMatches = useLocalStorage("history_matches", [])
+const addHistoryMatch = (match: IMatchInfo) => {
+  const existingIndex = historyMatches.value.findIndex(obj => obj.fid === match.fid)
+  if (existingIndex !== -1) {
+    historyMatches.value.splice(existingIndex, 1);
+  }
+  historyMatches.value.unshift({
+    fid: match.fid,
+    home: match.home_team,
+    visit: match.visit_team,
+    group: match.match_group,
+    time: match.match_time,
+  });
+  if (historyMatches.value.length > 10) {
+    historyMatches.value.pop()
+  }
 }
 </script>
 
