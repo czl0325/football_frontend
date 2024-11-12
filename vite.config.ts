@@ -28,13 +28,13 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 8303,
     open: true,
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:10008',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
+//    proxy: {
+//      '/api': {
+//        target: 'http://127.0.0.1:10008',
+//        changeOrigin: true,
+//        rewrite: (path) => path.replace(/^\/api/, '')
+//      }
+//    }
   },
   build: {
     chunkSizeWarningLimit: 500,
