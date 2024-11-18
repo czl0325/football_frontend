@@ -297,7 +297,7 @@ const onGetMatchInfo = async () => {
       if (err.code === 403) {
         window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }`
       } else if (err.code === 1001) {
-        window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }`
+        window.location.href = "https://github.com/czl0325/football_frontend"
       }
     })
   }
@@ -566,7 +566,7 @@ const onChartResize = () => {
   chart_size_all?.resize()
   chart_size_league?.resize()
 }
-const historyMatches = useLocalStorage("history_matches", [])
+const historyMatches = useLocalStorage<any[]>("history_matches", [])
 const addHistoryMatch = (match: IMatchInfo) => {
   const existingIndex = historyMatches.value.findIndex(obj => obj.fid === match.fid)
   if (existingIndex !== -1) {
