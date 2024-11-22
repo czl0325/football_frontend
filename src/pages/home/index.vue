@@ -22,7 +22,7 @@
       <van-sticky class="w-full" :offset-top="46">
         <van-cell title="比赛筛选" is-link @click="showMatchTypes=true"/>
       </van-sticky>
-      <van-pull-refresh class="list-container" v-model="isLoading" @refresh="onRefreshList">
+      <van-pull-refresh class="w-full flex-1" v-model="isLoading" @refresh="onRefreshList">
         <match-item v-for="match in matchList" :key="match.fid" :match="match" />
       </van-pull-refresh>
       <van-popup v-model:show="showMatchTypes" position="bottom" round>
