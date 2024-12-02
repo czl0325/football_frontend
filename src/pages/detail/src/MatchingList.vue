@@ -3,7 +3,13 @@
     <van-tab v-for="(item, index) in allData" :key="item.tab" :name="index" :title="item.tab">
       <div style="height: 70vh;">
         <vxe-table class="match-list-table" :data="item.data" border align="center" stripe height="100%" :row-class-name="rowClassName">
-          <vxe-column title="赛事" field="0" />
+          <vxe-column title="赛事" field="0">
+            <template #default="{row}">
+              <a :href="`https://live.m.500.com/detail/football/${row[6]}/analysis/record?render=local&extendchannel=10002`" target="_blank">
+                {{ row[0] }}
+              </a>
+            </template>
+          </vxe-column>
           <vxe-column title="主队" field="1" />
           <vxe-column title="客队" field="2" />
           <vxe-column title="比分" field="3" />
@@ -45,7 +51,7 @@ watch(() => props.type, (val) => {
   const newMatches = props.type === 1 ? matches : mergeSameMatch(matches)
   newMatches?.forEach((item: string) => {
     const arr = item.split("_")
-    if (arr.length === 6) {
+    if (arr.length >= 6) {
       if (props.type === 1) {
         if (arr[4] === "胜") {
           arr1.push(arr)

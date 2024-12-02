@@ -171,14 +171,16 @@ export const mergeSameMatch = (matchList: string[]) => {
       existingItem.indices.push(parts[5])
     } else {
       // 如果不存在相同 key 的元素，创建新的 entry，并初始化 indices 数组
+      const startIndex = item.indexOf(parts[5]);
       result.push({
         key,
-        start: item.substring(0, item.lastIndexOf('_') + 1),
+        start: item.substring(0, startIndex),
+        fid: parts[6],
         indices: [parts[5]],
       });
     }
   })
-  return result.map(entry => entry.start + mergeEqualValues(entry.indices.join(',')))
+  return result.map(entry => entry.start + mergeEqualValues(entry.indices.join(',')) + "_" + entry.fid)
 }
 
 function mergeEqualValues(str: string) {
