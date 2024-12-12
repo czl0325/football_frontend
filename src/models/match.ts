@@ -74,6 +74,8 @@ export interface IMatchInfo {
 
   poisson_small?: number;
   poisson_big?: number;
+  poisson_small_limit?: number;
+  poisson_big_limit?: number;
 }
 
 export interface IEuropeOddsInfo {

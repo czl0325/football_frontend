@@ -118,17 +118,33 @@
         <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           大小球初盘：{{ matchStore.match.origin_size_most }}，大小球即时盘：{{ matchStore.match.instant_size_most }}
         </van-notice-bar>
+        <span class="size-title" v-if="matchStore.match.poisson_small&&matchStore.match.poisson_big">泊松分布全联赛分主客场计算大小球</span>
         <table v-if="matchStore.match.poisson_small&&matchStore.match.poisson_big" class="table-1 w-full mt-3 px-4">
           <thead>
           <tr>
-            <th>泊松分布2.5小球概率</th>
-            <th>泊松分布2.5大球概率</th>
+            <th>泊松2.5小球概率</th>
+            <th>泊松2.5大球概率</th>
           </tr>
           </thead>
           <tbody>
           <tr>
             <td>{{ matchStore.match.poisson_small }}%</td>
             <td>{{ matchStore.match.poisson_big }}%</td>
+          </tr>
+          </tbody>
+        </table>
+        <span class="size-title" v-if="matchStore.match.poisson_small_limit&&matchStore.match.poisson_big_limit">泊松分布全联赛不分主客场取近5场计算大小球</span>
+        <table v-if="matchStore.match.poisson_small_limit&&matchStore.match.poisson_big_limit" class="table-1 w-full mt-3 px-4">
+          <thead>
+          <tr>
+            <th>泊松2.5小球概率</th>
+            <th>泊松2.5大球概率</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{ matchStore.match.poisson_small_limit }}%</td>
+            <td>{{ matchStore.match.poisson_big_limit }}%</td>
           </tr>
           </tbody>
         </table>
@@ -652,6 +668,12 @@ const addHistoryMatch = (match: IMatchInfo) => {
     color: orange;
     margin-bottom: 10px;
   }
+}
+
+.size-title {
+  font-size: 14px;
+  color: #996633;
+  margin-top: 10px;
 }
 
 .flex-horizontal-1 {
