@@ -76,6 +76,10 @@ export interface IMatchInfo {
   poisson_big?: number;
   poisson_small_limit?: number;
   poisson_big_limit?: number;
+  home_status?: number[];
+  visit_status?: number[];
+  home_total_goal?: number[];
+  visit_total_goal?: number[];
 }
 
 export interface IEuropeOddsInfo {

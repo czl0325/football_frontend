@@ -149,6 +149,101 @@ export const defineTrendChartOption = (type: number) : echarts.EChartsOption => 
   }
 }
 
+export const defineTeamStatusChartOption = () : echarts.EChartsOption => {
+  return {
+    color: ['#8B4513', '#FF1493'],
+    tooltip: {
+      trigger: 'axis'
+    },
+    legend: {
+      top: 5,
+      data: ["主队状态", "客队状态"],
+    },
+    grid: {
+      top: 50,
+      left: 30,
+      right: 20,
+      bottom: 25,
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false
+    },
+    yAxis: {
+      type: 'value',
+      minInterval: 1
+    },
+    series: [
+      {
+        name: "主队状态",
+        type: 'line',
+        stack: "主队状态",
+        symbol: "none",
+      },
+      {
+        name: "客队状态",
+        type: 'line',
+        stack: "客队状态",
+        symbol: "none",
+      }
+      ]
+  }
+}
+
+export const defineTotalGoalChartOption = () : echarts.EChartsOption => {
+  return {
+    color: ['#8B4513', '#FF1493', '#1890ff'],
+    tooltip: {
+      trigger: 'axis'
+    },
+    legend: {
+      top: 5,
+      data: ["主队总球数", "客队总球数"],
+    },
+    grid: {
+      top: 50,
+      left: 30,
+      right: 20,
+      bottom: 25,
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: true
+    },
+    yAxis: {
+      type: 'value',
+      minInterval: 0.5
+    },
+    series: [
+      {
+        name: "主队总球数",
+        type: 'bar',
+//        stack: "主队总球数",
+        barMinHeight: 0.3,
+        barMaxWidth: 20,
+        itemStyle: {
+          borderRadius: [3, 3, 0, 0]
+        }
+      },
+      {
+        name: "客队总球数",
+        type: 'bar',
+//        stack: "客队总球数",
+        barMinHeight: 0.3,
+        barMaxWidth: 20,
+        itemStyle: {
+          borderRadius: [3, 3, 0, 0]
+        }
+      },
+      {
+        name: "2.5球",
+        type: 'line',
+        symbol: 'none'
+      }
+    ]
+  }
+}
+
 export const getDecimalPoint = (value: number, num = 2) => {
   return parseFloat(value.toFixed(num))
 }

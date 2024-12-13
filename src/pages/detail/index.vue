@@ -115,6 +115,7 @@
             查看亚盘匹配详情
           </van-button>
         </div>
+        <div v-if="showTeamStatus" id="chart_team_status" class="chart" style="height: 250px"></div>
         <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           大小球初盘：{{ matchStore.match.origin_size_most }}，大小球即时盘：{{ matchStore.match.instant_size_most }}
         </van-notice-bar>
@@ -198,6 +199,7 @@
             查看大小球匹配详情
           </van-button>
         </div>
+        <div v-if="showTotalGoal" id="chart_total_goal" class="chart" style="height: 300px"></div>
         <van-notice-bar v-if="matchStore.match.remark" color="#fff" background="#f00" class="w-full" :text="matchStore.match.remark" :scrollable="false" wrapable />
       </div>
     </van-pull-refresh>
@@ -227,7 +229,7 @@ import _ from "lodash"
 import { analysisMatch, getGithubToken, getMatchInfo } from "@/http/api/football.ts"
 import { IMatchInfo } from "@/models/match.ts"
 import { closeToast, showLoadingToast, showToast } from "vant"
-import { defineChartOption, getDecimalPoint } from "@/utils/tools.ts"
+import { defineChartOption, defineTeamStatusChartOption, defineTotalGoalChartOption, getDecimalPoint } from "@/utils/tools.ts"
 import OddsList from "@/pages/detail/src/OddsList.vue"
 import MatchingList from "@/pages/detail/src/MatchingList.vue"
 import TrendList from "@/pages/detail/src/TrendList.vue"
@@ -244,6 +246,8 @@ const showEuropeAll = ref(true)
 const showEuropeLeague = ref(true)
 const showAsiaAll = ref(true)
 const showAsiaLeague = ref(true)
+const showTeamStatus = ref(true)
+const showTotalGoal = ref(true)
 const showSizeAll = ref(true)
 const showSizeLeague = ref(true)
 const showOdds = ref(false)
@@ -259,6 +263,8 @@ let chart_asia_all: echarts.EChartsType = {} as echarts.EChartsType
 let chart_asia_league: echarts.EChartsType = {} as echarts.EChartsType
 let chart_size_all: echarts.EChartsType = {} as echarts.EChartsType
 let chart_size_league: echarts.EChartsType = {} as echarts.EChartsType
+let chart_team_status: echarts.EChartsType = {} as echarts.EChartsType
+let chart_total_goal: echarts.EChartsType = {} as echarts.EChartsType
 const europe_score_list = ref<string[]>([])
 const asia_score_list = ref<string[]>([])
 const size_score_list = ref<string[]>([])
@@ -276,12 +282,14 @@ const clearAllData = () => {
   size_score_list.value = []
   goal_number_list.value = []
   half_goal_number_list.value = []
-  chart_europe_all.clear()
-  chart_europe_league.clear()
-  chart_asia_all.clear()
-  chart_asia_league.clear()
-  chart_size_all.clear()
-  chart_size_league.clear()
+  chart_europe_all?.clear()
+  chart_europe_league?.clear()
+  chart_asia_all?.clear()
+  chart_asia_league?.clear()
+  chart_size_all?.clear()
+  chart_size_league?.clear()
+  chart_team_status?.clear()
+  chart_total_goal?.clear()
   matchStore.match = {}
 }
 let fid = route.query.fid
@@ -440,6 +448,14 @@ const onAnalysisMatch = () => {
     } else {
       showAsiaLeague.value = false
     }
+    showTeamStatus.value = (matchStore.match.home_status?.length || 0) > 0 && (matchStore.match.visit_status?.length || 0) > 0
+    if (showTeamStatus.value) {
+      const option4 :echarts.EChartsOption = _.cloneDeep(defineTeamStatusChartOption()) as echarts.EChartsOption
+      option4.xAxis.data = matchStore.match.home_status?.map((_, index: number) => index)
+      option4.series[0].data = matchStore.match.home_status
+      option4.series[1].data = matchStore.match.visit_status
+      chart_team_status.setOption(option4)
+    }
     showSizeAll.value = (matchStore.match.size_big_all ?? 0) + (matchStore.match.size_run_all ?? 0) + (matchStore.match.size_small_all ?? 0) > 0
     if (showSizeAll.value) {
       const option3 = _.cloneDeep(defineChartOption(3, "大小球全网"))
@@ -509,6 +525,15 @@ const onAnalysisMatch = () => {
     } else {
       showSizeLeague.value = false
     }
+    showTotalGoal.value = (matchStore.match.home_total_goal?.length || 0) > 0 && (matchStore.match.visit_total_goal?.length || 0) > 0
+    if (showTotalGoal.value) {
+      const option5 :echarts.EChartsOption = _.cloneDeep(defineTotalGoalChartOption()) as echarts.EChartsOption
+      option5.xAxis.data = matchStore.match.home_total_goal.map((_, index: number) => index)
+      option5.series[0].data = matchStore.match.home_total_goal
+      option5.series[1].data = matchStore.match.visit_total_goal
+      option5.series[2].data = Array.from({ length: matchStore.match.home_total_goal!.length }, () => 2.5)
+      chart_total_goal.setOption(option5)
+    }
     closeToast()
   }).catch(() => {
     closeToast()
@@ -518,6 +543,7 @@ const onAnalysisMatch = () => {
     chart_asia_league?.clear()
     chart_size_all?.clear()
     chart_size_league?.clear()
+    chart_team_status?.clear()
     europe_score_list.value = []
     asia_score_list.value = []
     size_score_list.value = []
@@ -562,6 +588,14 @@ onMounted(() => {
   if (dom6) {
     chart_size_league = echarts.init(dom6)
   }
+  const dom7 = document.getElementById("chart_team_status")
+  if (dom7) {
+    chart_team_status = echarts.init(dom7)
+  }
+  const dom8 = document.getElementById("chart_total_goal")
+  if (dom8) {
+    chart_total_goal = echarts.init(dom8)
+  }
   window.addEventListener("resize", onChartResize)
   onGetMatchInfo()
 })
@@ -573,6 +607,8 @@ onBeforeUnmount(() => {
   chart_asia_league?.dispose()
   chart_size_all?.dispose()
   chart_size_league?.dispose()
+  chart_team_status?.dispose()
+  chart_total_goal?.dispose()
 })
 const onChartResize = () => {
   chart_europe_all?.resize()
@@ -581,6 +617,8 @@ const onChartResize = () => {
   chart_asia_league?.resize()
   chart_size_all?.resize()
   chart_size_league?.resize()
+  chart_team_status?.resize()
+  chart_total_goal?.resize()
 }
 const historyMatches = useLocalStorage<any[]>("history_matches", [])
 const addHistoryMatch = (match: IMatchInfo) => {
