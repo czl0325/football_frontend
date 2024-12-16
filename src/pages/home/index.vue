@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import MatchItem from "@/pages/home/src/MatchItem.vue"
 import { getGithubToken, getMatchList } from "@/http/api/football.ts"
@@ -91,7 +91,12 @@ const onRefreshList = () => {
   })
 }
 const onChangeMatchType = () => {
-  matchList.value = originMatchList.filter(item => selectMatchTypes.value.includes(item.match_category))
+  matchList.value = originMatchList.filter(item => {
+    if (item.match_category) {
+      return selectMatchTypes.value.includes(item.match_category)
+    }
+    return false
+  })
 }
 const onChangeMatchList = () => {
   matchType.value = matchType.value === "all" ? "jingcai" : "all"
@@ -109,17 +114,19 @@ const onSelectType = (type: number) => {
   }
 }
 const historyMatches = useLocalStorage<any[]>("history_matches", [])
-if (route.query.code) {
-  getGithubToken(route.query.code as string).then(res => {
-    if (res.access_token) {
-      localStorage.setItem("token", res.access_token as string)
-    }
-  })
-}
 onRefreshList()
 const onSubmit = (values: any) => {
   router.push(`/match/detail?fid=${values.fid}`)
 }
+watch(() => route.query.code, (code) => {
+  if (code) {
+    getGithubToken(route.query.code as string).then(res => {
+      if (res.access_token) {
+        localStorage.setItem("token", res.access_token as string)
+      }
+    })
+  }
+}, {immediate: true})
 </script>
 
 <style lang="less" scoped>
