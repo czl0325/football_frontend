@@ -119,10 +119,15 @@ const onSubmit = (values: any) => {
   router.push(`/match/detail?fid=${values.fid}`)
 }
 watch(() => route.query.code, (code) => {
-  if (code) {
+  const saveCode = localStorage.getItem("code")
+  if (code && code !== saveCode) {
     getGithubToken(route.query.code as string).then(res => {
       if (res.access_token) {
+        localStorage.setItem("code", route.query.code as string)
         localStorage.setItem("token", res.access_token as string)
+      } else {
+        localStorage.removeItem("code")
+        localStorage.removeItem("token")
       }
     })
   }

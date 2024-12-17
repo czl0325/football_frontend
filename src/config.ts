@@ -1,7 +1,7 @@
 import { version } from '../package.json'
 
 export const PRODUCT_URL = "http://106.54.58.139:10008"
-export const DEVELOP_URL = "/api" // "http://106.54.58.139:10008"
+export const DEVELOP_URL = "http://106.54.58.139:10008"
 export const API_URL = process.env.NODE_ENV === 'production' ? PRODUCT_URL : DEVELOP_URL
 export const APP_VERSION = version
 

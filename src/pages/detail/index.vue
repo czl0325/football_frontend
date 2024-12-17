@@ -319,6 +319,8 @@ const onGetMatchInfo = async () => {
       onAnalysisMatch()
     }).catch(err => {
       if (err.code === 403) {
+        localStorage.removeItem("code")
+        localStorage.removeItem("token")
         window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }`
       } else if (err.code === 1001) {
         window.location.href = "https://github.com/czl0325/football_frontend"
@@ -531,7 +533,7 @@ const onAnalysisMatch = () => {
       option5.xAxis.data = matchStore.match.home_total_goal.map((_, index: number) => index)
       option5.series[0].data = matchStore.match.home_total_goal
       option5.series[1].data = matchStore.match.visit_total_goal
-      option5.series[2].data = Array.from({ length: matchStore.match.home_total_goal!.length }, () => 2.5)
+      option5.series[2].data = Array.from({ length: matchStore.match.home_total_goal!.length }, () => matchStore.match.instant_size_most)
       chart_total_goal.setOption(option5)
     }
     closeToast()
@@ -554,6 +556,8 @@ const onAnalysisMatch = () => {
   }).catch(err => {
     if (err.code === 403) {
 //      window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }${ window.location.pathname }&state=fid%3D${ fid }`
+      localStorage.removeItem("code")
+      localStorage.removeItem("token")
       window.location.href = `https://github.com/login/oauth/authorize?client_id=Iv23li5sI6CczpWVGpaT&redirect_uri=${ window.location.origin }`
     }
   }).finally(() => {
