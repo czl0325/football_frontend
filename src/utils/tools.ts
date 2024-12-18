@@ -219,7 +219,7 @@ export const defineTotalGoalChartOption = () : echarts.EChartsOption => {
         name: "主队总球数",
         type: 'bar',
 //        stack: "主队总球数",
-        barMinHeight: 0.3,
+        barMinHeight: 0.5,
         barMaxWidth: 20,
         itemStyle: {
           borderRadius: [3, 3, 0, 0]
@@ -229,14 +229,14 @@ export const defineTotalGoalChartOption = () : echarts.EChartsOption => {
         name: "客队总球数",
         type: 'bar',
 //        stack: "客队总球数",
-        barMinHeight: 0.3,
+        barMinHeight: 0.5,
         barMaxWidth: 20,
         itemStyle: {
           borderRadius: [3, 3, 0, 0]
         }
       },
       {
-        name: "2.5球",
+        name: "本场开盘",
         type: 'line',
         symbol: 'none'
       }
