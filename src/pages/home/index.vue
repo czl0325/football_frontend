@@ -121,6 +121,11 @@ const onSubmit = (values: any) => {
 watch(() => route.query.code, (code) => {
   const saveCode = localStorage.getItem("code")
   if (code && code !== saveCode) {
+    showLoadingToast({
+      message: "正在获取token...",
+      duration: 0,
+      forbidClick: true
+    })
     getGithubToken(route.query.code as string).then(res => {
       if (res.access_token) {
         localStorage.setItem("code", route.query.code as string)
@@ -129,6 +134,8 @@ watch(() => route.query.code, (code) => {
         localStorage.removeItem("code")
         localStorage.removeItem("token")
       }
+    }).finally(() => {
+      closeToast()
     })
   }
 }, {immediate: true})
