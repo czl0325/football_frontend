@@ -123,8 +123,8 @@
         <table v-if="matchStore.match.poisson_small&&matchStore.match.poisson_big" class="table-1 w-full mt-3 px-4">
           <thead>
           <tr>
-            <th>泊松2.5小球概率</th>
-            <th>泊松2.5大球概率</th>
+            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}小球概率</th>
+            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}大球概率</th>
           </tr>
           </thead>
           <tbody>
@@ -138,8 +138,8 @@
         <table v-if="matchStore.match.poisson_small_limit&&matchStore.match.poisson_big_limit" class="table-1 w-full mt-3 px-4">
           <thead>
           <tr>
-            <th>泊松2.5小球概率</th>
-            <th>泊松2.5大球概率</th>
+            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}小球概率</th>
+            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}大球概率</th>
           </tr>
           </thead>
           <tbody>

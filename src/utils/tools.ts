@@ -222,7 +222,7 @@ export const defineTotalGoalChartOption = () : echarts.EChartsOption => {
         barMinHeight: 0.5,
         barMaxWidth: 20,
         itemStyle: {
-          borderRadius: [3, 3, 0, 0]
+          borderRadius: [5, 5, 0, 0]
         }
       },
       {
@@ -232,7 +232,7 @@ export const defineTotalGoalChartOption = () : echarts.EChartsOption => {
         barMinHeight: 0.5,
         barMaxWidth: 20,
         itemStyle: {
-          borderRadius: [3, 3, 0, 0]
+          borderRadius: [5, 5, 0, 0]
         }
       },
       {
