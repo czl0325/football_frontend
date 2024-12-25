@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue"
+import { onActivated, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import MatchItem from "@/pages/home/src/MatchItem.vue"
 import { getGithubToken, getMatchList } from "@/http/api/football.ts"
@@ -118,7 +118,7 @@ onRefreshList()
 const onSubmit = (values: any) => {
   router.push(`/match/detail?fid=${values.fid}`)
 }
-watch(() => route.query.code, (code) => {
+const onCodeChange = (code?: string) => {
   const saveCode = localStorage.getItem("code")
   if (code && code !== saveCode) {
     showLoadingToast({
@@ -134,11 +134,21 @@ watch(() => route.query.code, (code) => {
         localStorage.removeItem("code")
         localStorage.removeItem("token")
       }
+    }).catch(() => {
+      localStorage.removeItem("code")
+      localStorage.removeItem("token")
+      window.location.href = '/'
     }).finally(() => {
       closeToast()
     })
   }
+}
+watch(() => route.query.code, (code) => {
+  onCodeChange(code as string)
 }, {immediate: true})
+onActivated(() => {
+  onCodeChange(route.query.code as string)
+})
 </script>
 
 <style lang="less" scoped>
