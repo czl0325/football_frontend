@@ -5,7 +5,7 @@
         <vxe-table class="match-list-table" :data="item.data" border align="center" stripe height="100%" :row-class-name="rowClassName">
           <vxe-column title="赛事" field="0">
             <template #default="{row}">
-              <a :href="`https://live.m.500.com/detail/football/${row[6]}/analysis/record?render=local&extendchannel=10002`" target="_blank">
+              <a :href="isMobile()?`https://live.m.500.com/detail/football/${row[6]}/analysis/record?render=local&extendchannel=10002`:`https://odds.500.com/fenxi/shuju-${row[6]}.shtml`" target="_blank">
                 {{ row[0] }}
               </a>
             </template>
@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import { IMatchInfo } from "@/models/match.ts"
 import { computed, nextTick, ref, watch } from "vue"
-import { mergeSameMatch } from "@/utils/tools.ts"
+import { isMobile, mergeSameMatch } from "@/utils/tools.ts"
 import { VxeTablePropTypes } from "vxe-table"
 import { TabsInstance } from "vant"
 

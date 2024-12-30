@@ -303,3 +303,13 @@ function mergeEqualValues(str: string) {
   })
   return results.join(',')
 }
+
+export const isMobile = () => {
+  // ts-ignore
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  // 检查常见的移动设备标识
+  if (/android/i.test(userAgent)) {
+    return true;
+  }
+  return /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+}
