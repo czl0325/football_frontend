@@ -531,8 +531,12 @@ const onAnalysisMatch = () => {
     if (showTotalGoal.value) {
       const option5 :echarts.EChartsOption = _.cloneDeep(defineTotalGoalChartOption()) as echarts.EChartsOption
       option5.xAxis.data = matchStore.match.home_total_goal.map((_, index: number) => index)
-      option5.series[0].data = matchStore.match.home_total_goal
-      option5.series[1].data = matchStore.match.visit_total_goal
+      option5.series[0].data = matchStore.match.home_total_goal.map(item => {
+        return item === 0 ? 0.2 : item
+      })
+      option5.series[1].data = matchStore.match.visit_total_goal.map(item => {
+        return item === 0 ? 0.2 : item
+      })
       option5.series[2].data = Array.from({ length: matchStore.match.home_total_goal!.length }, () => matchStore.match.instant_size_most)
       chart_total_goal.setOption(option5)
     }
