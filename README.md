@@ -39,9 +39,7 @@ $\color{red}{👋👋👋热烈祝贺本项目2024欧洲杯完成仅错三场的
 
 #### 捐赠项目运行
 
-<img width="400" height="600" src="./src/assets/images/alipay.jpg" alt="">
-
-<img width="400" height="600" src="./src/assets/images/wxpay.jpg" alt="">
+<img width="400" height="600" src="./src/assets/images/alipay.jpg" alt="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img width="400" height="600" src="./src/assets/images/wxpay.jpg" alt="">
 
 
 #### 使用手册
