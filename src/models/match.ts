@@ -44,6 +44,7 @@ export interface IMatchInfo {
   no_friend_match?: number;
   asia_filter_odds?: number;
   size_filter_odds?: number;
+  only_main_match?: number;
 
   asia_lose_all?: number;
   asia_lose_league?: number;
