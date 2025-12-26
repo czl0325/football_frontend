@@ -311,5 +311,6 @@ export const isMobile = () => {
   if (/android/i.test(userAgent)) {
     return true;
   }
+  // ts-ignore
   return /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 }

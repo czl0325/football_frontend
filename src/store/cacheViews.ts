@@ -1,7 +1,6 @@
 import { defineStore } from "pinia"
 
-export const useCacheViewsStore = defineStore({
-  id: "cacheViews",
+export const useCacheViewsStore = defineStore("cacheViews", {
   state: () => ({
     cachedViews: [] as string[],
   }),
