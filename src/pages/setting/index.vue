@@ -45,7 +45,7 @@
             <van-switch v-model="noFriendMatch" :active-value="1" :inactive-value="0"/>
           </template>
         </van-cell>
-        <van-cell title="只匹配主流联赛" label="五大联赛欧冠欧罗巴世界杯欧洲杯(目前还未确定联赛，暂未开放功能，请大家提交建议)">
+        <van-cell title="只匹配主流联赛" label="法甲|法乙|德甲|德乙|英超|英冠|意甲|意乙|西甲|西乙|荷甲|荷乙|葡超|法国杯|德国杯|英足总杯|意杯|西班牙杯|荷杯|葡杯|欧冠|欧联|欧罗巴|欧会杯|亚冠|世界杯|欧洲杯|美洲杯">
           <template #right-icon>
             <van-switch v-model="onlyMainMatch" :active-value="1" :inactive-value="0"/>
           </template>
@@ -54,7 +54,6 @@
       <!--    <van-cell-group title="匹配配置" class="w-full text-left" >-->
       <!--      <van-cell title="不准确联赛" label="勾选后将不会匹配该联赛的数据" is-link @click="showMatchPopover=true"/>-->
       <!--    </van-cell-group>-->
-
     </div>
     <span class="w-full block text-center my-2" style="color: #ff5252">当前版本:{{ APP_VERSION }}</span>
     <van-popup v-model:show="showEuropePopover" position="bottom">

@@ -28,6 +28,7 @@ export const analysisMatch = (match: IMatchInfo) => {
   match.no_friend_match = localStorage.getItem("no_friend_match") == "0" ? 0 : 1
   match.asia_filter_odds = localStorage.getItem("asia_filter_odds") == "0" ? 0 : 1
   match.size_filter_odds = localStorage.getItem("size_filter_odds") == "0" ? 0 : 1
+  match.only_main_match = localStorage.getItem("only_main_match") == "1" ? 1 : 0
   return http1.post<IMatchInfo>("/analysis/all", match)
 }
 
