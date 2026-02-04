@@ -20,7 +20,7 @@
     "vant": "^4.9.22",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4",
-    "vxe-table": "^4.17.35"
+    "vxe-table": "^4.17.48"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.21",
@@ -31,6 +31,7 @@
     "less": "^4.5.1",
     "less-loader": "^12.3.0",
     "postcss": "^8.5.6",
+    "sass-embedded": "^1.97.3",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.9.3",
     "unplugin-vue-components": "^30.0.0",

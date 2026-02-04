@@ -10,13 +10,15 @@ import 'vant/es/image-preview/style'
 import 'vant/lib/index.css'
 import "@/assets/css/vant.less"
 import "@/assets/css/table.less"
-import VXETable from 'vxe-table'
-import 'vxe-table/lib/style.css'
 import { createPinia } from "pinia"
 
-import { VxeUI } from 'vxe-table'
+import VxeUIBase from 'vxe-pc-ui'
+import 'vxe-pc-ui/es/style.css'
 
-VxeUI.setConfig({
+import VxeUITable from 'vxe-table'
+import 'vxe-table/es/style.css'
+
+VxeUIBase.setConfig({
   table: {
     emptyText: "暂无数据"
   }
@@ -24,6 +26,6 @@ VxeUI.setConfig({
 
 const app = createApp(App)
 app.use(router)
-app.use(VXETable)
+app.use(VxeUIBase).use(VxeUITable)
 app.use(createPinia())
 app.mount('#app')

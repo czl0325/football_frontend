@@ -116,6 +116,17 @@
           </van-button>
         </div>
         <div v-if="showTeamStatus" id="chart_team_status" class="chart" style="height: 250px"></div>
+        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="800">
+          <vxe-column title="主队" field="home" align="center"/>
+          <vxe-column title="交集球队" field="infer" align="center"/>
+          <vxe-column title="客队" field="visit" align="center"/>
+          <vxe-column title="让初推导" field="origin_infer" align="center"/>
+          <vxe-column title="让终推导" field="instant_infer" align="center"/>
+        </vxe-table>
+        <span v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0">
+          让初推导平均值：{{ matchStore.match.origin_infer_average }}。{{ matchStore.match!.origin_infer_average! < matchStore.match!.origin_pan_most! ? '让初偏深' : '正常让球' }}。
+          让终推导平均值：{{ matchStore.match.instant_infer_average }}。{{ matchStore.match!.instant_infer_average! < matchStore.match!.instant_pan_most! ? '让终偏深' : '正常让球' }}
+        </span>
         <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           大小球初盘：{{ matchStore.match.origin_size_most }}，大小球即时盘：{{ matchStore.match.instant_size_most }}
         </van-notice-bar>

@@ -81,6 +81,10 @@ export interface IMatchInfo {
   visit_status?: number[];
   home_total_goal?: number[];
   visit_total_goal?: number[];
+
+  infer_data?: IInferInfo[];
+  origin_infer_average?: number;
+  instant_infer_average?: number;
 }
 
 export interface IEuropeOddsInfo {
@@ -114,4 +118,12 @@ export interface ISizeOddsInfo {
   instant_size?: number;
   instant_odds_big?: number;
   instant_odds_small?: number;
+}
+
+export interface IInferInfo {
+  infer?: string;
+  home?: string;
+  visit?: string;
+  origin_infer?: string;
+  instant_infer?: string;
 }
