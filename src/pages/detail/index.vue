@@ -116,7 +116,7 @@
           </van-button>
         </div>
         <div v-if="showTeamStatus" id="chart_team_status" class="chart" style="height: 250px"></div>
-        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="800" show-footer :footer-data="footerData">
+        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="800" :footer-data="footerData">
           <vxe-column title="主队" field="home" align="center">
             <template #default="{row}">
               {{ row.home }}vs{{ row.infer }}：<br>
@@ -131,12 +131,22 @@
               让终：{{ row.visit_concede_terminus }}
             </template>
           </vxe-column>
-          <vxe-column title="让初推导" field="origin_infer" align="center" />
-          <vxe-column title="让终推导" field="instant_infer" align="center" />
+          <vxe-column title="让初推导" field="origin_infer" align="center" width="80"/>
+          <vxe-column title="让终推导" field="instant_infer" align="center" width="80"/>
         </vxe-table>
         <span v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0">
+          <span class="text-blue-600">
+          主队让初平均：{{ matchStore.match.home_concede_origin_average }}<br>
+          主队让终平均：{{ matchStore.match.home_concede_terminus_average }}<br>
+          </span>
+          <span class="text-orange-500">
+          客队让初平均：{{ matchStore.match.visit_concede_origin_average }}<br>
+          客队让终平均：{{ matchStore.match.visit_concede_terminus_average }}<br>
+          </span>
+          <span class="text-red-500">
           让初推导平均值：{{ matchStore.match.origin_infer_average }} {{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '<' : '>' }} 本场初始让球：{{ matchStore.match!.origin_pan_most! }}，{{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '让初偏深' : '正常让球' }}。<br>
           让终推导平均值：{{ matchStore.match.instant_infer_average }} {{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '<' : '>' }} 本场最终让球：{{ matchStore.match!.origin_pan_most! }}，{{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '让终偏深' : '正常让球' }}。
+          </span>
         </span>
         <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           大小球初盘：{{ matchStore.match.origin_size_most }}，大小球即时盘：{{ matchStore.match.instant_size_most }}
