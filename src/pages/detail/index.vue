@@ -116,7 +116,7 @@
           </van-button>
         </div>
         <div v-if="showTeamStatus" id="chart_team_status" class="chart" style="height: 250px"></div>
-        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="800">
+        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="800" show-footer :footer-data="footerData">
           <vxe-column title="主队" field="home" align="center">
             <template #default="{row}">
               {{ row.home }}vs{{ row.infer }}：<br>
@@ -131,13 +131,12 @@
               让终：{{ row.visit_concede_terminus }}
             </template>
           </vxe-column>
-          <vxe-column title="让初推导" field="origin_infer" align="center" width="90"/>
-          <vxe-column title="让终推导" field="instant_infer" align="center" width="90"/>
+          <vxe-column title="让初推导" field="origin_infer" align="center" />
+          <vxe-column title="让终推导" field="instant_infer" align="center" />
         </vxe-table>
         <span v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0">
-          让初推导平均值：{{ matchStore.match.home_concede_origin_average }}。<br>
-          让初推导平均值：{{ matchStore.match.origin_infer_average }}，{{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '让初偏深' : '正常让球' }}。<br>
-          让终推导平均值：{{ matchStore.match.instant_infer_average }}，{{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '让终偏深' : '正常让球' }}。
+          让初推导平均值：{{ matchStore.match.origin_infer_average }} {{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '<' : '>' }} 本场初始让球：{{ matchStore.match!.origin_pan_most! }}，{{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '让初偏深' : '正常让球' }}。<br>
+          让终推导平均值：{{ matchStore.match.instant_infer_average }} {{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '<' : '>' }} 本场最终让球：{{ matchStore.match!.origin_pan_most! }}，{{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '让终偏深' : '正常让球' }}。
         </span>
         <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           大小球初盘：{{ matchStore.match.origin_size_most }}，大小球即时盘：{{ matchStore.match.instant_size_most }}
@@ -258,6 +257,7 @@ import MatchingList from "@/pages/detail/src/MatchingList.vue"
 import TrendList from "@/pages/detail/src/TrendList.vue"
 import { useMatchStore } from "@/store/currentMatch.ts"
 import { useLocalStorage } from "@vueuse/core"
+import { VxeTablePropTypes } from "vxe-table"
 
 defineOptions({
   name: "MatchDetail"
@@ -293,6 +293,9 @@ const asia_score_list = ref<string[]>([])
 const size_score_list = ref<string[]>([])
 const goal_number_list = ref<string[]>([])
 const half_goal_number_list = ref<string[]>([])
+const footerData = ref<VxeTablePropTypes.FooterData>([
+  { home: `主队让初平均：${matchStore.match.home_concede_origin_average }\n主队让终平均：${matchStore.match.home_concede_terminus_average }`, visit: `客队让初平均：${matchStore.match.visit_concede_origin_average }\n客队让终平均：${matchStore.match.visit_concede_terminus_average }`, origin_infer: `让初推导平均：${matchStore.match.origin_infer_average }`, instant_infer: `让终推导平均：${matchStore.match.instant_infer_average }` }
+])
 const clearAllData = () => {
   showEuropeAll.value = true
   showEuropeLeague.value = true
@@ -364,8 +367,11 @@ const onAnalysisMatch = () => {
       const option1 = _.cloneDeep(defineChartOption(1, "欧赔全网"))
       const total1 = (res2.europe_win_all ?? 0) + (res2.europe_even_all ?? 0) + (res2.europe_lose_all ?? 0)
       if (total1 > 0) {
+        // @ts-ignore
         option1.series[0].data = [(res2.europe_win_all ?? 0) / total1]
+        // @ts-ignore
         option1.series[1].data = [(res2.europe_even_all ?? 0) / total1]
+        // @ts-ignore
         option1.series[2].data = [(res2.europe_lose_all ?? 0) / total1]
         option1.legend = {
           top: '10%',
@@ -386,8 +392,11 @@ const onAnalysisMatch = () => {
         const option11: echarts.EChartsOption = _.cloneDeep(defineChartOption(1, "欧赔本联赛"))
         const total11 = (res2.europe_win_league ?? 0) + (res2.europe_even_league ?? 0) + (res2.europe_lose_league ?? 0)
         if (total11 > 0) {
+          // @ts-ignore
           option11.series[0].data = [(res2.europe_win_league ?? 0) / total11]
+          // @ts-ignore
           option11.series[1].data = [(res2.europe_even_league ?? 0) / total11]
+          // @ts-ignore
           option11.series[2].data = [(res2.europe_lose_league ?? 0) / total11]
           option11.legend = {
             top: '10%',
@@ -421,8 +430,11 @@ const onAnalysisMatch = () => {
       const option2 = _.cloneDeep(defineChartOption(2, "亚盘全网")) as echarts.EChartsOption
       const total2 = (res2.asia_win_all ?? 0) + (res2.asia_run_all ?? 0) + (res2.asia_lose_all ?? 0)
       if (total2 > 0) {
+        // @ts-ignore
         option2.series[0].data = [(res2.asia_win_all ?? 0) / total2]
+        // @ts-ignore
         option2.series[1].data = [(res2.asia_run_all ?? 0) / total2]
+        // @ts-ignore
         option2.series[2].data = [(res2.asia_lose_all ?? 0) / total2]
         option2.legend = {
           top: '10%',
@@ -443,8 +455,11 @@ const onAnalysisMatch = () => {
         const option22 = _.cloneDeep(defineChartOption(2, "亚盘本联赛"))
         const total122 = (res2.asia_win_league ?? 0) + (res2.asia_run_league ?? 0) + (res2.asia_lose_league ?? 0)
         if (total122 > 0) {
+          // @ts-ignore
           option22.series[0].data = [(res2.asia_win_league ?? 0) / total122]
+          // @ts-ignore
           option22.series[1].data = [(res2.asia_run_league ?? 0) / total122]
+          // @ts-ignore
           option22.series[2].data = [(res2.asia_lose_league ?? 0) / total122]
           option22.legend = {
             top: '10%',
@@ -476,8 +491,11 @@ const onAnalysisMatch = () => {
     showTeamStatus.value = (matchStore.match.home_status?.length || 0) > 0 && (matchStore.match.visit_status?.length || 0) > 0
     if (showTeamStatus.value) {
       const option4 :echarts.EChartsOption = _.cloneDeep(defineTeamStatusChartOption()) as echarts.EChartsOption
+      // @ts-ignore
       option4.xAxis.data = matchStore.match.home_status?.map((_, index: number) => index)
+      // @ts-ignore
       option4.series[0].data = matchStore.match.home_status
+      // @ts-ignore
       option4.series[1].data = matchStore.match.visit_status
       chart_team_status.setOption(option4)
     }
@@ -485,8 +503,11 @@ const onAnalysisMatch = () => {
     if (showSizeAll.value) {
       const option3 = _.cloneDeep(defineChartOption(3, "大小球全网"))
       const total3 = (res2.size_big_all ?? 0) + (res2.size_run_all ?? 0) + (res2.size_small_all ?? 0)
+      // @ts-ignore
       option3.series[0].data = [(res2.size_big_all ?? 0) / total3]
+      // @ts-ignore
       option3.series[1].data = [(res2.size_run_all ?? 0) / total3]
+      // @ts-ignore
       option3.series[2].data = [(res2.size_small_all ?? 0) / total3]
       option3.legend = {
         top: '10%',
@@ -506,8 +527,11 @@ const onAnalysisMatch = () => {
         const option33 = _.cloneDeep(defineChartOption(3, "大小球本联赛"))
         const total33 = (res2.size_big_league ?? 0) + (res2.size_run_league ?? 0) + (res2.size_small_league ?? 0)
         if (total33 > 0) {
+          // @ts-ignore
           option33.series[0].data = [(res2.size_big_league ?? 0) / total33]
+          // @ts-ignore
           option33.series[1].data = [(res2.size_run_league ?? 0) / total33]
+          // @ts-ignore
           option33.series[2].data = [(res2.size_small_league ?? 0) / total33]
           option33.legend = {
             top: '10%',
@@ -553,13 +577,17 @@ const onAnalysisMatch = () => {
     showTotalGoal.value = (matchStore.match.home_total_goal?.length || 0) > 0 && (matchStore.match.visit_total_goal?.length || 0) > 0
     if (showTotalGoal.value) {
       const option5 :echarts.EChartsOption = _.cloneDeep(defineTotalGoalChartOption()) as echarts.EChartsOption
+      // @ts-ignore
       option5.xAxis.data = matchStore.match.home_total_goal.map((_, index: number) => index)
+      // @ts-ignore
       option5.series[0].data = matchStore.match.home_total_goal.map(item => {
         return item === 0 ? 0.2 : item
       })
+      // @ts-ignore
       option5.series[1].data = matchStore.match.visit_total_goal.map(item => {
         return item === 0 ? 0.2 : item
       })
+      // @ts-ignore
       option5.series[2].data = Array.from({ length: matchStore.match.home_total_goal!.length }, () => matchStore.match.instant_size_most)
       chart_total_goal.setOption(option5)
     }

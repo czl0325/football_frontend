@@ -85,6 +85,10 @@ export interface IMatchInfo {
   infer_data?: IInferInfo[];
   origin_infer_average?: number;
   instant_infer_average?: number;
+  home_concede_origin_average?: number;
+  home_concede_terminus_average?: number;
+  visit_concede_origin_average?: number;
+  visit_concede_terminus_average?: number;
 }
 
 export interface IEuropeOddsInfo {
