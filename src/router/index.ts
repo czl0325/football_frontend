@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory, RouterOptions } from 'vue-router'
+import { createRouter, createWebHistory, RouterOptions } from 'vue-router'
 import { useCacheViewsStore } from "../store/cacheViews.ts"
 
 export const constantRouterMap = [

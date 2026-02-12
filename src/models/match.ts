@@ -123,7 +123,17 @@ export interface ISizeOddsInfo {
 export interface IInferInfo {
   infer?: string;
   home?: string;
+  home_match?: string;
   visit?: string;
+  visit_match?: string;
+  home_concede_origin?: number;
+  home_concede_terminus?: number;
   origin_infer?: string;
   instant_infer?: string;
+  visit_concede_origin?: number;
+  visit_concede_terminus?: number;
+  home_concede_origin_average?: number;
+  home_concede_terminus_average?: number;
+  visit_concede_origin_average?: number;
+  visit_concede_terminus_average?: number;
 }
