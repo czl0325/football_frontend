@@ -145,11 +145,12 @@
           </span>
           <span class="text-red-500">
           让初推导平均值：{{ matchStore.match.origin_infer_average }} {{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '<' : '>' }} 本场初始让球：{{ matchStore.match!.origin_pan_most! }}，
-            {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) < -0.5 ? '让初偏深' : '' }}。<br>
-            {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) > 0.5 ? '让初偏浅' : '' }}。<br>
-          让终推导平均值：{{ matchStore.match.instant_infer_average }} {{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '<' : '>' }} 本场最终让球：{{ matchStore.match!.instant_pan_most! }}，
-            {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) < -0.5 ? '让终偏深' : '' }}。
-            {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) > 0.5 ? '让终偏浅' : '' }}。
+            {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) < -0.5 ? '让初偏深。' : '' }}
+            {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) > 0.5 ? '让初偏浅。' : '' }}
+            <br>
+          让终推导平均值：{{ matchStore.match.instant_infer_average }} {{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '<' : '>' }} 本场最终让球：{{ matchStore.match!.instant_pan_most! }}。
+            {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) < -0.5 ? '让终偏深。' : '' }}
+            {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) > 0.5 ? '让终偏浅。' : '' }}
           </span>
         </span>
         <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
