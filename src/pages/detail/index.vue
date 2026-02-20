@@ -119,6 +119,7 @@
         <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="800" :footer-data="footerData">
           <vxe-column title="主队" field="home" align="center">
             <template #default="{row}">
+              {{ row.home_match_group }}<br>
               {{ row.home }}vs{{ row.infer }}：<br>
               让初：{{ row.home_concede_origin }}<br>
               让终：{{ row.home_concede_terminus }}
@@ -126,6 +127,7 @@
           </vxe-column>
           <vxe-column title="客队" field="visit" align="center">
             <template #default="{row}">
+              {{ row.visit_match_group }}<br>
               {{ row.infer }}vs{{ row.visit }}：<br>
               让初：{{ row.visit_concede_origin }}<br>
               让终：{{ row.visit_concede_terminus }}

@@ -132,6 +132,7 @@ export interface IInferInfo {
   visit_match?: string;
   home_concede_origin?: number;
   home_concede_terminus?: number;
+  home_match_group?: string;
   origin_infer?: string;
   instant_infer?: string;
   visit_concede_origin?: number;
@@ -140,4 +141,5 @@ export interface IInferInfo {
   home_concede_terminus_average?: number;
   visit_concede_origin_average?: number;
   visit_concede_terminus_average?: number;
+  visit_match_group?: string;
 }
