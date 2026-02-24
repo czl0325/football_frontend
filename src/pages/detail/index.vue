@@ -121,6 +121,7 @@
             <template #default="{row}">
               {{ row.home_match_group }}<br>
               {{ row.home }}vs{{ row.infer }}：<br>
+              比分：{{ row.home_field_score }}<br>
               让初：{{ row.home_concede_origin }}<br>
               让终：{{ row.home_concede_terminus }}
             </template>
@@ -129,12 +130,18 @@
             <template #default="{row}">
               {{ row.visit_match_group }}<br>
               {{ row.infer }}vs{{ row.visit }}：<br>
+              比分：{{ row.visit_field_score }}<br>
               让初：{{ row.visit_concede_origin }}<br>
               让终：{{ row.visit_concede_terminus }}
             </template>
           </vxe-column>
           <vxe-column title="让初推导" field="origin_infer" align="center" width="80"/>
           <vxe-column title="让终推导" field="instant_infer" align="center" width="80"/>
+          <vxe-column title="结果" align="center" width="80">
+            <template #default="{row}">
+              {{ row.home_concede_result }}{{ row.visit_concede_result }}
+            </template>
+          </vxe-column>
         </vxe-table>
         <span v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0">
           <span class="text-blue-600">
