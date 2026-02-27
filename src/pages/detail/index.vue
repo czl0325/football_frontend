@@ -120,7 +120,7 @@
           <vxe-column title="主队" field="home" align="center">
             <template #default="{row}">
               {{ row.home_match_group }}<br>
-              {{ row.home }}vs{{ row.infer }}<br>
+              <span style="color:#8B4513">{{ row.home }}</span>&nbsp;&nbsp;vs&nbsp;&nbsp;{{ row.infer }}<br>
               比分：{{ row.home_field_score }}<br>
               让初：{{ row.home_concede_origin }}<br>
               让终：{{ row.home_concede_terminus }}
@@ -129,7 +129,7 @@
           <vxe-column title="客队" field="visit" align="center">
             <template #default="{row}">
               {{ row.visit_match_group }}<br>
-              {{ row.infer }}vs{{ row.visit }}：<br>
+              {{ row.infer }}&nbsp;&nbsp;vs&nbsp;&nbsp;<span style="color:#FF1493">{{ row.visit }}</span><br>
               比分：{{ row.visit_field_score }}<br>
               让初：{{ row.visit_concede_origin }}<br>
               让终：{{ row.visit_concede_terminus }}
@@ -516,7 +516,7 @@ const onAnalysisMatch = () => {
     if (showTeamStatus.value) {
       const option4 :echarts.EChartsOption = _.cloneDeep(defineTeamStatusChartOption()) as echarts.EChartsOption
       // @ts-ignore
-      option4.xAxis.data = matchStore.match.home_status?.map((_, index: number) => index)
+      option4.xAxis.data = matchStore.match.home_status?.map((_, index: number) => (index + 1))
       // @ts-ignore
       option4.series[0].data = matchStore.match.home_status
       // @ts-ignore
@@ -602,7 +602,7 @@ const onAnalysisMatch = () => {
     if (showTotalGoal.value) {
       const option5 :echarts.EChartsOption = _.cloneDeep(defineTotalGoalChartOption()) as echarts.EChartsOption
       // @ts-ignore
-      option5.xAxis.data = matchStore.match.home_total_goal.map((_, index: number) => index)
+      option5.xAxis.data = matchStore.match.home_total_goal.map((_, index: number) => (index + 1))
       // @ts-ignore
       option5.series[0].data = matchStore.match.home_total_goal.map(item => {
         return item === 0 ? 0.2 : item
