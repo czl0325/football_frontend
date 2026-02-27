@@ -120,7 +120,7 @@
           <vxe-column title="主队" field="home" align="center">
             <template #default="{row}">
               {{ row.home_match_group }}<br>
-              {{ row.home }}vs{{ row.infer }}：<br>
+              {{ row.home }}vs{{ row.infer }}<br>
               比分：{{ row.home_field_score }}<br>
               让初：{{ row.home_concede_origin }}<br>
               让终：{{ row.home_concede_terminus }}
