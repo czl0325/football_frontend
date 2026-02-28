@@ -116,7 +116,7 @@
           </van-button>
         </div>
         <div v-if="showTeamStatus" id="chart_team_status" class="chart" style="height: 250px"></div>
-        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="800" :footer-data="footerData">
+        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="3000" :footer-data="footerData">
           <vxe-column title="主队" field="home" align="center" min-width="20%">
             <template #default="{row}">
               {{ row.home_match_group }}<br>
