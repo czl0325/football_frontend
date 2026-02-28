@@ -89,6 +89,7 @@ export interface IMatchInfo {
   home_concede_terminus_average?: number;
   visit_concede_origin_average?: number;
   visit_concede_terminus_average?: number;
+  infer_score?: string;
 }
 
 export interface IEuropeOddsInfo {

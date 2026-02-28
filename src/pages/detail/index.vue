@@ -160,6 +160,8 @@
           让终推导平均值：{{ matchStore.match.instant_infer_average }} {{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '<' : '>' }} 本场最终让球：{{ matchStore.match!.instant_pan_most! }}。
             {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) < -0.5 ? '让终偏深。' : '' }}
             {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) > 0.5 ? '让终偏浅。' : '' }}
+            <br>
+            比分均值计算：{{ matchStore.match.infer_score }}
           </span>
         </span>
         <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
@@ -386,6 +388,19 @@ const onAnalysisMatch = () => {
   })
   analysisMatch(matchStore.match).then((res2: IMatchInfo) => {
     matchStore.match = res2
+    let home_score = 0
+    let visit_score = 0
+//    matchStore.match.infer_data?.forEach(item => {
+//      home_score += parseInt(item.home_field_score!.split(":")[0]!) + parseInt(item.visit_field_score!.split(":")[0])
+//      visit_score += parseInt(item.home_field_score!.split(":")[1]!) + parseInt(item.visit_field_score!.split(":")[1])
+//    })
+    matchStore.match.infer_data?.forEach(item => {
+      const [homeHome, homeAway] = (item.home_field_score || '0:0').split(':').map(Number)
+      const [visitHome, visitAway] = (item.visit_field_score || '0:0').split(':').map(Number)
+      home_score += (homeHome || 0) + (visitHome || 0)
+      visit_score += (homeAway || 0) + (visitAway || 0)
+    })
+    matchStore.match.infer_score = (home_score / visit_score).toFixed(2) + ":1"
     showEuropeAll.value = (matchStore.match?.europe_win_all ?? 0) + (matchStore.match?.europe_even_all ?? 0) + (matchStore.match?.europe_lose_all ?? 0) > 0
     if (showEuropeAll.value) {
       const option1 = _.cloneDeep(defineChartOption(1, "欧赔全网"))

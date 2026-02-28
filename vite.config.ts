@@ -26,7 +26,7 @@ export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? "/" : "./",
   server: {
     host: '0.0.0.0',
-    port: 8303,
+    port: 8080,
     open: true,
     proxy: {
       '/api': {
