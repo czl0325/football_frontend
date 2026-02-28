@@ -117,7 +117,7 @@
         </div>
         <div v-if="showTeamStatus" id="chart_team_status" class="chart" style="height: 250px"></div>
         <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="800" :footer-data="footerData">
-          <vxe-column title="主队" field="home" align="center">
+          <vxe-column title="主队" field="home" align="center" min-width="20%">
             <template #default="{row}">
               {{ row.home_match_group }}<br>
               <span style="color:#8B4513">{{ row.home }}</span>&nbsp;&nbsp;vs&nbsp;&nbsp;{{ row.infer }}<br>
@@ -126,7 +126,7 @@
               让终：{{ row.home_concede_terminus }}
             </template>
           </vxe-column>
-          <vxe-column title="客队" field="visit" align="center">
+          <vxe-column title="客队" field="visit" align="center" min-width="20%">
             <template #default="{row}">
               {{ row.visit_match_group }}<br>
               {{ row.infer }}&nbsp;&nbsp;vs&nbsp;&nbsp;<span style="color:#FF1493">{{ row.visit }}</span><br>
@@ -135,9 +135,9 @@
               让终：{{ row.visit_concede_terminus }}
             </template>
           </vxe-column>
-          <vxe-column title="让初推导" field="origin_infer" align="center" width="80"/>
-          <vxe-column title="让终推导" field="instant_infer" align="center" width="80"/>
-          <vxe-column title="结果" align="center" width="80">
+          <vxe-column title="让初推导" field="origin_infer" align="center" max-width="80"/>
+          <vxe-column title="让终推导" field="instant_infer" align="center" max-width="80"/>
+          <vxe-column title="结果" align="center" max-width="60">
             <template #default="{row}">
               {{ row.home_concede_result }}{{ row.visit_concede_result }}
             </template>

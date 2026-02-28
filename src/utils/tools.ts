@@ -305,12 +305,12 @@ function mergeEqualValues(str: string) {
 }
 
 export const isMobile = () => {
-  // ts-ignore
+  // @ts-ignore
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
   // 检查常见的移动设备标识
   if (/android/i.test(userAgent)) {
     return true;
   }
-  // ts-ignore
+  // @ts-ignore
   return /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 }
