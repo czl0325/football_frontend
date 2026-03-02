@@ -2,7 +2,7 @@
   <van-tabs ref="xTabs" v-model:active="activeTab" animated swipeable title-active-color="#FF5600">
     <van-tab v-for="(item, index) in allData" :key="item.tab" :name="index" :title="item.tab">
       <div style="height: 70vh;">
-        <vxe-table class="match-list-table" :data="item.data" border align="center" stripe height="100%" :row-class-name="rowClassName">
+        <vxe-table class="match-list-table" :data="item.data" border align="center" height="100%" :row-style="rowStyle">
           <vxe-column title="赛事" field="0">
             <template #default="{row}">
               <a :href="isMobile()?`https://live.m.500.com/detail/football/${row[6]}/analysis/record?render=local&extendchannel=10002`:`https://odds.500.com/fenxi/shuju-${row[6]}.shtml`" target="_blank">
@@ -39,8 +39,13 @@ const xTabs = ref<TabsInstance>()
 const activeTab = ref(0)
 const allData = ref<any>([])
 const match = computed<IMatchInfo>(() => props.match)
-const rowClassName: VxeTablePropTypes.CellClassName<IMatchInfo> = ({ row }) => {
-  return row[0].includes(match.value.match_category) ? "match-highlight" : ""
+const rowStyle: VxeTablePropTypes.RowStyle<IMatchInfo> = ({ row }) => {
+  // @ts-ignore
+  if (row[0].includes(match.value.match_category)) {
+    return {
+      backgroundColor: '#F9CDAD'
+    }
+  }
 }
 watch(() => props.type, (val) => {
   allData.value = []

@@ -20,7 +20,7 @@
     "vant": "^4.9.22",
     "vue": "^3.5.28",
     "vue-router": "^5.0.2",
-    "vxe-table": "^4.17.48"
+    "vxe-table": "^4.17.49"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.23",
