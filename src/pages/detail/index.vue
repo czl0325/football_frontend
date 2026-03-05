@@ -21,6 +21,7 @@
           </div>
         </div>
         <!--        <van-notice-bar wrapable :scrollable="false" text="请注意，本项目打法仅适用于滚球的亚盘和大小球，不适用于竞彩，（欧赔仅娱乐，准确率不高）建议在开场后一分钟查看分析最准确。" />-->
+        <van-notice-bar v-if="matchStore.match.remark" color="#fff" background="#f00" class="w-full" :text="matchStore.match.remark" :scrollable="false" wrapable />
         <div class="panel" v-if="showEuropeAll">
           <div class="title">
             欧赔全网匹配结果：
@@ -143,15 +144,21 @@
             </template>
           </vxe-column>
         </vxe-table>
+        <table v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0" class="table2">
+          <thead>
+            <tr><th>让球推导</th><th>主队</th><th>客队</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr><td>让初平均</td><td>{{ matchStore.match.home_concede_origin_average }}</td><td>{{ matchStore.match.visit_concede_origin_average }}</td></tr>
+            <tr><td>让终平均</td><td>{{ matchStore.match.home_concede_terminus_average }}</td><td>{{ matchStore.match.visit_concede_terminus_average }}</td></tr>
+            <tr><td>进球平均</td><td>{{ matchStore.match.home_goal_average }}</td><td>{{ matchStore.match.visit_goal_average }}</td></tr>
+            <tr><td>失球平均</td><td>{{ matchStore.match.home_loss_average }}</td><td>{{ matchStore.match.visit_loss_average }}</td></tr>
+            <tr><td>净胜球平均</td><td>{{ matchStore.match.home_gd_average }}</td><td>{{ matchStore.match.visit_gd_average }}</td></tr>
+            <tr><td>赢盘率</td><td>{{ matchStore.match.home_pan_percent }}%</td><td>{{ matchStore.match.visit_pan_percent }}%</td></tr>
+          </tbody>
+        </table>
         <span v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0">
-          <span class="text-blue-600">
-          主队让初平均：{{ matchStore.match.home_concede_origin_average }}<br>
-          主队让终平均：{{ matchStore.match.home_concede_terminus_average }}<br>
-          </span>
-          <span class="text-orange-500">
-          客队让初平均：{{ matchStore.match.visit_concede_origin_average }}<br>
-          客队让终平均：{{ matchStore.match.visit_concede_terminus_average }}<br>
-          </span>
           <span class="text-red-500">
           让初推导平均值：{{ matchStore.match.origin_infer_average }} {{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '<' : '>' }} 本场初始让球：{{ matchStore.match!.origin_pan_most! }}，
             {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) < -0.5 ? '让初偏深。' : '' }}
@@ -248,7 +255,6 @@
           </van-button>
         </div>
         <div v-if="showTotalGoal" id="chart_total_goal" class="chart" style="height: 300px"></div>
-        <van-notice-bar v-if="matchStore.match.remark" color="#fff" background="#f00" class="w-full" :text="matchStore.match.remark" :scrollable="false" wrapable />
       </div>
     </van-pull-refresh>
     <van-popup v-model:show="showOdds" position="bottom" round close-on-popstate>

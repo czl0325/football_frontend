@@ -253,7 +253,7 @@ export const getAssetsFile = (url: string) => {
 }
 
 export const getAllMatchGroup = (matchList: IMatchInfo[]) => {
-  return [...new Set(matchList.map(item => item.match_category))]
+  return [...new Set(matchList.map(item => item.match_category))].sort((a, b) => a!.localeCompare(b!, 'zh-CN'));
 }
 
 export const mergeSameMatch = (matchList: string[]) => {

@@ -9,9 +9,6 @@
   border-bottom-style: solid;
   border-bottom-color: rgb(211, 202, 221);
 }
-
-
-/* Padding and font style */
 .table-1 td, .table-1 th {
   padding: 5px 10px;
   font-size: 12px;
@@ -19,12 +16,251 @@
   color: rgb(95, 74, 121);
   text-align: center;
 }
-
-
-/* Alternating background colors */
 .table-1 tr:nth-child(even) {
   background: rgb(223, 216, 232)
 }
 .table-1 tr:nth-child(odd) {
   background: #FFF
+}
+
+
+.table2 {
+  border-collapse: collapse;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+}
+.table2 thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+.table2 th, .table2 td {
+  padding: 5px 10px;
+}
+.table2 tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.table2 tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+.table2 tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+.table2 tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+
+
+/* 样式1：现代简约风（推荐） */
+.table-modern {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  text-align: center;
+}
+.table-modern thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+.table-modern th {
+  padding: 16px 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+}
+.table-modern th:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.table-modern th:last-child:after {
+  display: none;
+}
+.table-modern tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+.table-modern tbody tr:hover {
+  background: linear-gradient(90deg, #f8f9ff 0%, #f0f2ff 100%);
+  transform: translateX(4px);
+}
+.table-modern td {
+  padding: 18px 20px;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.table-modern td:first-child {
+  font-weight: 500;
+  color: #2c3e50;
+}
+.table-modern tbody tr:nth-child(even) {
+  background-color: #fafbff;
+}
+
+
+/* 样式2：商务深色主题 */
+.table-business {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #1a1d28;
+  border-radius: 8px;
+  overflow: hidden;
+  color: #e4e6eb;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+.table-business thead {
+  background: #161922;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.table-business th {
+  padding: 18px 24px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: #8b8f9e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #2d313e;
+}
+.table-business tbody tr {
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid #2d313e;
+}
+.table-business tbody tr:last-child {
+  border-bottom: none;
+}
+.table-business tbody tr:hover {
+  background-color: #252937;
+}
+.table-business td {
+  padding: 20px 24px;
+  font-size: 14px;
+  color: #c9cdd8;
+  position: relative;
+}
+.table-business td:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+.table-business tbody tr:hover td:before {
+  background: linear-gradient(180deg, #4f8cff, #0066ff);
+}
+
+
+/* 样式3：清新卡片风格 */
+.table-card {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.08);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: 'SF Pro Display', -apple-system, sans-serif;
+}
+.table-card thead {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+}
+.table-card th {
+  padding: 20px 24px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+.table-card tbody tr {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.table-card tbody tr:not(:last-child) {
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+.table-card tbody tr:hover {
+  background: rgba(241, 245, 249, 0.6);
+  box-shadow: inset 4px 0 0 #3b82f6;
+}
+.table-card td {
+  padding: 22px 24px;
+  font-size: 15px;
+  color: #334155;
+  font-weight: 400;
+}
+.table-card td:first-child {
+  font-weight: 500;
+  color: #1e293b;
+}
+.table-card tbody tr:hover td {
+  color: #0f172a;
+}
+
+
+/* 样式4：极简线框风格 */
+.table-minimalist {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+.table-minimalist thead {
+  background: #f9fafb;
+}
+.table-minimalist th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  color: #6b7280;
+  border-bottom: 2px solid #e5e7eb;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.table-minimalist tbody tr {
+  transition: background-color 0.15s ease;
+}
+.table-minimalist tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+.table-minimalist tbody tr:hover {
+  background-color: #f3f4f6;
+}
+.table-minimalist td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+}
+.table-minimalist tbody tr:last-child td {
+  border-bottom: none;
 }

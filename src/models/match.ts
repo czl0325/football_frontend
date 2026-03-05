@@ -87,8 +87,16 @@ export interface IMatchInfo {
   instant_infer_average?: number;
   home_concede_origin_average?: number;
   home_concede_terminus_average?: number;
+  home_gd_average?: number;
+  home_goal_average?: number;
+  home_loss_average?: number;
+  home_pan_percent?: number;
   visit_concede_origin_average?: number;
   visit_concede_terminus_average?: number;
+  visit_gd_average?: number;
+  visit_goal_average?: number;
+  visit_loss_average?: number;
+  visit_pan_percent?: number;
   infer_score?: string;
 }
 
