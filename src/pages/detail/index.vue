@@ -406,7 +406,8 @@ const onAnalysisMatch = () => {
       home_score += (homeHome || 0) + (visitHome || 0)
       visit_score += (homeAway || 0) + (visitAway || 0)
     })
-    matchStore.match.infer_score = (home_score / visit_score).toFixed(2) + ":1"
+    const fixedRatio = Math.round(home_score / visit_score * 100) / 100;
+    matchStore.match.infer_score = (fixedRatio === Math.floor(fixedRatio) ? Math.floor(fixedRatio) : fixedRatio) + ":1"
     showEuropeAll.value = (matchStore.match?.europe_win_all ?? 0) + (matchStore.match?.europe_even_all ?? 0) + (matchStore.match?.europe_lose_all ?? 0) > 0
     if (showEuropeAll.value) {
       const option1 = _.cloneDeep(defineChartOption(1, "欧赔全网"))
