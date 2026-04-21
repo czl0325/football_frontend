@@ -256,7 +256,8 @@
           </van-button>
         </div>
         <div v-if="showTotalGoal" id="chart_total_goal" class="chart" style="height: 300px"></div>
-        <div class="flex w-full m-4 px-2">
+        <div class="flex w-full m-4 px-2 gap-2">
+          <van-button type="primary" class="grow" @click="onCopy">问AI</van-button>
           <van-button type="primary" class="grow" @click="onScreenShot">保存比赛截图</van-button>
         </div>
       </div>
@@ -755,6 +756,13 @@ const addHistoryMatch = (match: IMatchInfo) => {
   if (historyMatches.value.length > 10) {
     historyMatches.value.pop()
   }
+}
+const onCopy = async () => {
+  await navigator.clipboard.writeText(`${matchStore.match.match_group}，主队${matchStore.match.home_team}对阵客队${matchStore.match.visit_team}，比赛时间${matchStore.match.match_time}，请通过对比两队本赛季的xg值，近5场的单场xg/实际进球，两队最近的状态情况来分析比赛的结果。`)
+  showToast({
+    message: "已复制比赛信息，前往AI应用粘贴提问~",
+    position: "bottom"
+  })
 }
 const onScreenShot = () => {
   showLoadingToast("保存截图中...")
