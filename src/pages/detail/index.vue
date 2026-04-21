@@ -257,8 +257,8 @@
         </div>
         <div v-if="showTotalGoal" id="chart_total_goal" class="chart" style="height: 300px"></div>
         <div class="flex w-full m-4 px-2 gap-2">
-          <van-button type="primary" class="grow" @click="onCopy">问AI</van-button>
-          <van-button type="primary" class="grow" @click="onScreenShot">保存比赛截图</van-button>
+          <van-button type="primary" class="flex-1" @click="onCopy">问AI</van-button>
+          <van-button type="primary" class="flex-1" @click="onScreenShot">保存比赛截图</van-button>
         </div>
       </div>
     </van-pull-refresh>
@@ -757,8 +757,14 @@ const addHistoryMatch = (match: IMatchInfo) => {
     historyMatches.value.pop()
   }
 }
-const onCopy = async () => {
-  await navigator.clipboard.writeText(`${matchStore.match.match_group}，主队${matchStore.match.home_team}对阵客队${matchStore.match.visit_team}，比赛时间${matchStore.match.match_time}，请通过对比两队本赛季的xg值，近5场的单场xg/实际进球，两队最近的状态情况来分析比赛的结果。`)
+const onCopy = () => {
+//  await navigator.clipboard.writeText()
+  const input = document.createElement('input')
+  input.value = `${matchStore.match.match_group}，主队${matchStore.match.home_team}对阵客队${matchStore.match.visit_team}，比赛时间${matchStore.match.match_time}，请通过对比两队本赛季的xg值，近5场的单场xg/实际进球，结合两队近期的状态和战意来分析比赛的结果和走向。`
+  document.body.appendChild(input)
+  input.select()
+  document.execCommand('copy')
+  document.body.removeChild(input)
   showToast({
     message: "已复制比赛信息，前往AI应用粘贴提问~",
     position: "bottom"
