@@ -53,3 +53,9 @@ export const getOddsTrendByCompany = (match: IMatchInfo, type: number, company: 
     })
   }
 }
+
+export const postFeedback = (message: string) => {
+  return http1.post<string>("/analysis/feedback", {
+    message,
+  })
+}

@@ -258,6 +258,7 @@
         <div v-if="showTotalGoal" id="chart_total_goal" class="chart" style="height: 300px"></div>
         <div class="flex w-full m-4 px-2 gap-2">
           <van-button type="primary" class="flex-1" @click="onCopy">问AI</van-button>
+          <van-button type="primary" class="flex-1" @click="onFeedback">反馈问题</van-button>
           <van-button type="primary" class="flex-1" @click="onScreenShot">保存比赛截图</van-button>
         </div>
       </div>
@@ -285,15 +286,15 @@ import { onBeforeUnmount, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import * as echarts from "echarts"
 import _ from "lodash"
+import { closeToast, showDialog, showLoadingToast, showToast } from "vant"
 import { useLocalStorage } from "@vueuse/core"
 import { VxeTablePropTypes } from "vxe-table"
 import { domToJpeg } from "modern-screenshot"
 import OddsList from "@/pages/detail/src/OddsList.vue"
 import MatchingList from "@/pages/detail/src/MatchingList.vue"
 import TrendList from "@/pages/detail/src/TrendList.vue"
-import { analysisMatch, getGithubToken, getMatchInfo } from "@/http/api/football.ts"
+import { analysisMatch, getGithubToken, getMatchInfo, postFeedback } from "@/http/api/football.ts"
 import { IMatchInfo } from "@/models/match.ts"
-import { closeToast, showLoadingToast, showToast } from "vant"
 import { defineChartOption, defineTeamStatusChartOption, defineTotalGoalChartOption, getDecimalPoint } from "@/utils/tools.ts"
 import { useMatchStore } from "@/store/currentMatch.ts"
 
@@ -769,6 +770,28 @@ const onCopy = () => {
     message: "已复制比赛信息，前往AI应用粘贴提问~",
     position: "bottom"
   })
+}
+const onFeedback = async () => {
+  const result = await showDialog({
+    title: '请输入内容',
+    message: '<input type="text" id="feedback-input" placeholder="请输入" style="width:100%;padding:8px;margin-top:10px;border:1px solid #eee;border-radius:4px;" />',
+    allowHtml: true,  // 允许HTML
+    showCancelButton: true,
+    confirmButtonText: '反馈',
+    cancelButtonText: '取消',
+  })
+  if (result === "confirm") {
+    const input: any = document.getElementById('feedback-input')
+    let value = input.value || ''
+    if (value.length > 0) {
+      value = `比赛fid:${matchStore.match.fid}，${matchStore.match.match_group}，${matchStore.match.match_time}，${matchStore.match.home_team}vs${matchStore.match.visit_team}，反馈内容：${value}`
+      postFeedback(value).then(res => {
+        showToast(res)
+      })
+    } else {
+      showToast("没有输入反馈内容")
+    }
+  }
 }
 const onScreenShot = () => {
   showLoadingToast("保存截图中...")
