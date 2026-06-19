@@ -270,7 +270,7 @@
     </van-popup>
     <van-popup v-model:show="showMatching" position="bottom" round close-on-popstate>
       <div class="w-full overflow-y-auto flex flex-col">
-        <matching-list :match="matchStore.match" :type="currentOddsType" />
+        <matching-list v-if="showMatching" :match="matchStore.match" :type="currentOddsType" />
       </div>
     </van-popup>
     <van-popup v-model:show="showTrend" position="bottom" round close-on-popstate @opened="onLookTrend">
@@ -389,6 +389,7 @@ const onGetMatchInfo = async () => {
         onAnalysisMatch()
       }
     }).catch(err => {
+      isLoading.value = false
       if (err.code === 403) {
         localStorage.removeItem("code")
         localStorage.removeItem("token")
@@ -411,6 +412,7 @@ const onAnalysisMatch = () => {
     closeToast()
   }).catch(() => {
     closeToast()
+    isLoading.value = false
     chart_europe_all?.clear()
     chart_europe_league?.clear()
     chart_asia_all?.clear()
