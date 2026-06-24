@@ -240,6 +240,28 @@
           </div>
           <div id="chart_size_league" class="chart"></div>
         </div>
+        <div class="panel" v-if="showSizeAll">
+          <div class="title">
+            进球区间全网匹配结果：
+          </div>
+          <div class="flex flex-row items-center w-full">
+            <div class="flex-horizontal-1 " style="color: #B8D3F5">
+              0-1球：{{ goal_range_list['0-1'] }}场
+            </div>
+            <div class="flex-horizontal-1 " style="color: #66A8ED">
+              2-3球：{{ goal_range_list['2-3'] }}场
+            </div>
+          </div>
+          <div class="flex flex-row items-center w-full">
+            <div class="flex-horizontal-1 " style="color: #2670CC">
+              4~6球：{{ goal_range_list['4-6'] }}场
+            </div>
+            <div class="flex-horizontal-1 " style="color: #073778">
+              7+球：{{ goal_range_list['7+'] }}场
+            </div>
+          </div>
+          <div id="chart_range_all" class="chart"></div>
+        </div>
         <div class="panel" v-if="showSizeAll&&size_score_list.length">比分概率前三:
           <div v-for="score in size_score_list" :key="score" v-html="score"></div>
         </div>
@@ -325,6 +347,7 @@ let chart_asia_all: echarts.EChartsType = {} as echarts.EChartsType
 let chart_asia_league: echarts.EChartsType = {} as echarts.EChartsType
 let chart_size_all: echarts.EChartsType = {} as echarts.EChartsType
 let chart_size_league: echarts.EChartsType = {} as echarts.EChartsType
+let chart_range_all: echarts.EChartsType = {} as echarts.EChartsType
 let chart_team_status: echarts.EChartsType = {} as echarts.EChartsType
 let chart_total_goal: echarts.EChartsType = {} as echarts.EChartsType
 const europe_score_list = ref<string[]>([])
@@ -332,6 +355,7 @@ const asia_score_list = ref<string[]>([])
 const size_score_list = ref<string[]>([])
 const goal_number_list = ref<string[]>([])
 const half_goal_number_list = ref<string[]>([])
+const goal_range_list = ref<Record<string, number>>({})
 const footerData = ref<VxeTablePropTypes.FooterData>([
   { home: `主队让初平均：${matchStore.match.home_concede_origin_average }\n主队让终平均：${matchStore.match.home_concede_terminus_average }`, visit: `客队让初平均：${matchStore.match.visit_concede_origin_average }\n客队让终平均：${matchStore.match.visit_concede_terminus_average }`, origin_infer: `让初推导平均：${matchStore.match.origin_infer_average }`, instant_infer: `让终推导平均：${matchStore.match.instant_infer_average }` }
 ])
@@ -352,6 +376,7 @@ const clearAllData = () => {
   chart_asia_all?.clear()
   chart_asia_league?.clear()
   chart_size_all?.clear()
+  chart_range_all?.clear()
   chart_size_league?.clear()
   chart_team_status?.clear()
   chart_total_goal?.clear()
@@ -437,6 +462,31 @@ const onAnalysisMatch = () => {
   }).finally(() => {
     isLoading.value = false
   })
+}
+const formatGoalRange = () => {
+  const buckets: Record<string, number> = {
+    '0-1': 0,
+    '2-3': 0,
+    '4-6': 0,
+    '7+': 0,
+  }
+  if ((matchStore.match.goal_number_list?.length || 0) > 0) {
+    for (const item of matchStore.match.goal_number_list!) {
+      const goals = Number(item[0]);
+      const count = Number(item[1]) || 0;
+      if (isNaN(goals)) continue;
+      if (goals <= 1) {
+        buckets['0-1'] += count;
+      } else if (goals <= 3) {
+        buckets['2-3'] += count;
+      } else if (goals <= 6) {
+        buckets['4-6'] += count;
+      } else {
+        buckets['7+'] += count;
+      }
+    }
+  }
+  return buckets
 }
 const operateMatchData = () => {
   let home_score = 0
@@ -661,6 +711,131 @@ const operateMatchData = () => {
           return true
         }
       })
+      goal_range_list.value = formatGoalRange()
+      const colors = ['#B8D3F5', '#66A8ED', '#2670CC', '#073778']
+      const option4 = {
+        color: colors,
+        legend: {
+          top: '10%',
+          formatter: (name: string) => {
+            if (name === "0-1") {
+              return `0~1球：${ getDecimalPoint((goal_range_list.value['0-1'] ?? 0) / total3 * 100) }%`
+            } else if (name === "2-3") {
+              return `2~3球：${ getDecimalPoint((goal_range_list.value['2-3'] ?? 0) / total3 * 100) }%`
+            } else if (name === "4-6") {
+              return `4~6球：${ getDecimalPoint((goal_range_list.value['4-6'] ?? 0) / total3 * 100) }%`
+            } else {
+              return `7+球：${ getDecimalPoint((goal_range_list.value['7+'] ?? 0) / total3 * 100) }%`
+            }
+          }
+        },
+        grid: {
+          left: 0,
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          show: false,
+          type: 'value',
+          min: 0,
+          max: 1,
+          axisLabel: {
+            formatter: function (value: any) {
+              return value + "%"
+            }
+          },
+          splitLine: {
+            show: true
+          }
+        },
+        yAxis: {
+          type: 'category',
+          axisLabel: {
+            margin: 2,
+            align: "right"
+          },
+          axisTick: {
+            show: false
+          },
+          data: ["进球区间全网"]
+        },
+        series: [
+          {
+            name: "0-1",
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: false
+            },
+            itemStyle: {
+              color: colors[0],
+            },
+            emphasis: {
+              itemStyle: {
+                color: colors[0]
+              }
+            },
+            barWidth: 20,
+            data: [(goal_range_list.value["0-1"] ?? 0) / total3]
+          },
+          {
+            name: "2-3",
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: false
+            },
+            itemStyle: {
+              color: colors[1],
+            },
+            emphasis: {
+              itemStyle: {
+                color: colors[1],
+              },
+            },
+            barWidth: 20,
+            data: [(goal_range_list.value["2-3"] ?? 0) / total3]
+          },
+          {
+            name: "4-6",
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: false
+            },
+            itemStyle: {
+              color: colors[2]
+            },
+            emphasis: {
+              itemStyle: {
+                color: colors[2]
+              },
+            },
+            barWidth: 20,
+            data: [(goal_range_list.value["4-6"] ?? 0) / total3]
+          },
+          {
+            name: "7+",
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: false
+            },
+            itemStyle: {
+              color: colors[3]
+            },
+            emphasis: {
+              itemStyle: {
+                color: colors[3]
+              },
+            },
+            barWidth: 20,
+            data: [(goal_range_list.value["7+"] ?? 0) / total3]
+          },
+        ]
+      }
+      chart_range_all.setOption(option4)
     }
   } else {
     showSizeLeague.value = false
@@ -711,6 +886,10 @@ onMounted(() => {
   if (dom6) {
     chart_size_league = echarts.init(dom6)
   }
+  const dom9 = document.getElementById("chart_range_all")
+  if (dom9) {
+    chart_range_all = echarts.init(dom9)
+  }
   const dom7 = document.getElementById("chart_team_status")
   if (dom7) {
     chart_team_status = echarts.init(dom7)
@@ -732,6 +911,7 @@ onBeforeUnmount(() => {
   chart_size_league?.dispose()
   chart_team_status?.dispose()
   chart_total_goal?.dispose()
+  chart_range_all?.dispose()
 })
 const onChartResize = () => {
   chart_europe_all?.resize()
@@ -742,6 +922,7 @@ const onChartResize = () => {
   chart_size_league?.resize()
   chart_team_status?.resize()
   chart_total_goal?.resize()
+  chart_range_all?.resize()
 }
 const historyMatches = useLocalStorage<any[]>("history_matches", [])
 const addHistoryMatch = (match: IMatchInfo) => {

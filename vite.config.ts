@@ -40,12 +40,16 @@ export default defineConfig({
     chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
-        manualChunks: {
-          lodash: ['lodash'],
-          vant: ['vant'],
-          echarts: ['echarts'],
-          vueuse: ['@vueuse/core'],
-          axios: ['axios']
+        manualChunks(id: string) {
+          if (!id) return;
+          if (id.includes('node_modules')) {
+            if (id.includes('lodash')) return 'lodash';
+            if (id.includes('vant')) return 'vant';
+            if (id.includes('echarts')) return 'echarts';
+            if (id.includes('@vueuse')) return 'vueuse';
+            if (id.includes('axios')) return 'axios';
+            return 'vendor';
+          }
         }
       }
     }
