@@ -50,6 +50,16 @@
             <van-switch v-model="onlyMainMatch" :active-value="1" :inactive-value="0"/>
           </template>
         </van-cell>
+        <van-cell title="亚盘剔除未获取到赔率走势的公司" label="有的公司未获取到亚盘水位走势，是否剔除这些公司">
+          <template #right-icon>
+            <van-switch v-model="filterNoAsiaTrend" :active-value="1" :inactive-value="0"/>
+          </template>
+        </van-cell>
+        <van-cell title="大小球剔除未获取到赔率走势的公司" label="有的公司未获取到大小球水位走势，是否剔除这些公司">
+          <template #right-icon>
+            <van-switch v-model="filterNoSizeTrend" :active-value="1" :inactive-value="0"/>
+          </template>
+        </van-cell>
       </van-cell-group>
       <!--    <van-cell-group title="匹配配置" class="w-full text-left" >-->
       <!--      <van-cell title="不准确联赛" label="勾选后将不会匹配该联赛的数据" is-link @click="showMatchPopover=true"/>-->
@@ -112,6 +122,8 @@ const asiaFilterOdds = useLocalStorage("asia_filter_odds", 1)
 const sizeFilterOdds = useLocalStorage("size_filter_odds", 1)
 const noFriendMatch = useLocalStorage("no_friend_match", 1)
 const onlyMainMatch = useLocalStorage("only_main_match", 0)
+const filterNoAsiaTrend = useLocalStorage("filter_no_asia_trend", 1)
+const filterNoSizeTrend = useLocalStorage("filter_no_size_trend", 1)
 </script>
 
 <style lang="less" scoped>
