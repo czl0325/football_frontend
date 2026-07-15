@@ -122,8 +122,8 @@ const asiaFilterOdds = useLocalStorage("asia_filter_odds", 1)
 const sizeFilterOdds = useLocalStorage("size_filter_odds", 1)
 const noFriendMatch = useLocalStorage("no_friend_match", 1)
 const onlyMainMatch = useLocalStorage("only_main_match", 0)
-const filterNoAsiaTrend = useLocalStorage("filter_no_asia_trend", 1)
-const filterNoSizeTrend = useLocalStorage("filter_no_size_trend", 1)
+const filterNoAsiaTrend = useLocalStorage("filter_no_asia_trend", 0)
+const filterNoSizeTrend = useLocalStorage("filter_no_size_trend", 0)
 </script>
 
 <style lang="less" scoped>
