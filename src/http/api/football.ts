@@ -14,7 +14,11 @@ export const getMatchList = async (type = "all") => {
 }
 
 export const getMatchInfo = (fid: string) => {
-  return http1.get<IMatchInfo>(`/analysis/info`, { fid })
+  return http1.get<IMatchInfo>(`/analysis/info`, {
+    fid,
+    filter_noAsiaTrend: localStorage.getItem("filter_no_asia_trend") == "1" ? 1 : 0,
+    filter_noSizeTrend: localStorage.getItem("filter_no_size_trend") == "1" ? 1 : 0,
+  })
 }
 
 export const analysisMatch = (match: IMatchInfo) => {
