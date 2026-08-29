@@ -7,7 +7,7 @@ export class EAxios {
   constructor (url: string) {
     this.instance = axios.create({
       baseURL: url || '',
-      timeout: 1000 * 180
+      timeout: 1000 * 10
     })
     this.init()
   }
@@ -24,6 +24,9 @@ export class EAxios {
         config.headers["Content-Type"] = 'application/json;'
         if (localStorage.getItem("token")) {
           config.headers["Authorization"] = localStorage.getItem("token")
+        }
+        if (config.url?.includes('/analysis/info') || config.url?.includes('/analysis/all')) {
+          config.timeout = 1000 * 180
         }
         return config
       },
