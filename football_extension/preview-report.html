@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>分析结果预览（对照 detail 页排布）</title>
+<style>
+body { margin:0; padding:16px; background:#eef1f5; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; }
+.wrap { max-width:600px; margin:0 auto; }
+.hint { color:#6b7280; font-size:12px; margin:0 0 8px; }
+/* 模拟扩展面板容器：report.js 的样式都挂在 #fk500-panel 下 */
+#fk500-panel { background:#fff; border:1px solid #e3e6ea; border-radius:12px; padding:10px; box-shadow:0 8px 24px rgba(0,0,0,.06); }
+/* content.css —— 面板样式，全部加 fk500- 前缀，避免污染 500.com 页面样式 */
+
+#fk500-launcher {
+  position: fixed;
+  right: 18px;
+  bottom: 96px;
+  z-index: 2147483000;
+}
+
+#fk500-launcher #fk500-open {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(238, 9, 121, 0.35);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+#fk500-launcher #fk500-open:hover { filter: brightness(1.08); }
+#fk500-launcher #fk500-open:active { transform: translateY(1px); }
+
+#fk500-panel {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 560px;
+  max-width: calc(100vw - 36px);
+  max-height: calc(100vh - 36px);
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: #1f2328;
+  border: 1px solid #e3e6ea;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  z-index: 2147483001;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+#fk500-panel.is-min .fk500-toolbar,
+#fk500-panel.is-min #fk500-tabs,
+#fk500-panel.is-min .fk500-body,
+#fk500-panel.is-min .fk500-foot { display: none; }
+
+#fk500-panel .fk500-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  background: #f6f7f9;
+  border-bottom: 1px solid #e3e6ea;
+  cursor: move;
+  user-select: none;
+}
+#fk500-panel .fk500-title { font-weight: 600; color: #111418; }
+#fk500-panel .fk500-head-btns { display: flex; gap: 6px; }
+#fk500-panel .fk500-icon {
+  width: 22px; height: 22px;
+  border: 1px solid #d7dbe0;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1;
+  color: #4a5158;
+}
+#fk500-panel .fk500-icon:hover { background: #eef1f4; }
+
+#fk500-panel .fk500-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px 0;
+  flex-wrap: wrap;
+}
+#fk500-panel .fk500-label { color: #6b7280; }
+#fk500-panel .fk500-input {
+  width: 96px;
+  padding: 4px 8px;
+  border: 1px solid #d7dbe0;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #1f2328;
+  background: #fff;
+}
+#fk500-panel .fk500-check { display: inline-flex; align-items: center; gap: 4px; color: #4a5158; cursor: pointer; }
+#fk500-panel .fk500-btn {
+  margin-left: auto;
+  padding: 5px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+#fk500-panel .fk500-btn:hover { background: #1d4ed8; }
+#fk500-panel .fk500-btn:disabled { background: #9bb4ee; cursor: default; }
+
+#fk500-panel #fk500-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 10px 12px 0;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #eceff2;
+}
+#fk500-panel .fk500-tab {
+  padding: 5px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  color: #5a626b;
+  font-size: 13px;
+}
+#fk500-panel .fk500-tab:hover { background: #f2f4f7; }
+#fk500-panel .fk500-tab.is-active {
+  background: #eaf1ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+#fk500-panel .fk500-body {
+  padding: 10px 12px;
+  overflow: auto;
+  flex: 1 1 auto;
+  min-height: 80px;
+}
+
+#fk500-panel .fk500-teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #f7f9fc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+#fk500-panel .fk500-team { flex: 1 1 0; text-align: center; }
+#fk500-panel .fk500-team-name { font-weight: 600; color: #111418; }
+#fk500-panel .fk500-team-sub { color: #7a828b; font-size: 12px; }
+#fk500-panel .fk500-score { font-size: 16px; font-weight: 700; color: #ee0979; white-space: nowrap; }
+
+#fk500-panel .fk500-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 12px;
+}
+#fk500-panel .fk500-kv { display: flex; gap: 6px; border-bottom: 1px dashed #eef0f3; padding: 2px 0; }
+#fk500-panel .fk500-k { color: #7a828b; flex: 0 0 auto; }
+#fk500-panel .fk500-v { color: #1f2328; word-break: break-all; }
+
+#fk500-panel .fk500-scroll { overflow: auto; max-width: 100%; }
+#fk500-panel .fk500-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  white-space: nowrap;
+}
+#fk500-panel .fk500-table th,
+#fk500-panel .fk500-table td {
+  border: 1px solid #eceff2;
+  padding: 3px 6px;
+  text-align: center;
+}
+#fk500-panel .fk500-table th { background: #f6f7f9; color: #4a5158; font-weight: 600; position: sticky; top: 0; }
+#fk500-panel .fk500-table tbody tr:nth-child(even) { background: #fbfcfd; }
+#fk500-panel .fk500-stat { white-space: normal; }
+#fk500-panel .fk500-stat .fk500-stat-label { text-align: left; color: #5a626b; width: 46%; }
+
+#fk500-panel .fk500-empty { color: #8a929b; padding: 12px 0; text-align: center; }
+#fk500-panel .fk500-pre {
+  margin: 0;
+  padding: 8px;
+  background: #f7f9fc;
+  border-radius: 8px;
+  max-height: 320px;
+  overflow: auto;
+  font-size: 11px;
+  color: #1f2328;
+}
+#fk500-panel .fk500-json-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+#fk500-panel .fk500-mini {
+  padding: 4px 10px;
+  border: 1px solid #d7dbe0;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+#fk500-panel .fk500-mini:hover { background: #eef1f4; }
+#fk500-panel .fk500-muted { color: #8a929b; font-size: 12px; }
+
+#fk500-panel .fk500-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 12px;
+  border-top: 1px solid #eceff2;
+  background: #fbfcfd;
+}
+#fk500-panel .fk500-status { font-size: 12px; color: #6b7280; white-space: pre-wrap; }
+#fk500-panel .fk500-status.is-ok { color: #15803d; }
+
+/* ---------- 分析结果页签 ---------- */
+
+#fk500-panel .fk500-cfg {
+  background: #f7f9fc;
+  border: 1px solid #eceff2;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
+#fk500-panel .fk500-cfg-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+#fk500-panel .fk500-cfg-row + .fk500-cfg-row { margin-top: 6px; }
+#fk500-panel .fk500-cfg-opts { gap: 10px; }
+/* 后端地址（写死在代码里，仅展示） */
+#fk500-panel .fk500-api-fixed {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #eef2f7;
+  border: 1px solid #e1e7ee;
+  color: #1f2328;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+#fk500-panel .fk500-remark {
+  background: #f00;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  white-space: pre-line;
+}
+
+#fk500-panel .fk500-panel {
+  border: 1px solid #eceff2;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  background: #fff;
+}
+#fk500-panel .fk500-panel-title {
+  font-weight: 600;
+  color: #111418;
+  margin-bottom: 6px;
+}
+/* 一组「胜/平/负」：一行三项文字 + 同一条堆叠条（对应 detail 的 .flex-horizontal-1 + 堆叠条形图） */
+#fk500-panel .fk500-triple {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  font-size: 13px;
+}
+/* 对应 detail 的 .flex-horizontal-1 { width: 0; flex: 1 } */
+#fk500-panel .fk500-triple-item { width: 0; flex: 1 1 auto; }
+#fk500-panel .fk500-triple-item small { color: #8a929b; font-size: 11px; }
+#fk500-panel .fk500-stackbar {
+  display: flex;
+  width: 100%;
+  height: 16px;
+  margin-top: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #f0f2f5;
+}
+#fk500-panel .fk500-stackbar > span { display: block; height: 100%; flex: 0 0 auto; }
+
+/* 提示条（对应 detail 的 van-notice-bar：蓝字浅蓝底） */
+#fk500-panel .fk500-notice {
+  background: #ecf9ff;
+  color: #1989fa;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  text-align: center;
+}
+
+#fk500-panel .fk500-key { color: #895b8a; }
+#fk500-panel .fk500-home { color: #8B4513; }
+#fk500-panel .fk500-visit { color: #FF1493; }
+#fk500-panel .fk500-concede {
+  color: #f5222d;
+  line-height: 1.8;
+  font-size: 13px;
+}
+#fk500-panel .fk500-infer td {
+  text-align: left;
+  white-space: normal;
+  min-width: 96px;
+  vertical-align: top;
+}
+
+/* 泊松表的标题（对应 detail 的 .size-title） */
+#fk500-panel .fk500-size-title {
+  font-size: 14px;
+  color: #996633;
+  margin: 10px 0 4px;
+}
+
+/* 泊松表（对应 detail 的 .table-1） */
+#fk500-panel .fk500-table1 {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid rgb(211, 202, 221);
+  border-bottom: 1px solid rgb(211, 202, 221);
+  font-family: Verdana, serif;
+}
+#fk500-panel .fk500-table1 th,
+#fk500-panel .fk500-table1 td {
+  padding: 5px 10px;
+  font-size: 12px;
+  color: rgb(95, 74, 121);
+  text-align: center;
+  font-weight: normal;
+}
+#fk500-panel .fk500-table1 tbody tr:nth-child(odd) { background: #fff; }
+#fk500-panel .fk500-table1 tbody tr:nth-child(even) { background: rgb(223, 216, 232); }
+
+/* 让球平均表（对应 detail 的 .table2：绿头 + 斑马纹 + 绿底边） */
+#fk500-panel .fk500-table2 {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 8px;
+}
+#fk500-panel .fk500-table2 thead tr { background-color: #009879; color: #fff; }
+#fk500-panel .fk500-table2 th,
+#fk500-panel .fk500-table2 td { padding: 5px 10px; text-align: center; }
+#fk500-panel .fk500-table2 tbody tr { border-bottom: 1px solid #ddd; }
+#fk500-panel .fk500-table2 tbody tr:nth-of-type(even) { background-color: #f3f3f3; }
+#fk500-panel .fk500-table2 tbody tr:last-of-type { border-bottom: 2px solid #009879; }
+
+#fk500-panel .fk500-status-row { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 6px; }
+#fk500-panel .fk500-status-label { color: #7a828b; width: 32px; flex: 0 0 auto; }
+#fk500-panel .fk500-status-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 44px;
+  flex: 1 1 auto;
+}
+#fk500-panel .fk500-status-bar { width: 8px; border-radius: 2px 2px 0 0; display: block; }
+#fk500-panel .fk500-status.is-error { color: #dc2626; }
+#fk500-panel .fk500-status.is-loading { color: #b45309; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="hint">这是 dev 预览页（不参与扩展运行）：用样例数据渲染「分析结果」页签，顺序与样式对照 football_frontend/src/pages/detail/index.vue。</p>
+  <div id="fk500-panel"><div id="fk500-body"></div></div>
+</div>
+<script>/**
+ * report.js —— 把后端 /analysis/all 返回的分析结果渲染成 HTML
+ *
+ * 严格对照参考页 frontend/src/pages/detail/index.vue 的**顺序与样式**：
+ *   1) remark 提示条（红底）
+ *   2) 欧赔全网匹配结果 / 欧赔本联赛匹配结果 + 比分概率前三
+ *   3) 亚盘初盘·即时盘提示条
+ *   4) 亚盘全网匹配结果 / 亚盘本联赛匹配结果 + 比分概率前三
+ *   5) 球队状态 → 让球推导表 → 让球平均表(table2) → 让球深浅判断（红字）
+ *   6) 大小球初盘·即时盘提示条
+ *   7) 泊松（全联赛分主客场）/ 泊松（近5场）两张表
+ *   8) 大小球全网 / 大小球本联赛 / 进球区间全网
+ *   9) 大小球比分概率前三 / 进球数概率前三 / 上半场进球数概率前三
+ *  10) 球队总进球
+ *
+ * 关键样式：一组「胜/平/负」是 **一行三项文字 + 同一条堆叠条**（对应 detail 的
+ * .flex-horizontal-1 三项 + 一个 echarts 堆叠条形图），不是三条独立的条。
+ *
+ * 取色与 detail 一致：
+ *   文字行 .win_count/.even_count/.lose_count → #ff3200 / #99cc33 / #1890ff
+ *   堆叠条 defineChartOption colors        → #ff5252 / #99cc33 / #1890ff
+ *   进球区间 colors                        → #B8D3F5 / #66A8ED / #2670CC / #073778
+ *   球队 主/客                            → #8B4513 / #FF1493
+ */
+(() => {
+  // 文字行取色（detail .win_count / .even_count / .lose_count）
+  const TEXT = ['#ff3200', '#99cc33', '#1890ff'];
+  // 堆叠条取色（detail defineChartOption 的 colors）
+  const BAR = ['#ff5252', '#99cc33', '#1890ff'];
+  // 进球区间取色（detail chart_range_all 的 colors）
+  const RANGE_BAR = ['#B8D3F5', '#66A8ED', '#2670CC', '#073778'];
+  // 球队状态/球队总进球取色（主队 / 客队）
+  const HOME = '#8B4513';
+  const VISIT = '#FF1493';
+
+  const H = (s) => String(s === null || s === undefined ? '' : s)
+    .replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const V = (x) => (x === null || x === undefined || x === '' ? '-' : x);
+  const has = (x) => x !== null && x !== undefined && x !== '';
+  const num = (x) => (typeof x === 'number' && isFinite(x) ? x : (isFinite(Number(x)) ? Number(x) : 0));
+  // 对应 detail 的 getDecimalPoint(value, 2)：两位小数但去掉末尾 0
+  const dp = (n) => parseFloat(Number(n).toFixed(2));
+  const pct = (n, total) => (total > 0 ? dp(n / total * 100) + '%' : '-');
+
+  /* ------------------------------------------------------------------ *
+   * 一组「胜/平/负」「赢/走/输」「大/走/小」
+   * 一行三项文字 + 同一条堆叠条（对应 detail 的 .flex-horizontal-1 三项 + 堆叠条形图）
+   * ------------------------------------------------------------------ */
+  function countsPanel(title, items, emptyText) {
+    const total = items.reduce((s, it) => s + num(it[1]), 0);
+    if (!total) {
+      return `<div class="fk500-panel">
+                <div class="fk500-panel-title">${H(title)}</div>
+                <div class="fk500-panel">${H(emptyText)}</div>
+              </div>`;
+    }
+
+    const row = items.map((it, i) => `
+      <div class="fk500-triple-item" style="color:${TEXT[i]}">
+        ${H(it[0])}：${num(it[1])}场 <small>(${pct(num(it[1]), total)})</small>
+      </div>`).join('');
+
+    const seg = items.map((it, i) => {
+      const w = num(it[1]) / total * 100;
+      return `<span style="width:${w.toFixed(3)}%;background:${BAR[i]}" title="${H(it[0])}：${num(it[1])}场 ${pct(num(it[1]), total)}"></span>`;
+    }).join('');
+
+    return `<div class="fk500-panel">
+      <div class="fk500-panel-title">${H(title)}</div>
+      <div class="fk500-triple">${row}</div>
+      <div class="fk500-stackbar">${seg}</div>
+    </div>`;
+  }
+
+  /* 比分/进球数概率前三（detail 里是 panel 内的多行，score 用 #895b8a） */
+  function topList(title, list, total) {
+    if (!Array.isArray(list) || !list.length) return '';
+    const rows = list.slice(0, 3)
+      .map((it) => `<div><span class="fk500-key">${H(it[0])}</span>：${num(it[1])}场(${pct(num(it[1]), total)})</div>`)
+      .join('');
+    return `<div class="fk500-panel"><div class="fk500-panel-title">${H(title)}</div><div>${rows}</div></div>`;
+  }
+
+  /* 提示条（detail 的 van-notice-bar：蓝字浅蓝底） */
+  function notice(text) {
+    if (!text) return '';
+    return `<div class="fk500-notice">${H(text)}</div>`;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 进球区间全网匹配结果：两行各两项（对应 detail 的 2×2 布局）+ 同一条堆叠条
+   * ------------------------------------------------------------------ */
+  // 对应 index.vue::formatGoalRange
+  function goalRange(goalNumberList) {
+    const b = { '0-1': 0, '2-3': 0, '4-6': 0, '7+': 0 };
+    (goalNumberList || []).forEach((it) => {
+      const goals = Number(it[0]);
+      const count = Number(it[1]) || 0;
+      if (isNaN(goals)) return;
+      if (goals <= 1) b['0-1'] += count;
+      else if (goals <= 3) b['2-3'] += count;
+      else if (goals <= 6) b['4-6'] += count;
+      else b['7+'] += count;
+    });
+    return b;
+  }
+
+  function goalRangePanel(goalNumberList) {
+    const b = goalRange(goalNumberList);
+    const total = b['0-1'] + b['2-3'] + b['4-6'] + b['7+'];
+    if (!total) return '';
+    const keys = ['0-1', '2-3', '4-6', '7+'];
+    const cell = (k, i) => `
+      <div class="fk500-triple-item" style="color:${RANGE_BAR[i]}">
+        ${H(k)}球：${b[k]}场 <small>(${pct(b[k], total)})</small>
+      </div>`;
+    const seg = keys.map((k, i) =>
+      `<span style="width:${(b[k] / total * 100).toFixed(3)}%;background:${RANGE_BAR[i]}" title="${H(k)}球：${b[k]}场 ${pct(b[k], total)}"></span>`
+    ).join('');
+
+    return `<div class="fk500-panel">
+      <div class="fk500-panel-title">进球区间全网匹配结果：</div>
+      <div class="fk500-triple">${cell('0-1', 0)}${cell('2-3', 1)}</div>
+      <div class="fk500-triple">${cell('4-6', 2)}${cell('7+', 3)}</div>
+      <div class="fk500-stackbar">${seg}</div>
+    </div>`;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 让球推导：明细表 + 平均表（detail 的 vxe-table + table2）+ 深浅判断红字
+   * ------------------------------------------------------------------ */
+  function inferTable(d) {
+    const list = d.infer_data;
+    if (!Array.isArray(list) || !list.length) return '';
+    const rows = list.map((row) => `
+      <tr>
+        <td>
+          ${H(row.home_match_group)}<br>
+          <span class="fk500-home">${H(row.home)}</span>&nbsp;&nbsp;vs&nbsp;&nbsp;${H(row.infer)}<br>
+          比分：${H(row.home_field_score)}<br>
+          让初：${H(row.home_concede_origin)}<br>
+          让终：${H(row.home_concede_terminus)}
+        </td>
+        <td>
+          ${H(row.visit_match_group)}<br>
+          ${H(row.infer)}&nbsp;&nbsp;vs&nbsp;&nbsp;<span class="fk500-visit">${H(row.visit)}</span><br>
+          比分：${H(row.visit_field_score)}<br>
+          让初：${H(row.visit_concede_origin)}<br>
+          让终：${H(row.visit_concede_terminus)}
+        </td>
+        <td>${H(row.origin_infer)}</td>
+        <td>${H(row.instant_infer)}</td>
+        <td>${H(row.home_concede_result)}${H(row.visit_concede_result)}</td>
+      </tr>`).join('');
+
+    const avg = [
+      ['让初平均', d.home_concede_origin_average, d.visit_concede_origin_average],
+      ['让终平均', d.home_concede_terminus_average, d.visit_concede_terminus_average],
+      ['进球平均', d.home_goal_average, d.visit_goal_average],
+      ['失球平均', d.home_loss_average, d.visit_loss_average],
+      ['净胜球平均', d.home_gd_average, d.visit_gd_average],
+      ['赢盘率', has(d.home_pan_percent) ? d.home_pan_percent + '%' : '-', has(d.visit_pan_percent) ? d.visit_pan_percent + '%' : '-'],
+    ].map((r) => `<tr><td>${H(r[0])}</td><td>${H(V(r[1]))}</td><td>${H(V(r[2]))}</td></tr>`).join('');
+
+    return `
+      <div class="fk500-panel">
+        <div class="fk500-scroll">
+          <table class="fk500-table fk500-infer">
+            <thead><tr><th>主队</th><th>客队</th><th>让初推导</th><th>让终推导</th><th>结果</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <table class="fk500-table2">
+          <thead><tr><th>让球推导</th><th>主队</th><th>客队</th></tr></thead>
+          <tbody>${avg}</tbody>
+        </table>
+      </div>`;
+  }
+
+  /* 让球深浅判断（照搬 index.vue 里那段 Math.abs 比较 + 比分均值计算），红字 */
+  function concedeBlock(d) {
+    const lines = [];
+    const mk = (inferAvg, panMost, label, panLabel) => {
+      if (!has(inferAvg) || !has(panMost)) return;
+      const a = Math.abs(num(inferAvg));
+      const b = Math.abs(num(panMost));
+      const cmp = a < b ? '&lt;' : '&gt;';
+      const diff = a - b;
+      const extra = (diff < -0.5 ? `${label}偏深。` : '') + (diff > 0.5 ? `${label}偏浅。` : '');
+      lines.push(`${label}推导平均值：${H(inferAvg)} ${cmp} 本场${panLabel}让球：${H(panMost)}，${extra}`);
+    };
+    mk(d.origin_infer_average, d.origin_pan_most, '让初', '初始');
+    mk(d.instant_infer_average, d.instant_pan_most, '让终', '最终');
+    if (has(d.infer_score)) lines.push(`比分均值计算：${H(d.infer_score)}`);
+    if (!lines.length) return '';
+    return `<div class="fk500-panel fk500-concede">${lines.join('<br>')}</div>`;
+  }
+
+  /* 泊松两张表（detail 的 .size-title + .table-1） */
+  function poissonTable(title, small, big, sizeMost) {
+    if (!has(small) && !has(big)) return '';
+    const s = has(sizeMost) ? sizeMost : 2.5;
+    return `
+      <div class="fk500-size-title">${H(title)}</div>
+      <table class="fk500-table1">
+        <thead><tr><th>泊松${H(s)}小球概率</th><th>泊松${H(s)}大球概率</th></tr></thead>
+        <tbody><tr><td>${H(V(small))}%</td><td>${H(V(big))}%</td></tr></tbody>
+      </table>`;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 球队状态 / 球队总进球（detail 的 chart_team_status / chart_total_goal）
+   * 没有 echarts，用等高柱形对齐呈现
+   * ------------------------------------------------------------------ */
+  function barsRow(arr, color, label) {
+    const vals = arr.map((v) => num(v));
+    const max = Math.max.apply(null, vals.concat([0.5]));
+    const bars = vals.map((v, i) => {
+      const h = Math.max(2, (v === 0 ? 0.2 : v) / max * 40);
+      return `<span class="fk500-status-bar" title="第${i + 1}场：${H(v)}" style="height:${h.toFixed(1)}px;background:${color}"></span>`;
+    }).join('');
+    return `<div class="fk500-status-row">
+      <span class="fk500-status-label">${H(label)}</span>
+      <div class="fk500-status-bars">${bars}</div>
+    </div>`;
+  }
+
+  function teamStatus(d) {
+    const home = d.home_status;
+    const visit = d.visit_status;
+    if (!Array.isArray(home) || !home.length || !Array.isArray(visit) || !visit.length) return '';
+    return `<div class="fk500-panel">
+      <div class="fk500-panel-title">球队状态</div>
+      ${barsRow(home, HOME, '主队')}
+      ${barsRow(visit, VISIT, '客队')}
+    </div>`;
+  }
+
+  function totalGoal(d) {
+    const home = d.home_total_goal;
+    const visit = d.visit_total_goal;
+    if (!Array.isArray(home) || !home.length || !Array.isArray(visit) || !visit.length) return '';
+    return `<div class="fk500-panel">
+      <div class="fk500-panel-title">球队总进球</div>
+      ${barsRow(home, HOME, '主队')}
+      ${barsRow(visit, VISIT, '客队')}
+      <div class="fk500-muted">本场开盘：${H(V(d.instant_size_most))}</div>
+    </div>`;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * 主渲染：顺序严格对照 index.vue 的模板
+   * ------------------------------------------------------------------ */
+  function render(d) {
+    if (!d) return '<div class="fk500-empty">还没有分析结果</div>';
+
+    const euAll = num(d.europe_win_all) + num(d.europe_even_all) + num(d.europe_lose_all);
+    const euLg = num(d.europe_win_league) + num(d.europe_even_league) + num(d.europe_lose_league);
+    const asAll = num(d.asia_win_all) + num(d.asia_run_all) + num(d.asia_lose_all);
+    const asLg = num(d.asia_win_league) + num(d.asia_run_league) + num(d.asia_lose_league);
+    const szAll = num(d.size_big_all) + num(d.size_run_all) + num(d.size_small_all);
+    const szLg = num(d.size_big_league) + num(d.size_run_league) + num(d.size_small_league);
+
+    return [
+      // 1) remark 提示条（detail 顶部那张红条）
+      d.remark ? `<div class="fk500-remark">${H(d.remark)}</div>` : '',
+
+      // 2) 欧赔：全网 / 本联赛 / 比分概率前三
+      countsPanel('欧赔全网匹配结果：', [['胜', d.europe_win_all], ['平', d.europe_even_all], ['负', d.europe_lose_all]], '欧赔暂无匹配场次'),
+      countsPanel('欧赔本联赛匹配结果：', [['胜', d.europe_win_league], ['平', d.europe_even_league], ['负', d.europe_lose_league]], '欧赔暂无匹配场次'),
+      euAll ? topList('欧赔比分概率前三：', d.europe_score_list, euAll) : '',
+
+      // 3) 亚盘初盘 / 即时盘 提示条
+      has(d.origin_pan_most) && has(d.instant_pan_most)
+        ? notice(`亚盘初盘：${V(d.origin_pan_most)}，亚盘即时盘：${V(d.instant_pan_most)}`)
+        : '',
+
+      // 4) 亚盘：全网 / 本联赛 / 比分概率前三
+      countsPanel('亚盘全网匹配结果：', [['赢', d.asia_win_all], ['走', d.asia_run_all], ['输', d.asia_lose_all]], '亚盘暂无匹配场次'),
+      countsPanel('亚盘本联赛匹配结果：', [['赢', d.asia_win_league], ['走', d.asia_run_league], ['输', d.asia_lose_league]], '亚盘暂无匹配场次'),
+      asAll ? topList('亚盘比分概率前三：', d.asia_score_list, asAll) : '',
+
+      // 5) 球队状态 → 让球推导 → 平均表 → 深浅判断
+      teamStatus(d),
+      inferTable(d),
+      concedeBlock(d),
+
+      // 6) 大小球初盘 / 即时盘 提示条
+      has(d.origin_size_most) && has(d.instant_size_most)
+        ? notice(`大小球初盘：${V(d.origin_size_most)}，大小球即时盘：${V(d.instant_size_most)}`)
+        : '',
+
+      // 7) 泊松两张表
+      poissonTable('泊松分布全联赛分主客场计算大小球', d.poisson_small, d.poisson_big, d.instant_size_most),
+      poissonTable('泊松分布全联赛不分主客场取近5场计算大小球', d.poisson_small_limit, d.poisson_big_limit, d.instant_size_most),
+
+      // 8) 大小球：全网 / 本联赛 / 进球区间
+      countsPanel('大小球全网匹配结果：', [['大', d.size_big_all], ['走', d.size_run_all], ['小', d.size_small_all]], '大小球暂无匹配场次'),
+      countsPanel('大小球本联赛匹配结果：', [['大', d.size_big_league], ['走', d.size_run_league], ['小', d.size_small_league]], '大小球暂无匹配场次'),
+      szAll ? goalRangePanel(d.goal_number_list) : '',
+
+      // 9) 大小球比分 / 进球数 / 上半场进球数 概率前三
+      szAll ? topList('大小球比分概率前三：', d.size_score_list, szAll) : '',
+      szAll ? topList('进球数概率前三：', d.goal_number_list, szAll) : '',
+      szAll ? topList('上半场进球数概率前三：', d.half_goal_number_list, szAll) : '',
+
+      // 10) 球队总进球
+      totalGoal(d),
+
+      // 兜底提示
+      // euLg + asLg + szLg === 0 ? '<div class="fk500-muted">本联赛无匹配场次</div>' : '',
+    ].filter(Boolean).join('');
+  }
+
+  window.FK500_REPORT = { render };
+})();
+</script>
+<script>
+  document.getElementById('fk500-body').innerHTML = window.FK500_REPORT.render({"fid":"1476142","match_group":"25/26赛季英超第5轮","home_team":"阿森纳","visit_team":"切尔西","origin_pan_most":0.5,"instant_pan_most":0.75,"origin_size_most":2.5,"instant_size_most":2.75,"infer_score":"1.82:1","home_pan_percent":60,"visit_pan_percent":40,"poisson_small":45.2,"poisson_big":54.8,"poisson_small_limit":50.1,"poisson_big_limit":49.9,"origin_infer_average":0.4,"instant_infer_average":1.3,"remark":"请注意，本项目打法仅适用于滚球的亚盘和大小球，不适用于竞彩。","europe_win_all":12,"europe_even_all":8,"europe_lose_all":5,"europe_win_league":4,"europe_even_league":3,"europe_lose_league":1,"europe_score_list":[["2:1",6],["1:0",4],["2:0",3]],"asia_win_all":10,"asia_run_all":6,"asia_lose_all":4,"asia_win_league":3,"asia_run_league":2,"asia_lose_league":1,"asia_score_list":[["0.75",5],["-0.5",4],["1",3]],"size_big_all":9,"size_run_all":3,"size_small_all":8,"size_big_league":2,"size_run_league":1,"size_small_league":2,"size_score_list":[["2:1",5],["3:1",3],["1:0",2]],"goal_number_list":[[1,4],[2,6],[3,5],[7,1]],"half_goal_number_list":[[0,3],[1,5],[2,2]],"infer_data":[{"home":"曼城","visit":"利物浦","infer":"0.5","home_match_group":"25/26赛季英超","visit_match_group":"25/26赛季英超","home_field_score":"2:1","visit_field_score":"1:1","home_concede_origin":0.5,"home_concede_terminus":0.75,"visit_concede_origin":0.5,"visit_concede_terminus":0.75,"origin_infer":"胜","instant_infer":"胜","home_concede_result":"赢","visit_concede_result":"输"},{"home":"热刺","visit":"纽卡","infer":"0.25","home_match_group":"25/26赛季英超","visit_match_group":"25/26赛季英超","home_field_score":"3:0","visit_field_score":"0:2","home_concede_origin":0.5,"home_concede_terminus":0.5,"visit_concede_origin":0.25,"visit_concede_terminus":0.5,"origin_infer":"胜","instant_infer":"胜","home_concede_result":"赢","visit_concede_result":"输"}],"home_concede_origin_average":0.5,"visit_concede_origin_average":0.4,"home_concede_terminus_average":0.7,"visit_concede_terminus_average":0.6,"home_goal_average":1.8,"visit_goal_average":1.2,"home_loss_average":1,"visit_loss_average":1.4,"home_gd_average":0.8,"visit_gd_average":-0.2,"home_status":[1,3,0,2,1],"visit_status":[2,1,1,0,3],"home_total_goal":[2,1,3,0,2],"visit_total_goal":[1,2,0,3,1]});
+</script>
+</body>
+</html>

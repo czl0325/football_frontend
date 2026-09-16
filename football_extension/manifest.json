@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "500彩票 · 赛事分析",
+  "version": "1.0.0",
+  "description": "在 500.com 抓取足球比赛信息，分析并就地展示结果。",
+  "permissions": [],
+  "host_permissions": [
+    "https://odds.500.com/*",
+    "http://127.0.0.1/*",
+    "http://117.72.172.8/*",
+    "http://106.54.58.139/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "足球比赛分析（500）"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://odds.500.com/*"],
+      "js": ["tables.js", "matchlib.js", "report.js", "content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
