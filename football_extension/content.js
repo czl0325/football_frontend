@@ -9,8 +9,8 @@
     europe_companies: [],
     asia_companies: [],
     size_companies: [],
-    asia_compose_size: 1,
-    size_compose_asia: 1,
+    asia_compose_size: 0,
+    size_compose_asia: 0,
     asia_nonMainstream: 1,
     size_nonMainstream: 1,
     no_friend_match: 1,
@@ -29,15 +29,80 @@
     ['only_main_match', '只匹配主流联赛'],
   ];
 
+  // 工具栏勾选项的默认值（fna/fns 对应抓取时的走势剔除，auto = 获取后自动分析）
+  const TOOLBAR_FLAGS = { fna: 0, fns: 0, autoAnalyze: 1 };
+
+  /* ------------------------------------------------------------------ *
+   * 持久化：localStorage
+   * key 统一加 fk500: 前缀，避免和 odds.500.com 自身的存储打架；
+   * 所有读写都包 try/catch（隐私模式 / 禁用存储时 localStorage 会抛异常）。
+   * ------------------------------------------------------------------ */
+  const LS_OPTS = 'fk500:analyzeOptions:v1';
+  const LS_TOOL = 'fk500:toolbarFlags:v1';
+
+  function lsGet(key) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function lsSet(key, obj) {
+    try {
+      localStorage.setItem(key, JSON.stringify(obj));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function lsDel(key) {
+    try { localStorage.removeItem(key); } catch (e) { /* ignore */ }
+  }
+
+  // 用 defs 的键做白名单 + 0/1 归一化：未知键丢弃，缺失键回落默认值
+  // （后续给 DEFAULT_OPTIONS / TOOLBAR_FLAGS 新增选项时，老数据不会把它冲掉）
+  function normalizeFlags(saved, defs) {
+    const out = { ...defs };
+    const src = saved || {};
+    for (const key of Object.keys(defs)) {
+      if (!Object.prototype.hasOwnProperty.call(src, key)) continue;
+      out[key] = src[key] ? 1 : 0;
+    }
+    return out;
+  }
+
+  // 只持久化 OPTION_DEFS 里的布尔项；companies 数组始终取 DEFAULT_OPTIONS
+  function normalizeOptions(saved) {
+    const out = { ...DEFAULT_OPTIONS };
+    const src = saved || {};
+    for (const [key] of OPTION_DEFS) {
+      if (!Object.prototype.hasOwnProperty.call(src, key)) continue;
+      out[key] = src[key] ? 1 : 0;
+    }
+    return out;
+  }
+
   let currentData = null;      // 前端抓取出的 match 对象
   let analysisData = null;     // 后端 /analysis/all 返回的分析结果
   let activeTab = 'overview';
   let busy = false;
   let analyzing = false;
 
-  // 分析参数 / 自动分析：仅当前页面会话内有效，不持久化
-  let autoAnalyze = true;
-  let analyzeOptions = { ...DEFAULT_OPTIONS };
+  // 分析参数 / 自动分析：从 localStorage 恢复，改动即落盘
+  let toolbarFlags = normalizeFlags(lsGet(LS_TOOL), TOOLBAR_FLAGS);
+  let autoAnalyze = !!toolbarFlags.autoAnalyze;
+  let analyzeOptions = normalizeOptions(lsGet(LS_OPTS));
+
+  function setToolbarFlag(key, checked) {
+    toolbarFlags[key] = checked ? 1 : 0;
+    if (key === 'autoAnalyze') autoAnalyze = !!checked;
+    return lsSet(LS_TOOL, toolbarFlags);
+  }
 
   /* ------------------------------------------------------------------ *
    * fid 识别
@@ -196,8 +261,9 @@
         <div class="fk500-cfg-row fk500-cfg-opts">
           ${OPTION_DEFS.map(([key, label]) => `
             <label class="fk500-check"><input type="checkbox" data-opt="${key}" ${analyzeOptions[key] ? 'checked' : ''} /> ${H(label)}</label>`).join('')}
+          <button class="fk500-mini" id="fk500-opt-reset" title="清除本地保存的勾选，恢复默认">恢复默认</button>
         </div>
-        <div class="fk500-muted">分析参数默认值与前端 detail 页一致；公司筛选（europe / asia / size_companies）默认不筛选。参数仅本次页面有效，不落盘。</div>
+        <div class="fk500-muted">勾选会自动保存到浏览器 localStorage（同源长期有效，下次打开自动恢复）；公司筛选（europe / asia / size_companies）默认不筛选。</div>
       </div>`;
 
     if (!analysisData) {
@@ -215,7 +281,7 @@
     { key: 'europe', label: '欧赔', render: renderEurope },
     { key: 'asia', label: '亚盘', render: renderAsia },
     { key: 'size', label: '大小球', render: renderSize },
-    { key: 'stats', label: '统计', render: renderStats },
+    // { key: 'stats', label: '统计', render: renderStats },
     { key: 'report', label: '分析结果', render: renderReport },
     { key: 'json', label: 'JSON', render: renderJson },
   ];
@@ -254,8 +320,20 @@
     document.querySelectorAll('#fk500-body input[data-opt]').forEach((el) => {
       el.addEventListener('change', () => {
         analyzeOptions[el.dataset.opt] = el.checked ? 1 : 0;
+        if (!lsSet(LS_OPTS, analyzeOptions)) {
+          setStatus('选项本地保存失败（浏览器可能禁用了 localStorage），本次仍生效', 'error');
+        }
       });
     });
+    const resetBtn = document.getElementById('fk500-opt-reset');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        analyzeOptions = { ...DEFAULT_OPTIONS };
+        lsDel(LS_OPTS);
+        renderBody();
+        setStatus('已清除本地保存，分析参数恢复默认', 'ok');
+      });
+    }
     const analyzeBtn = document.getElementById('fk500-analyze');
     if (analyzeBtn) analyzeBtn.addEventListener('click', () => runAnalyze());
   }
@@ -306,8 +384,8 @@
     setStatus('开始抓取（纯前端，复用你当前页面的登录态）…', 'loading');
 
     const opts = {
-      filter_no_asia_trend: document.getElementById('fk500-fna')?.checked ? 1 : 0,
-      filter_no_size_trend: document.getElementById('fk500-fns')?.checked ? 1 : 0,
+      filter_no_asia_trend: toolbarFlags.fna ? 1 : 0,
+      filter_no_size_trend: toolbarFlags.fns ? 1 : 0,
       sleep_ms: 400,
     };
 
@@ -406,9 +484,9 @@
         <input id="fk500-fid" class="fk500-input" value="${H(info.fid)}" placeholder="比赛 id" />
         <span class="fk500-muted" id="fk500-fid-src">${H(info.source ? '来自：' + info.source : '未自动识别')}</span>
       </div>
-      <div class="fk500-toolbar">
-        <label class="fk500-check"><input type="checkbox" id="fk500-fna" /> 剔除无亚盘走势</label>
-        <label class="fk500-check"><input type="checkbox" id="fk500-fns" /> 剔除无大小球走势</label>
+      <div class="fk500-toolbar" id="fk500-toolbar">
+        <label class="fk500-check"><input type="checkbox" id="fk500-fna" ${toolbarFlags.fna ? 'checked' : ''} /> 剔除无亚盘走势</label>
+        <label class="fk500-check"><input type="checkbox" id="fk500-fns" ${toolbarFlags.fns ? 'checked' : ''} /> 剔除无大小球走势</label>
         <label class="fk500-check"><input type="checkbox" id="fk500-auto" ${autoAnalyze ? 'checked' : ''} /> 获取后自动分析</label>
         <button class="fk500-btn" id="fk500-go">开始获取</button>
       </div>
@@ -425,8 +503,14 @@
     panel.querySelector('#fk500-close').addEventListener('click', () => togglePanel(false));
     panel.querySelector('#fk500-min').addEventListener('click', () => panel.classList.toggle('is-min'));
     panel.querySelector('#fk500-go').addEventListener('click', () => fetchData());
-    panel.querySelector('#fk500-auto').addEventListener('change', (e) => {
-      autoAnalyze = e.target.checked;
+    [['fk500-fna', 'fna'], ['fk500-fns', 'fns'], ['fk500-auto', 'autoAnalyze']].forEach(([id, key]) => {
+      const el = panel.querySelector('#' + id);
+      if (!el) return;
+      el.addEventListener('change', () => {
+        if (!setToolbarFlag(key, el.checked)) {
+          setStatus('勾选本地保存失败（浏览器可能禁用了 localStorage）', 'error');
+        }
+      });
     });
     panel.querySelectorAll('#fk500-tabs .fk500-tab').forEach((b) => {
       b.addEventListener('click', () => { activeTab = b.dataset.tab; renderBody(); });

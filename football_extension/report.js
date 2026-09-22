@@ -263,7 +263,7 @@
 
     return [
       // 1) remark 提示条（detail 顶部那张红条）
-      d.remark ? `<div class="fk500-remark">${H(d.remark)}</div>` : '',
+      // d.remark ? `<div class="fk500-remark">${H(d.remark)}</div>` : '',
 
       // 2) 欧赔：全网 / 本联赛 / 比分概率前三
       countsPanel('欧赔全网匹配结果：', [['胜', d.europe_win_all], ['平', d.europe_even_all], ['负', d.europe_lose_all]], '欧赔暂无匹配场次'),
@@ -281,9 +281,9 @@
       asAll ? topList('亚盘比分概率前三：', d.asia_score_list, asAll) : '',
 
       // 5) 球队状态 → 让球推导 → 平均表 → 深浅判断
-      teamStatus(d),
-      inferTable(d),
-      concedeBlock(d),
+      // teamStatus(d),
+      // inferTable(d),
+      // concedeBlock(d),
 
       // 6) 大小球初盘 / 即时盘 提示条
       has(d.origin_size_most) && has(d.instant_size_most)
@@ -291,8 +291,8 @@
         : '',
 
       // 7) 泊松两张表
-      poissonTable('泊松分布全联赛分主客场计算大小球', d.poisson_small, d.poisson_big, d.instant_size_most),
-      poissonTable('泊松分布全联赛不分主客场取近5场计算大小球', d.poisson_small_limit, d.poisson_big_limit, d.instant_size_most),
+      // poissonTable('泊松分布全联赛分主客场计算大小球', d.poisson_small, d.poisson_big, d.instant_size_most),
+      // poissonTable('泊松分布全联赛不分主客场取近5场计算大小球', d.poisson_small_limit, d.poisson_big_limit, d.instant_size_most),
 
       // 8) 大小球：全网 / 本联赛 / 进球区间
       countsPanel('大小球全网匹配结果：', [['大', d.size_big_all], ['走', d.size_run_all], ['小', d.size_small_all]], '大小球暂无匹配场次'),
@@ -305,10 +305,7 @@
       szAll ? topList('上半场进球数概率前三：', d.half_goal_number_list, szAll) : '',
 
       // 10) 球队总进球
-      totalGoal(d),
-
-      // 兜底提示
-      // euLg + asLg + szLg === 0 ? '<div class="fk500-muted">本联赛无匹配场次</div>' : '',
+      // totalGoal(d),
     ].filter(Boolean).join('');
   }
 

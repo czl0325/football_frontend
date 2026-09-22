@@ -80,7 +80,6 @@
   }
 
   /* ---------------- 页面抓取 ---------------- */
-
   // 抓 GB2312 页面并解析为 document。Python 端是 response.encoding="gb2312"
   async function fetchPageDoc(page) {
     const res = await fetch(BASE + page, { credentials: 'include' });
@@ -110,7 +109,6 @@
   }
 
   /* ---------------- MatchItem 骨架 ---------------- */
-
   // 与 models/match.py::MatchItem 中 get_fundamentals 会赋值的字段一一对应
   function newMatchItem(fid) {
     return {
