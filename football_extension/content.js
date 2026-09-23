@@ -108,12 +108,7 @@
    * fid 识别
    * ------------------------------------------------------------------ */
   function detectFid() {
-    const links = Array.from(document.querySelectorAll('a[href*="shuju-"], a[href*="youliao-"]'));
-    for (const a of links) {
-      const m = (a.getAttribute('href') || '').match(/shuju-(\d+)\.shtml/);
-      if (m) return { fid: m[1], source: '页面内「数据分析」链接' };
-    }
-    const m = location.pathname.match(/(?:youliao|shuju|ouzhi|yazhi|daxiao|zoushi)-(\d+)\.shtml/);
+    const m = location.pathname.match(/(?:shuju|youliao|touzhu|ouzhi|yazhi|daxiao|bifen|zoushi|stat)-(\d+)\.shtml/);
     if (m) return { fid: m[1], source: '当前网址' };
     return { fid: '', source: '' };
   }
