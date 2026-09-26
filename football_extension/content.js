@@ -29,8 +29,8 @@
     ['only_main_match', '只匹配主流联赛'],
   ];
 
-  // 工具栏勾选项的默认值（fna/fns 对应抓取时的走势剔除，auto = 获取后自动分析）
-  const TOOLBAR_FLAGS = { fna: 0, fns: 0, autoAnalyze: 1 };
+  // 工具栏勾选项的默认值（fna/fns 对应抓取时的走势剔除）
+  const TOOLBAR_FLAGS = { fna: 0, fns: 0 };
 
   /* ------------------------------------------------------------------ *
    * 持久化：localStorage
@@ -95,12 +95,10 @@
 
   // 分析参数 / 自动分析：从 localStorage 恢复，改动即落盘
   let toolbarFlags = normalizeFlags(lsGet(LS_TOOL), TOOLBAR_FLAGS);
-  let autoAnalyze = !!toolbarFlags.autoAnalyze;
   let analyzeOptions = normalizeOptions(lsGet(LS_OPTS));
 
   function setToolbarFlag(key, checked) {
     toolbarFlags[key] = checked ? 1 : 0;
-    if (key === 'autoAnalyze') autoAnalyze = !!checked;
     return lsSet(LS_TOOL, toolbarFlags);
   }
 
@@ -248,11 +246,6 @@
   function renderReport() {
     const cfgHtml = `
       <div class="fk500-cfg">
-        <div class="fk500-cfg-row">
-          <label class="fk500-label">后端地址</label>
-          <code class="fk500-api-fixed">${H(API_BASE)}</code>
-          <button class="fk500-btn" id="fk500-analyze">${analysisData ? '重新分析' : '发送到后端分析'}</button>
-        </div>
         <div class="fk500-cfg-row fk500-cfg-opts">
           ${OPTION_DEFS.map(([key, label]) => `
             <label class="fk500-check"><input type="checkbox" data-opt="${key}" ${analyzeOptions[key] ? 'checked' : ''} /> ${H(label)}</label>`).join('')}
@@ -329,8 +322,6 @@
         setStatus('已清除本地保存，分析参数恢复默认', 'ok');
       });
     }
-    const analyzeBtn = document.getElementById('fk500-analyze');
-    if (analyzeBtn) analyzeBtn.addEventListener('click', () => runAnalyze());
   }
 
   function renderBody() {
@@ -351,8 +342,6 @@
       }
     }
     document.querySelectorAll('#fk500-tabs .fk500-tab').forEach((b) => b.classList.toggle('is-active', b.dataset.tab === activeTab));
-    const autoEl = document.getElementById('fk500-auto');
-    if (autoEl) autoEl.checked = autoAnalyze;
   }
 
   function setStatus(text, type) {
@@ -392,7 +381,7 @@
       renderBody();
       const secs = ((Date.now() - t0) / 1000).toFixed(1);
       setStatus(`抓取完成 ${secs}s · 欧赔${match.europe_odds_items.length} 亚盘${match.asia_odds_items.length} 大小${match.size_odds_items.length}`, 'ok');
-      if (autoAnalyze) await runAnalyze();
+      await runAnalyze();
     } catch (e) {
       currentData = null;
       renderBody();
@@ -415,11 +404,9 @@
       return;
     }
     analyzing = true;
-    const btn = document.getElementById('fk500-analyze');
-    if (btn) { btn.disabled = true; btn.textContent = '分析中…'; }
 
     const targetUrl = `${API_BASE}/analysis/all`;
-    setStatus(`正在请求后端分析 ${targetUrl} …（首次可能十几秒）`, 'loading');
+    setStatus(`正在分析数据...`, 'loading');
 
     const t0 = Date.now();
     try {
@@ -440,11 +427,9 @@
       analysisData = null;
       activeTab = 'report';
       renderBody();
-      setStatus(`${String(e.message || e)}\n目标地址：${targetUrl}`, 'error');
+      setStatus(`${String(e.message || e)}\n`, 'error');
     } finally {
       analyzing = false;
-      const b = document.getElementById('fk500-analyze');
-      if (b) { b.disabled = false; b.textContent = analysisData ? '重新分析' : '发送到后端分析'; }
     }
   }
 
@@ -482,7 +467,6 @@
       <div class="fk500-toolbar" id="fk500-toolbar">
         <label class="fk500-check"><input type="checkbox" id="fk500-fna" ${toolbarFlags.fna ? 'checked' : ''} /> 剔除无亚盘走势</label>
         <label class="fk500-check"><input type="checkbox" id="fk500-fns" ${toolbarFlags.fns ? 'checked' : ''} /> 剔除无大小球走势</label>
-        <label class="fk500-check"><input type="checkbox" id="fk500-auto" ${autoAnalyze ? 'checked' : ''} /> 获取后自动分析</label>
         <button class="fk500-btn" id="fk500-go">开始获取</button>
       </div>
       <div id="fk500-tabs">
@@ -498,7 +482,7 @@
     panel.querySelector('#fk500-close').addEventListener('click', () => togglePanel(false));
     panel.querySelector('#fk500-min').addEventListener('click', () => panel.classList.toggle('is-min'));
     panel.querySelector('#fk500-go').addEventListener('click', () => fetchData());
-    [['fk500-fna', 'fna'], ['fk500-fns', 'fns'], ['fk500-auto', 'autoAnalyze']].forEach(([id, key]) => {
+    [['fk500-fna', 'fna'], ['fk500-fns', 'fns']].forEach(([id, key]) => {
       const el = panel.querySelector('#' + id);
       if (!el) return;
       el.addEventListener('change', () => {

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "500彩票 · 赛事分析",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "在 500.com 抓取足球比赛信息，分析并就地展示结果。",
   "permissions": [],
   "host_permissions": [
