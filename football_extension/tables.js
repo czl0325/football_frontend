@@ -1,7 +1,3 @@
-/**
- * tables.js —— 与 utils/arithmetic.py 完全一致的映射表
- * 来源：arithmetic.py 第 20-59 行(europe_map/asia_map)、73-154 行(goal_lst/boll_map)、155-172 行(company_dict)
- */
 window.FK500_TABLES = {
   europe_map: {
     "威廉希尔": "wl",

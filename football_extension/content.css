@@ -24,7 +24,7 @@
   position: fixed;
   right: 18px;
   bottom: 18px;
-  width: 560px;
+  width: 600px;
   max-width: calc(100vw - 36px);
   max-height: calc(100vh - 36px);
   display: flex;
@@ -296,10 +296,28 @@
   line-height: 1.8;
   font-size: 13px;
 }
+/* 让球推导表：固定表格布局 + 百分比列宽 → 总宽严格等于父容器，永不横向溢出 */
+#fk500-panel .fk500-infer {
+  table-layout: fixed;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+#fk500-panel .fk500-infer th,
+#fk500-panel .fk500-infer td {
+  /* 去掉 .fk500-table 的 nowrap，长内容换行而不是把表格撑宽 */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+#fk500-panel .fk500-infer th:nth-child(1),
+#fk500-panel .fk500-infer th:nth-child(2) { width: 29%; }
+#fk500-panel .fk500-infer th:nth-child(3),
+#fk500-panel .fk500-infer th:nth-child(4) { width: 15%; }
+#fk500-panel .fk500-infer th:nth-child(5) { width: 12%; }
 #fk500-panel .fk500-infer td {
   text-align: left;
   white-space: normal;
-  min-width: 96px;
+  min-width: 0;
   vertical-align: top;
 }
 
@@ -313,9 +331,11 @@
 /* 泊松表（对应 detail 的 .table-1） */
 #fk500-panel .fk500-table1 {
   width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+  box-sizing: border-box;
   border-collapse: collapse;
-  border-top: 1px solid rgb(211, 202, 221);
-  border-bottom: 1px solid rgb(211, 202, 221);
+  border: 1px solid rgb(211, 202, 221);
   font-family: Verdana, serif;
 }
 #fk500-panel .fk500-table1 th,
@@ -325,6 +345,18 @@
   color: rgb(95, 74, 121);
   text-align: center;
   font-weight: normal;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  border-right:1px solid rgb(211, 202, 221);
+  border-bottom: 1px solid rgb(211, 202, 221);
+}
+#fk500-panel .fk500-table1 tr:last-child td {
+  border-bottom: none;
+}
+#fk500-panel .fk500-table1 tr td:last-child,
+#fk500-panel .fk500-table1 tr th:last-child {
+  border-right: none;
 }
 #fk500-panel .fk500-table1 tbody tr:nth-child(odd) { background: #fff; }
 #fk500-panel .fk500-table1 tbody tr:nth-child(even) { background: rgb(223, 216, 232); }
@@ -332,13 +364,22 @@
 /* 让球平均表（对应 detail 的 .table2：绿头 + 斑马纹 + 绿底边） */
 #fk500-panel .fk500-table2 {
   width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+  box-sizing: border-box;
   border-collapse: collapse;
   font-size: 12px;
   margin-top: 8px;
 }
 #fk500-panel .fk500-table2 thead tr { background-color: #009879; color: #fff; }
 #fk500-panel .fk500-table2 th,
-#fk500-panel .fk500-table2 td { padding: 5px 10px; text-align: center; }
+#fk500-panel .fk500-table2 td {
+  padding: 5px 10px;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 #fk500-panel .fk500-table2 tbody tr { border-bottom: 1px solid #ddd; }
 #fk500-panel .fk500-table2 tbody tr:nth-of-type(even) { background-color: #f3f3f3; }
 #fk500-panel .fk500-table2 tbody tr:last-of-type { border-bottom: 2px solid #009879; }

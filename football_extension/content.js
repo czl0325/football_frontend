@@ -416,13 +416,12 @@
       });
       if (!resp) throw new Error('扩展后台无响应，试试重新加载扩展');
       if (!resp.ok) throw new Error(resp.error);
-
       analysisData = resp.result.data;
       analysisData.__time = resp.result.time;
       activeTab = 'report';
       renderBody();
       const secs = ((Date.now() - t0) / 1000).toFixed(1);
-      setStatus(`分析完成 ${secs}s · 匹配 ${(analysisData.infer_data || []).length} 场`, 'ok');
+      setStatus(`分析完成 ${secs}s`, 'ok');
     } catch (e) {
       analysisData = null;
       activeTab = 'report';
@@ -455,7 +454,7 @@
       <div class="fk500-head" id="fk500-drag">
         <span class="fk500-title">赛事分析</span>
         <span class="fk500-head-btns">
-          <button class="fk500-icon" id="fk500-min" title="收起/展开">—</button>
+          <button class="fk500-icon" id="fk500-min" title="收起/展开">-</button>
           <button class="fk500-icon" id="fk500-close" title="关闭">×</button>
         </span>
       </div>
