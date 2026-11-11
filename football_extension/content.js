@@ -255,7 +255,7 @@
       </div>`;
 
     if (!analysisData) {
-      return `${cfgHtml}<div class="fk500-empty">还没有分析结果。先「开始获取」抓基本面，再点上面的「发送到后端分析」。</div>`;
+      return `${cfgHtml}<div class="fk500-empty">数据分析等待中。。。</div>`;
     }
     return `
       ${cfgHtml}

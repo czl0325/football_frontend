@@ -17,11 +17,7 @@ async function postAnalyze(payload) {
       signal: ctrl.signal,
     });
   } catch (e) {
-    throw new Error(
-      `请求后端失败：${e.message}\n目标地址：${url}\n` +
-      `排查：1) 后端是否已启动（python manage.py，默认 10008）2) background.js 的 API_BASE 是否写对 ` +
-      `3) manifest 的 host_permissions 是否包含该地址。`
-    );
+    throw new Error(`请求失败，请稍后重试。`);
   } finally {
     clearTimeout(timer);
   }
