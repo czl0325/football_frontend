@@ -196,7 +196,7 @@
 
   /* ---------------- get_fundamentals 主体（数据 页） ---------------- */
   function parseFundamentals(doc, match) {
-    const match_group = xpText(doc, "//div[@class='odds_header']//table//tr/td[3]//a[@class='hd_name']/text()");
+    const match_group = xpText(doc, "//div[@id='odds_hd_ls']/a[@class='hd_name']/text()");
     if (match_group) {
       match.match_group = match_group.trim();
       const typeRe = /(.*?)(第\d+轮|第.*?圈|分组赛|小组赛|资格赛|半.*?决赛|决赛|十六强|八强|季军赛|外.*?赛|排名|升|降|春|秋|16强|附加赛|欧会杯资格附加.*?赛|[A-F]联赛|1\/\d+决赛|中级锦标赛|\d+月赛程.*?|赛事|优选赛)/;
@@ -209,21 +209,21 @@
       if (mr) match.match_round = parseInt(mr[1], 10);
     }
 
-    const home_team = xpText(doc, "//div[@class='odds_header']//table//tr/td[1]/ul/li/a/text()");
+    const home_team = xpText(doc, "//div[contains(@class,'odds-match-card')]/div[@class='odds_hd_cont']/table/tbody/tr/td[1]/ul/li[1]/a/text()");
     if (home_team) match.home_team = home_team;
-    const visit_team = xpText(doc, "//div[@class='odds_header']//table//tr/td[5]/ul/li/a/text()");
+    const visit_team = xpText(doc, "//div[contains(@class,'odds-match-card')]/div[@class='odds_hd_cont']/table/tbody/tr/td[5]/ul/li[1]/a/text()");
     if (visit_team) match.visit_team = visit_team;
 
-    const home_rank = xpText(doc, "//div[@class='odds_header']/div[@class='odds_hd_cont']/table/tbody/tr/td[1]/ul/li[2]/span[@class='red']/text()");
+    const home_rank = xpText(doc, "//div[contains(@class,'odds-match-card')]/div[@class='odds_hd_cont']/table/tbody/tr/td[1]/ul/li[2]/span/text()");
     match.home_team_rank = home_rank ? parseInt(home_rank, 10) || 0 : 0;
-    const visit_rank = xpText(doc, "//div[@class='odds_header']/div[@class='odds_hd_cont']/table/tbody/tr/td[5]/ul/li[2]/span[@class='red']/text()");
+    const visit_rank = xpText(doc, "//div[contains(@class,'odds-match-card')]/div[@class='odds_hd_cont']/table/tbody/tr/td[5]/ul/li[2]/span/text()");
     match.visit_team_rank = visit_rank ? parseInt(visit_rank, 10) || 0 : 0;
 
-    const field_score = xpText(doc, "//div[@class='odds_header']/div[@class='odds_hd_cont']/table/tbody/tr/td[3]/div/p[@class='odds_hd_bf']/strong/text()");
-    if (field_score) match.field_score = field_score;
+    const field_score = xpText(doc, "//div[contains(@class, 'odds_header')]//p[@class='odds_hd_bf']/strong/text()");
+    if (field_score) match.field_score = field_score.replace("-", ":");
 
     // 积分榜取两队积分（浏览器会把 table>tr 规整为 table>tbody>tr，故用 //tr）
-    const scoreTable = xp(doc, "//div[@id='nav_jifen']//tr[position()<last()]");
+    const scoreTable = xp(doc, "//div[contains(@class, 'hd_jfb')]//tr[position()<last()]");
     if (scoreTable.length > 0 && match.home_team_rank && match.visit_team_rank) {
       match.team_count = scoreTable.length;
       for (const tr of scoreTable) {
@@ -244,7 +244,7 @@
       }
     }
 
-    const match_time = xpText(doc, "//div[@class='odds_header']/div[@class='odds_hd_cont']/table/tbody/tr/td[3]/div/p[1]/text()");
+    const match_time = xpText(doc, "//div[contains(@class, 'odds_header')]/div[@class='odds_hd_cont']//p[@class='game_time']/text()");
     if (match_time) match.match_time = match_time.replace('比赛时间', '').trim();
   }
 
@@ -301,7 +301,7 @@
     const doc = await fetchPageDoc(`yazhi-${match.fid}.shtml`);
 
     // Python: //div[@id='table_cont']/table/tr ；浏览器解析会自动补 tbody
-    const trs = xp(doc, "//div[@id='table_cont']/table/tbody/tr");
+    const trs = xp(doc, "//table[@id='datatb']//tr");
     const items = [];
     const panMaps = {
       origin: {}, instant: {},
@@ -323,28 +323,28 @@
       const company = T.company_dict[cid];
       if (!company || !T.asia_map[company]) continue;
 
-      let origin_odds = toNum(xpAttr(doc, "./td[position()=5]/table/tbody/tr/td[2]/@ref", tr));
+      let origin_odds = toNum(xpAttr(doc, "./td[5]/table/tbody/tr/td[2]/@ref", tr));
       if (origin_odds !== null && origin_odds !== 0) {
         const panText = xpText(doc, "./td[5]/table//tr/td[2]/text()", tr);
         if (panText !== null && T.boll_map[panText] !== undefined && origin_odds !== T.boll_map[panText]) {
           origin_odds = T.boll_map[panText];
         }
       }
-      const homeRaw = xpText(doc, "./td[position()=5]/table/tbody/tr/td[1]/text()", tr);
+      const homeRaw = xpText(doc, "./td[5]/table/tbody/tr/td[1]/text()", tr);
       if (homeRaw === null || homeRaw.trim() === '') continue;
       const origin_odds_home = cleanNum(homeRaw);
-      const visitRaw = xpText(doc, "./td[position()=5]/table/tbody/tr/td[3]/text()", tr);
+      const visitRaw = xpText(doc, "./td[5]/table/tbody/tr/td[3]/text()", tr);
       if (visitRaw === null || visitRaw.trim() === '') continue;
       const origin_odds_visit = cleanNum(visitRaw);
 
-      let instant_odds = toNum(xpAttr(doc, "./td[position()=3]/table/tbody/tr/td[2]/@ref", tr));
+      let instant_odds = toNum(xpAttr(doc, "./td[3]/table/tbody/tr/td[2]/@ref", tr));
       if (instant_odds !== null && instant_odds !== 0) {
         const panText = xpText(doc, "./td[3]/table//tr/td[2]/text()", tr);
         if (panText !== null && T.boll_map[panText] !== undefined && instant_odds !== T.boll_map[panText]) {
           instant_odds = T.boll_map[panText];
         }
       }
-      const iHomeRaw = xpText(doc, "./td[position()=3]/table/tbody/tr/td[1]/text()", tr);
+      const iHomeRaw = xpText(doc, "./td[3]/table/tbody/tr/td[1]/text()", tr);
       if (iHomeRaw === null || iHomeRaw.trim() === '') continue;
       let instant_odds_home_state = '';
       if (iHomeRaw.indexOf('↑') >= 0) instant_odds_home_state = 'up';
@@ -352,7 +352,7 @@
       const instant_odds_home = cleanNum(iHomeRaw);
       if (instant_odds_home === '') continue;
 
-      const iVisitRaw = xpText(doc, "./td[position()=3]/table/tbody/tr/td[3]/text()", tr);
+      const iVisitRaw = xpText(doc, "./td[3]/table/tbody/tr/td[3]/text()", tr);
       if (iVisitRaw === null || iVisitRaw === '') continue;
       let instant_odds_visit_state = '';
       if (iVisitRaw.indexOf('↑') >= 0) instant_odds_visit_state = 'up';
@@ -475,7 +475,7 @@
     onProgress && onProgress(`抓取大小球页 daxiao-${match.fid}.shtml …`);
     const doc = await fetchPageDoc(`daxiao-${match.fid}.shtml`);
 
-    const trs = xp(doc, "//table[@id='datatb']/tbody/tr");
+    const trs = xp(doc, "//table[@id='datatb']//tr");
     const items = [];
     const maps = {
       origin: {}, instant: {},

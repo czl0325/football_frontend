@@ -522,7 +522,12 @@
 
   function togglePanel(show) {
     const exists = document.getElementById('fk500-panel');
-    if (!show && exists) { exists.remove(); return; }
+    if (!show && exists) {
+      // 面板关闭时一并收掉挂在 body 上的匹配详情弹层
+      if (window.FK500_REPORT && window.FK500_REPORT.closeMatching) window.FK500_REPORT.closeMatching();
+      exists.remove();
+      return;
+    }
     if (!exists) buildPanel();
     const panel = document.getElementById('fk500-panel');
     panel.classList.remove('is-min');

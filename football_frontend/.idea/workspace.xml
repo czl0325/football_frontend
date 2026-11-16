@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6239572d-c878-419d-92a5-05a93145a75e" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/../football_extension/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../football_extension/.workbuddy/memory/2026-09-22.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../football_extension/content.css" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/content.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../football_extension/content.js" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/content.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../football_extension/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../football_extension/matchlib.js" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/matchlib.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../football_extension/preview-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/preview-report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../football_extension/report.js" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/report.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/detail/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/detail/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/index.vue" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0" />
+      <entry key="M2" value="1.0" />
+      <entry key="M5" value="1.0" />
+      <entry key="M10" value="1.0" />
+      <entry key="M15" value="1.0" />
+      <entry key="M30" value="1.0" />
+      <entry key="H1" value="1.0" />
+      <entry key="H2" value="1.0" />
+      <entry key="H4" value="1.0" />
+      <entry key="D1" value="1.0" />
+      <entry key="W1" value="1.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="2.9478037381739673E-5" />
+      <entry key="MS500" value="0.12413656192962948" />
+      <entry key="S2" value="0.5935740802844283" />
+      <entry key="S5" value="0.8116895809772786" />
+      <entry key="S10" value="0.900938167122072" />
+      <entry key="S30" value="0.9658247460297513" />
+      <entry key="S60" value="0.9827638302408933" />
+      <entry key="M2" value="0.991344455898601" />
+      <entry key="M5" value="0.996528750409808" />
+      <entry key="M10" value="0.9982628663883116" />
+      <entry key="M15" value="0.9988415753738366" />
+      <entry key="M30" value="0.999420619846237" />
+      <entry key="H1" value="0.9997102679507883" />
+      <entry key="H2" value="0.9998551234807913" />
+      <entry key="H4" value="0.9999275591165548" />
+      <entry key="D1" value="0.9999879261549873" />
+      <entry key="W1" value="0.999998275156073" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3JPCo7yed1uLoS1Hddn8VVQ0dik" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/zhaoliangchen/Desktop/mylib/football_frontend/football_frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.appearance&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/zhaoliangchen/Desktop/mylib/football_frontend/football_frontend/node_modules/typescript/lib&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-WS-262.11879.105" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="6239572d-c878-419d-92a5-05a93145a75e" name="更改" comment="" />
+      <created>1787582856279</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1787582856279</updated>
+      <workItem from="1787582877224" duration="23000" />
+      <workItem from="1789553489955" duration="315000" />
+      <workItem from="1790039893631" duration="1000" />
+      <workItem from="1790040211227" duration="7401000" />
+      <workItem from="1792914765799" duration="1000" />
+      <workItem from="1794403441151" duration="110000" />
+      <workItem from="1794403558129" duration="3000" />
+      <workItem from="1794403648968" duration="1886000" />
+      <workItem from="1794814063095" duration="508000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

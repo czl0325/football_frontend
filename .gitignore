@@ -129,3 +129,4 @@ dist
 .pnp.*
 *.conf
 .workbuddy
+**/.workbuddy/

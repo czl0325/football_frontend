@@ -13,6 +13,9 @@
  *   9) 大小球比分概率前三 / 进球数概率前三 / 上半场进球数概率前三
  *  10) 球队总进球
  *
+ * 另外：欧赔/亚盘/大小球三块结果下方各有一个「查看 XX 匹配详情」按钮，
+ *      点开是与 detail/src/MatchingList.vue 同构的三页签列表（原生 DOM 实现）。
+ *
  * 关键样式：一组「胜/平/负」是 **一行三项文字 + 同一条堆叠条**（对应 detail 的
  * .flex-horizontal-1 三项 + 一个 echarts 堆叠条形图），不是三条独立的条。
  *
@@ -86,6 +89,186 @@
     if (!text) return '';
     return `<div class="fk500-notice">${H(text)}</div>`;
   }
+
+  /* ================================================================== *
+   * 匹配详情（对照 detail/src/MatchingList.vue）
+   *
+   * 后端 europe_matches / asia_matches / size_matches 是 "_" 分隔的字符串：
+   *   赛事_主队_客队_比分_赛果_开盘公司_fid
+   * 亚盘 / 大小球会先按同一场比赛合并多家公司，再按赛果拆成三个页签。
+   * ================================================================== */
+  const MATCH_META = {
+    1: { name: '欧赔', field: 'europe_matches', heads: ['胜', '平', '负'], merge: false },
+    2: { name: '亚盘', field: 'asia_matches', heads: ['赢', '走', '输'], merge: true },
+    3: { name: '大小球', field: 'size_matches', heads: ['大', '走', '小'], merge: true },
+  };
+
+  // 对应 tools.ts::mergeEqualValues —— 把 "威廉(0.9),立博(0.9)" 压成 "威廉|立博(0.9)"
+  function mergeEqualValues(str) {
+    const parts = str.split(',');
+    const values = [];
+    parts.forEach((item) => {
+      const match = item.match(/\(([^)]+)\)/g);
+      if (match && !values.includes(match[0])) values.push(match[0]);
+    });
+    const results = [];
+    values.forEach((item) => {
+      let s = item;
+      parts.forEach((part) => {
+        if (part.endsWith(item)) s = '|' + part.slice(0, part.indexOf('(')) + s;
+      });
+      if (s.startsWith('|')) s = s.slice(1);
+      results.push(s);
+    });
+    return results.join(',');
+  }
+
+  // 对应 tools.ts::mergeSameMatch —— 赛事+主队+客队 相同则合并开盘公司
+  function mergeSameMatch(list) {
+    const result = [];
+    list.forEach((item) => {
+      const parts = item.split('_');
+      const key = parts.slice(0, 3).join('_');
+      const exists = result.find((entry) => entry.key === key);
+      if (exists) {
+        exists.indices.push(parts[5]);
+      } else {
+        const startIndex = item.indexOf(parts[5]);
+        result.push({ key, start: item.substring(0, startIndex), fid: parts[6], indices: [parts[5]] });
+      }
+    });
+    return result.map((e) => e.start + mergeEqualValues(e.indices.join(',')) + '_' + e.fid);
+  }
+
+  function splitMatches(list, merge) {
+    const raw = (Array.isArray(list) ? list : []).filter((s) => typeof s === 'string' && s.trim());
+    if (!merge) return raw.map((s) => s.split('_')).filter((a) => a.length >= 6);
+    const valid = raw.filter((s) => {
+      const a = s.split('_');
+      return a.length >= 7 && a[5];
+    });
+    return mergeSameMatch(valid).map((s) => s.split('_')).filter((a) => a.length >= 6);
+  }
+
+  function groupMatches(rows, heads) {
+    return heads.map((h) => rows.filter((r) => String(r[4] || '').trim() === h));
+  }
+
+  function matchingTable(rows, category) {
+    if (!rows.length) return '<div class="fk500-mtable-empty">该分组暂无匹配场次</div>';
+    const head = '<tr><th>赛事</th><th>主队</th><th>客队</th><th>比分</th><th>赛果</th><th>开盘公司</th></tr>';
+    const body = rows.map((r) => {
+      const fid = String(r[6] === undefined ? '' : r[6]).replace(/\D/g, '');
+      const group = H(r[0]);
+      const cell = fid
+        ? `<a href="https://odds.500.com/fenxi/shuju-${fid}.shtml" target="_blank" rel="noopener noreferrer">${group}</a>`
+        : group;
+      // 与参考页一致：赛事名包含本场赛事简称则整行高亮
+      const hit = category && String(r[0] || '').indexOf(category) >= 0;
+      return `<tr${hit ? ' class="is-hit"' : ''}>`
+        + `<td class="fk500-mt-group">${cell}</td>`
+        + `<td>${H(r[1])}</td><td>${H(r[2])}</td><td>${H(r[3])}</td><td>${H(r[4])}</td>`
+        + `<td class="fk500-mt-company">${H(r[5])}</td></tr>`;
+    }).join('');
+    return `<table class="fk500-mtable"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  }
+
+  /* 渲染「查看 XX 匹配详情」按钮行；没有匹配数据时不渲染 */
+  function detailBar(type, d) {
+    const meta = MATCH_META[type];
+    const rows = splitMatches(d[meta.field], meta.merge);
+    if (!rows.length) return '';
+    return `<div class="fk500-detail-bar">
+      <span class="fk500-muted">共 ${rows.length} 场匹配明细</span>
+      <button type="button" class="fk500-mini fk500-detail-btn" data-fk-matching="${type}">查看${H(meta.name)}匹配详情</button>
+    </div>`;
+  }
+
+  let lastData = null;
+  let modalType = 1;
+  let modalGroup = 0;
+
+  function modalMask() {
+    return document.getElementById('fk500-matching-mask');
+  }
+
+  function closeMatching() {
+    const mask = modalMask();
+    if (mask) mask.remove();
+  }
+
+  function paintMatching() {
+    const mask = modalMask();
+    if (!mask || !lastData) return;
+    const meta = MATCH_META[modalType];
+    const heads = meta.heads;
+    const rows = splitMatches(lastData[meta.field], meta.merge);
+    const groups = groupMatches(rows, heads);
+    if (modalGroup >= groups.length) modalGroup = 0;
+
+    const title = mask.querySelector('.fk500-modal-title');
+    if (title) title.textContent = `${meta.name}匹配详情`;
+
+    const tabs = mask.querySelector('.fk500-modal-tabs');
+    if (tabs) {
+      tabs.innerHTML = heads.map((h, i) =>
+        `<button type="button" class="fk500-modal-tab${i === modalGroup ? ' is-active' : ''}" data-fk-mtab="${i}">${H(h)}(${groups[i].length})</button>`
+      ).join('');
+    }
+
+    const body = mask.querySelector('.fk500-modal-body');
+    if (body) body.innerHTML = matchingTable(groups[modalGroup], lastData.match_category);
+
+    const foot = mask.querySelector('.fk500-modal-foot');
+    if (foot) {
+      foot.textContent = rows.length
+        ? `共 ${rows.length} 场 · 点击赛事名在新标签打开 500 分析页`
+        : '后端未返回匹配明细（europe_matches / asia_matches / size_matches 为空）';
+    }
+  }
+
+  function openMatching(type) {
+    if (!MATCH_META[type] || !lastData) return;
+    modalType = type;
+    modalGroup = 0;
+    closeMatching();
+
+    const mask = document.createElement('div');
+    mask.id = 'fk500-matching-mask';
+    mask.innerHTML = `
+      <div class="fk500-modal" role="dialog" aria-modal="true" aria-label="匹配详情">
+        <div class="fk500-modal-head">
+          <span class="fk500-modal-title">匹配详情</span>
+          <button type="button" class="fk500-modal-close" data-fk-matching-close title="关闭">×</button>
+        </div>
+        <div class="fk500-modal-tabs" role="tablist"></div>
+        <div class="fk500-modal-body"></div>
+        <div class="fk500-modal-foot"></div>
+      </div>`;
+    mask.addEventListener('click', (e) => {
+      if (e.target === mask || e.target.closest('[data-fk-matching-close]')) {
+        closeMatching();
+        return;
+      }
+      const tab = e.target.closest('[data-fk-mtab]');
+      if (tab) {
+        modalGroup = Number(tab.dataset.fkMtab) || 0;
+        paintMatching();
+      }
+    });
+    document.body.appendChild(mask);
+    paintMatching();
+  }
+
+  // 文档级委托：结果面板重渲染后按钮依然可用，只需注册一次
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-fk-matching]');
+    if (trigger) openMatching(Number(trigger.dataset.fkMatching));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalMask()) closeMatching();
+  });
 
   /* ------------------------------------------------------------------ *
    * 进球区间全网匹配结果：两行各两项（对应 detail 的 2×2 布局）+ 同一条堆叠条
@@ -252,7 +435,13 @@
    * 主渲染：顺序严格对照 index.vue 的模板
    * ------------------------------------------------------------------ */
   function render(d) {
-    if (!d) return '<div class="fk500-empty">还没有分析结果</div>';
+    if (!d) {
+      lastData = null;
+      closeMatching();
+      return '<div class="fk500-empty">还没有分析结果</div>';
+    }
+    lastData = d;
+    closeMatching();
 
     const euAll = num(d.europe_win_all) + num(d.europe_even_all) + num(d.europe_lose_all);
     const euLg = num(d.europe_win_league) + num(d.europe_even_league) + num(d.europe_lose_league);
@@ -269,6 +458,7 @@
       countsPanel('欧赔全网匹配结果：', [['胜', d.europe_win_all], ['平', d.europe_even_all], ['负', d.europe_lose_all]], '欧赔暂无匹配场次'),
       countsPanel('欧赔本联赛匹配结果：', [['胜', d.europe_win_league], ['平', d.europe_even_league], ['负', d.europe_lose_league]], '欧赔暂无匹配场次'),
       euAll ? topList('欧赔比分概率前三：', d.europe_score_list, euAll) : '',
+      euAll ? detailBar(1, d) : '',
 
       // 3) 亚盘初盘 / 即时盘 提示条
       has(d.origin_pan_most) && has(d.instant_pan_most)
@@ -279,6 +469,7 @@
       countsPanel('亚盘全网匹配结果：', [['赢', d.asia_win_all], ['走', d.asia_run_all], ['输', d.asia_lose_all]], '亚盘暂无匹配场次'),
       countsPanel('亚盘本联赛匹配结果：', [['赢', d.asia_win_league], ['走', d.asia_run_league], ['输', d.asia_lose_league]], '亚盘暂无匹配场次'),
       asAll ? topList('亚盘比分概率前三：', d.asia_score_list, asAll) : '',
+      asAll ? detailBar(2, d) : '',
 
       // 5) 球队状态 → 让球推导 → 平均表 → 深浅判断
       teamStatus(d),
@@ -303,11 +494,12 @@
       szAll ? topList('大小球比分概率前三：', d.size_score_list, szAll) : '',
       szAll ? topList('进球数概率前三：', d.goal_number_list, szAll) : '',
       szAll ? topList('上半场进球数概率前三：', d.half_goal_number_list, szAll) : '',
+      szAll ? detailBar(3, d) : '',
 
       // 10) 球队总进球
       // totalGoal(d),
     ].filter(Boolean).join('');
   }
 
-  window.FK500_REPORT = { render };
+  window.FK500_REPORT = { render, closeMatching };
 })();

@@ -396,3 +396,140 @@
 #fk500-panel .fk500-status-bar { width: 8px; border-radius: 2px 2px 0 0; display: block; }
 #fk500-panel .fk500-status.is-error { color: #dc2626; }
 #fk500-panel .fk500-status.is-loading { color: #b45309; }
+
+/* ---------- 查看匹配详情按钮行 ---------- */
+#fk500-panel .fk500-detail-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: -2px 0 10px;
+  padding: 0 2px;
+}
+#fk500-panel .fk500-detail-btn {
+  border-color: #2563eb;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+#fk500-panel .fk500-detail-btn:hover { background: #eaf1ff; }
+
+/* ---------- 匹配详情弹层（挂载在 body 上，故不放在 #fk500-panel 作用域内） ---------- */
+#fk500-matching-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 2147484000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.45);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1f2328;
+}
+
+#fk500-matching-mask .fk500-modal {
+  display: flex;
+  flex-direction: column;
+  width: 720px;
+  max-width: 100%;
+  max-height: min(80vh, 680px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+
+#fk500-matching-mask .fk500-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #f6f7f9;
+  border-bottom: 1px solid #e3e6ea;
+}
+#fk500-matching-mask .fk500-modal-title { font-size: 14px; font-weight: 600; color: #111418; }
+#fk500-matching-mask .fk500-modal-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #d7dbe0;
+  background: #fff;
+  border-radius: 6px;
+  color: #4a5158;
+  line-height: 1;
+  cursor: pointer;
+}
+#fk500-matching-mask .fk500-modal-close:hover { background: #eef1f4; }
+
+/* 页签：对照参考页 van-tabs 的橙色选中态 */
+#fk500-matching-mask .fk500-modal-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 8px 14px 0;
+  border-bottom: 1px solid #eceff2;
+  flex-wrap: wrap;
+}
+#fk500-matching-mask .fk500-modal-tab {
+  padding: 5px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  color: #5a626b;
+  font-size: 13px;
+}
+#fk500-matching-mask .fk500-modal-tab:hover { background: #f2f4f7; }
+#fk500-matching-mask .fk500-modal-tab.is-active {
+  color: #ff5600;
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 #ff5600;
+}
+
+#fk500-matching-mask .fk500-modal-body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 0;
+  min-height: 120px;
+}
+#fk500-matching-mask .fk500-modal-foot {
+  padding: 7px 14px;
+  border-top: 1px solid #eceff2;
+  background: #fbfcfd;
+  color: #8a929b;
+  font-size: 12px;
+}
+
+#fk500-matching-mask .fk500-mtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+#fk500-matching-mask .fk500-mtable th,
+#fk500-matching-mask .fk500-mtable td {
+  border-bottom: 1px solid #eceff2;
+  padding: 5px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+#fk500-matching-mask .fk500-mtable th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f6f7f9;
+  color: #4a5158;
+  font-weight: 600;
+  white-space: nowrap;
+}
+#fk500-matching-mask .fk500-mtable tbody tr:nth-child(even) { background: #fbfcfd; }
+#fk500-matching-mask .fk500-mtable tbody tr:hover { background: #eef4ff; }
+/* 本联赛场次高亮（参考页 rowStyle 的 #F9CDAD） */
+#fk500-matching-mask .fk500-mtable tbody tr.is-hit,
+#fk500-matching-mask .fk500-mtable tbody tr.is-hit:hover { background: #f9cdad; }
+
+#fk500-matching-mask .fk500-mt-group { text-align: left; }
+#fk500-matching-mask .fk500-mt-group a { color: #1890ff; text-decoration: none; }
+#fk500-matching-mask .fk500-mt-group a:hover { text-decoration: underline; }
+#fk500-matching-mask .fk500-mt-company { text-align: left; white-space: normal; word-break: break-all; }
+#fk500-matching-mask .fk500-mtable-empty { padding: 28px 0; text-align: center; color: #8a929b; }
+

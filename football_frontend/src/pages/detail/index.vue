@@ -116,94 +116,94 @@
             查看亚盘匹配详情
           </van-button>
         </div>
-<!--        <div v-if="showTeamStatus" id="chart_team_status" class="chart" style="height: 250px"></div>-->
-<!--        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="8000" :footer-data="footerData">-->
-<!--          <vxe-column title="主队" field="home" align="center" min-width="20%">-->
-<!--            <template #default="{row}">-->
-<!--              {{ row.home_match_group }}<br>-->
-<!--              <span style="color:#8B4513">{{ row.home }}</span>&nbsp;&nbsp;vs&nbsp;&nbsp;{{ row.infer }}<br>-->
-<!--              比分：{{ row.home_field_score }}<br>-->
-<!--              让初：{{ row.home_concede_origin }}<br>-->
-<!--              让终：{{ row.home_concede_terminus }}-->
-<!--            </template>-->
-<!--          </vxe-column>-->
-<!--          <vxe-column title="客队" field="visit" align="center" min-width="20%">-->
-<!--            <template #default="{row}">-->
-<!--              {{ row.visit_match_group }}<br>-->
-<!--              {{ row.infer }}&nbsp;&nbsp;vs&nbsp;&nbsp;<span style="color:#FF1493">{{ row.visit }}</span><br>-->
-<!--              比分：{{ row.visit_field_score }}<br>-->
-<!--              让初：{{ row.visit_concede_origin }}<br>-->
-<!--              让终：{{ row.visit_concede_terminus }}-->
-<!--            </template>-->
-<!--          </vxe-column>-->
-<!--          <vxe-column title="让初推导" field="origin_infer" align="center" max-width="80"/>-->
-<!--          <vxe-column title="让终推导" field="instant_infer" align="center" max-width="80"/>-->
-<!--          <vxe-column title="结果" align="center" max-width="60">-->
-<!--            <template #default="{row}">-->
-<!--              {{ row.home_concede_result }}{{ row.visit_concede_result }}-->
-<!--            </template>-->
-<!--          </vxe-column>-->
-<!--        </vxe-table>-->
-<!--        <table v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0" class="table2">-->
-<!--          <thead>-->
-<!--            <tr><th>让球推导</th><th>主队</th><th>客队</th>-->
-<!--          </tr>-->
-<!--          </thead>-->
-<!--          <tbody>-->
-<!--            <tr><td>让初平均</td><td>{{ matchStore.match.home_concede_origin_average }}</td><td>{{ matchStore.match.visit_concede_origin_average }}</td></tr>-->
-<!--            <tr><td>让终平均</td><td>{{ matchStore.match.home_concede_terminus_average }}</td><td>{{ matchStore.match.visit_concede_terminus_average }}</td></tr>-->
-<!--            <tr><td>进球平均</td><td>{{ matchStore.match.home_goal_average }}</td><td>{{ matchStore.match.visit_goal_average }}</td></tr>-->
-<!--            <tr><td>失球平均</td><td>{{ matchStore.match.home_loss_average }}</td><td>{{ matchStore.match.visit_loss_average }}</td></tr>-->
-<!--            <tr><td>净胜球平均</td><td>{{ matchStore.match.home_gd_average }}</td><td>{{ matchStore.match.visit_gd_average }}</td></tr>-->
-<!--            <tr><td>赢盘率</td><td>{{ matchStore.match.home_pan_percent }}%</td><td>{{ matchStore.match.visit_pan_percent }}%</td></tr>-->
-<!--          </tbody>-->
-<!--        </table>-->
-<!--        <span v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0">-->
-<!--          <span class="text-red-500">-->
-<!--          让初推导平均值：{{ matchStore.match.origin_infer_average }} {{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '<' : '>' }} 本场初始让球：{{ matchStore.match!.origin_pan_most! }}，-->
-<!--            {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) < -0.5 ? '让初偏深。' : '' }}-->
-<!--            {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) > 0.5 ? '让初偏浅。' : '' }}-->
-<!--            <br>-->
-<!--          让终推导平均值：{{ matchStore.match.instant_infer_average }} {{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '<' : '>' }} 本场最终让球：{{ matchStore.match!.instant_pan_most! }}。-->
-<!--            {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) < -0.5 ? '让终偏深。' : '' }}-->
-<!--            {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) > 0.5 ? '让终偏浅。' : '' }}-->
-<!--            <br>-->
-<!--            比分均值计算：{{ matchStore.match.infer_score }}-->
-<!--          </span>-->
-<!--        </span>-->
+        <div v-if="showTeamStatus" id="chart_team_status" class="chart" style="height: 250px"></div>
+        <vxe-table v-if="matchStore.match.infer_data?.length" :data="matchStore.match.infer_data" auto-resize style="width: calc(100% - 20px);margin: 20px auto 0" border max-height="8000" :footer-data="footerData">
+          <vxe-column title="主队" field="home" align="center" min-width="20%">
+            <template #default="{row}">
+              {{ row.home_match_group }}<br>
+              <span style="color:#8B4513">{{ row.home }}</span>&nbsp;&nbsp;vs&nbsp;&nbsp;{{ row.infer }}<br>
+              比分：{{ row.home_field_score }}<br>
+              让初：{{ row.home_concede_origin }}<br>
+              让终：{{ row.home_concede_terminus }}
+            </template>
+          </vxe-column>
+          <vxe-column title="客队" field="visit" align="center" min-width="20%">
+            <template #default="{row}">
+              {{ row.visit_match_group }}<br>
+              {{ row.infer }}&nbsp;&nbsp;vs&nbsp;&nbsp;<span style="color:#FF1493">{{ row.visit }}</span><br>
+              比分：{{ row.visit_field_score }}<br>
+              让初：{{ row.visit_concede_origin }}<br>
+              让终：{{ row.visit_concede_terminus }}
+            </template>
+          </vxe-column>
+          <vxe-column title="让初推导" field="origin_infer" align="center" max-width="80"/>
+          <vxe-column title="让终推导" field="instant_infer" align="center" max-width="80"/>
+          <vxe-column title="结果" align="center" max-width="60">
+            <template #default="{row}">
+              {{ row.home_concede_result }}{{ row.visit_concede_result }}
+            </template>
+          </vxe-column>
+        </vxe-table>
+        <table v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0" class="table2">
+          <thead>
+            <tr><th>让球推导</th><th>主队</th><th>客队</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr><td>让初平均</td><td>{{ matchStore.match.home_concede_origin_average }}</td><td>{{ matchStore.match.visit_concede_origin_average }}</td></tr>
+            <tr><td>让终平均</td><td>{{ matchStore.match.home_concede_terminus_average }}</td><td>{{ matchStore.match.visit_concede_terminus_average }}</td></tr>
+            <tr><td>进球平均</td><td>{{ matchStore.match.home_goal_average }}</td><td>{{ matchStore.match.visit_goal_average }}</td></tr>
+            <tr><td>失球平均</td><td>{{ matchStore.match.home_loss_average }}</td><td>{{ matchStore.match.visit_loss_average }}</td></tr>
+            <tr><td>净胜球平均</td><td>{{ matchStore.match.home_gd_average }}</td><td>{{ matchStore.match.visit_gd_average }}</td></tr>
+            <tr><td>赢盘率</td><td>{{ matchStore.match.home_pan_percent }}%</td><td>{{ matchStore.match.visit_pan_percent }}%</td></tr>
+          </tbody>
+        </table>
+        <span v-if="matchStore.match.infer_data?.length" style="width: calc(100% - 20px);margin: 20px auto 0">
+          <span class="text-red-500">
+          让初推导平均值：{{ matchStore.match.origin_infer_average }} {{ Math.abs(matchStore.match!.origin_infer_average!) < Math.abs(matchStore.match!.origin_pan_most!) ? '<' : '>' }} 本场初始让球：{{ matchStore.match!.origin_pan_most! }}，
+            {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) < -0.5 ? '让初偏深。' : '' }}
+            {{ Math.abs(matchStore.match!.origin_infer_average!) - Math.abs(matchStore.match!.origin_pan_most!) > 0.5 ? '让初偏浅。' : '' }}
+            <br>
+          让终推导平均值：{{ matchStore.match.instant_infer_average }} {{ Math.abs(matchStore.match!.instant_infer_average!) < Math.abs(matchStore.match!.instant_pan_most!) ? '<' : '>' }} 本场最终让球：{{ matchStore.match!.instant_pan_most! }}。
+            {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) < -0.5 ? '让终偏深。' : '' }}
+            {{ Math.abs(matchStore.match!.instant_infer_average!) - Math.abs(matchStore.match!.instant_pan_most!) > 0.5 ? '让终偏浅。' : '' }}
+            <br>
+            比分均值计算：{{ matchStore.match.infer_score }}
+          </span>
+        </span>
         <van-notice-bar v-if="matchStore.match.origin_size_most&&matchStore.match.instant_size_most" color="#1989fa" background="#ecf9ff" class="w-full mt-4" :scrollable="false">
           大小球初盘：{{ matchStore.match.origin_size_most }}，大小球即时盘：{{ matchStore.match.instant_size_most }}
         </van-notice-bar>
-<!--        <span class="size-title" v-if="matchStore.match.poisson_small&&matchStore.match.poisson_big">泊松分布全联赛分主客场计算大小球</span>-->
-<!--        <table v-if="matchStore.match.poisson_small&&matchStore.match.poisson_big" class="table-1 w-full mt-3 px-4">-->
-<!--          <thead>-->
-<!--          <tr>-->
-<!--            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}小球概率</th>-->
-<!--            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}大球概率</th>-->
-<!--          </tr>-->
-<!--          </thead>-->
-<!--          <tbody>-->
-<!--          <tr>-->
-<!--            <td>{{ matchStore.match.poisson_small }}%</td>-->
-<!--            <td>{{ matchStore.match.poisson_big }}%</td>-->
-<!--          </tr>-->
-<!--          </tbody>-->
-<!--        </table>-->
-<!--        <span class="size-title" v-if="matchStore.match.poisson_small_limit&&matchStore.match.poisson_big_limit">泊松分布全联赛不分主客场取近5场计算大小球</span>-->
-<!--        <table v-if="matchStore.match.poisson_small_limit&&matchStore.match.poisson_big_limit" class="table-1 w-full mt-3 px-4">-->
-<!--          <thead>-->
-<!--          <tr>-->
-<!--            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}小球概率</th>-->
-<!--            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}大球概率</th>-->
-<!--          </tr>-->
-<!--          </thead>-->
-<!--          <tbody>-->
-<!--          <tr>-->
-<!--            <td>{{ matchStore.match.poisson_small_limit }}%</td>-->
-<!--            <td>{{ matchStore.match.poisson_big_limit }}%</td>-->
-<!--          </tr>-->
-<!--          </tbody>-->
-<!--        </table>-->
+        <span class="size-title" v-if="matchStore.match.poisson_small&&matchStore.match.poisson_big">泊松分布全联赛分主客场计算大小球</span>
+        <table v-if="matchStore.match.poisson_small&&matchStore.match.poisson_big" class="table-1 w-full mt-3 px-4">
+          <thead>
+          <tr>
+            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}小球概率</th>
+            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}大球概率</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{ matchStore.match.poisson_small }}%</td>
+            <td>{{ matchStore.match.poisson_big }}%</td>
+          </tr>
+          </tbody>
+        </table>
+        <span class="size-title" v-if="matchStore.match.poisson_small_limit&&matchStore.match.poisson_big_limit">泊松分布全联赛不分主客场取近5场计算大小球</span>
+        <table v-if="matchStore.match.poisson_small_limit&&matchStore.match.poisson_big_limit" class="table-1 w-full mt-3 px-4">
+          <thead>
+          <tr>
+            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}小球概率</th>
+            <th>泊松{{ matchStore.match.instant_size_most ?? 2.5 }}大球概率</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{ matchStore.match.poisson_small_limit }}%</td>
+            <td>{{ matchStore.match.poisson_big_limit }}%</td>
+          </tr>
+          </tbody>
+        </table>
         <div class="panel" v-if="showSizeAll">
           <div class="title">
             大小球全网匹配结果：
@@ -815,6 +815,7 @@ const onLookTrend = () => {
   xTrendList.value.getData()
 }
 onMounted(() => {
+  debugger
   const dom1 = document.getElementById('chart_europe_all')
   if (dom1) {
     chart_europe_all = echarts.init(dom1)
