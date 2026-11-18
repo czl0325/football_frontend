@@ -36,16 +36,28 @@
     return out;
   }
 
-  // 等价于 xpath("//x/text()")[0]（取第一个文本节点），没有则 null
+  // 等价于 xpath("//x/text()")[0]（取第一个文本节点），没有则 null。
+  // 表达式若为字符串函数（normalize-space()/string() 等）结果不是节点集，
+  // snapshot 求值会抛错，此时改用 STRING_TYPE 直接取字符串结果。
   function xpText(doc, expr, ctx) {
-    const nodes = xp(doc, expr, ctx);
-    return nodes.length ? nodes[0].nodeValue : null;
+    try {
+      const nodes = xp(doc, expr, ctx);
+      return nodes.length ? nodes[0].nodeValue : null;
+    } catch (e) {
+      const s = doc.evaluate(expr, ctx || doc, null, XPathResult.STRING_TYPE, null).stringValue;
+      return s === '' ? null : s;
+    }
   }
 
-  // 等价于 xpath("//x/@attr")[0]
+  // 等价于 xpath("//x/@attr")[0]，回退逻辑同 xpText
   function xpAttr(doc, expr, ctx) {
-    const nodes = xp(doc, expr, ctx);
-    return nodes.length ? nodes[0].nodeValue : null;
+    try {
+      const nodes = xp(doc, expr, ctx);
+      return nodes.length ? nodes[0].nodeValue : null;
+    } catch (e) {
+      const s = doc.evaluate(expr, ctx || doc, null, XPathResult.STRING_TYPE, null).stringValue;
+      return s === '' ? null : s;
+    }
   }
 
   // 等价于 safe_to_decimal：清洗成数字，失败返回 ""
@@ -196,7 +208,7 @@
 
   /* ---------------- get_fundamentals 主体（数据 页） ---------------- */
   function parseFundamentals(doc, match) {
-    const match_group = xpText(doc, "//div[@id='odds_hd_ls']/a[@class='hd_name']/text()");
+    const match_group = xpText(doc, "normalize-space(//div[@class='odds_hd_ls']/a[@class='hd_name'])");
     if (match_group) {
       match.match_group = match_group.trim();
       const typeRe = /(.*?)(第\d+轮|第.*?圈|分组赛|小组赛|资格赛|半.*?决赛|决赛|十六强|八强|季军赛|外.*?赛|排名|升|降|春|秋|16强|附加赛|欧会杯资格附加.*?赛|[A-F]联赛|1\/\d+决赛|中级锦标赛|\d+月赛程.*?|赛事|优选赛)/;

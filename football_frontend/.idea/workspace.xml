@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6239572d-c878-419d-92a5-05a93145a75e" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/../football_extension/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../football_extension/.workbuddy/memory/2026-09-22.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../football_extension/content.css" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/content.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../football_extension/content.js" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/content.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../football_extension/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../football_extension/matchlib.js" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/matchlib.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../football_extension/preview-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/preview-report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../football_extension/report.js" beforeDir="false" afterPath="$PROJECT_DIR$/../football_extension/report.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/detail/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/detail/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/index.vue" afterDir="false" />
-    </list>
+    <list default="true" id="6239572d-c878-419d-92a5-05a93145a75e" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -150,7 +138,7 @@
       <workItem from="1794403441151" duration="110000" />
       <workItem from="1794403558129" duration="3000" />
       <workItem from="1794403648968" duration="1886000" />
-      <workItem from="1794814063095" duration="508000" />
+      <workItem from="1794814063095" duration="959000" />
     </task>
     <servers />
   </component>
